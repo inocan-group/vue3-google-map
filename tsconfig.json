@@ -1,10 +1,8 @@
 {
   "compilerOptions": {
     "target": "esnext",
-    "module": "esnext",
+    "module": "commonjs",
     "strict": true,
-    "declaration": true,
-    "declarationDir": "dist",
     "noUnusedLocals": true,
     "noUnusedParameters": true,
     "importHelpers": true,
@@ -12,13 +10,18 @@
     "experimentalDecorators": true,
     "esModuleInterop": true,
     "allowSyntheticDefaultImports": true,
-    "sourceMap": true,
+    "sourceMap": false,
     "baseUrl": ".",
-    "types": ["node", "vue"],
+    "types": ["node", "vue", "google-maps"],
     "paths": {
       "@/*": ["src/*"]
     },
-    "lib": ["esnext", "dom", "dom.iterable", "scripthost"]
+    "lib": ["esnext", "dom", "dom.iterable", "scripthost"],
+    "plugins": [
+      { "transform": "typescript-transform-paths" },
+      { "transform": "typescript-transform-paths", "afterDeclarations": true }
+    ]
   },
+  "include": ["src/**/*.ts", "src/**/*.vue"],
   "exclude": ["node_modules", "dist"]
 }

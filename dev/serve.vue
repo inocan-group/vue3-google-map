@@ -24,7 +24,7 @@ export default defineComponent({
 <template>
   <div id="app">
     <GoogleMap
-      api-key="AIzaSyDRdC5ayB2snUW37qQP_6gHGVuxwbvlOIo"
+    api-key=""
       style="width: 100%; height: 80vh"
       :center="{ lat: 35, lng: -95 }"
       :zoom="13"
