@@ -1,17 +1,36 @@
 <script lang="ts">
-import Vue from 'vue';
-import { Vue3GoogleMapsSample } from '@/entry';
+import { defineComponent, ref } from 'vue'
+import { GoogleMap, Marker } from '@/components/index'
 
-export default Vue.extend({
+export default defineComponent({
   name: 'ServeDev',
   components: {
-    Vue3GoogleMapsSample,
-  }
-});
+    GoogleMap,
+    Marker,
+  },
+  setup() {
+    const greet = () => alert('hi')
+    const dist = ref(0)
+
+    setInterval(() => {
+      dist.value += 0.005
+    }, 1000)
+
+    return { greet, dist }
+  },
+})
 </script>
 
 <template>
   <div id="app">
-    <vue3-google-maps-sample />
+    <GoogleMap
+      api-key="AIzaSyDRdC5ayB2snUW37qQP_6gHGVuxwbvlOIo"
+      style="width: 100%; height: 80vh"
+      :center="{ lat: 35, lng: -95 }"
+      :zoom="13"
+    >
+      <Marker :options="{ position: { lat: 35, lng: -95 + dist } }" />
+      <Marker :options="{ position: { lat: 35, lng: -95 } }" @click="greet" />
+    </GoogleMap>
   </div>
 </template>

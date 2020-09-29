@@ -1,2 +1,6 @@
-/* eslint-disable import/prefer-default-export */
-export { default as Vue3GoogleMapsSample } from './vue3-google-maps-sample.vue';
+export { default as GoogleMap } from './GoogleMap.vue'
+export { default as Marker } from './Marker.vue'
+export { default as Polyline } from './Polyline.vue'
+export { default as Polygon } from './Polygon.vue'
+export { default as Rectangle } from './Rectangle.vue'
+export { default as Circle } from './Circle.vue'
