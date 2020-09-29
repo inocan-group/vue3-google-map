@@ -1,7 +1,7 @@
 import { ref } from 'vue'
-import { GoogleMapsAPI, Map } from '@types'
+import { GoogleMapsAPI, IMap } from '@/@types/index'
 
-const map = ref<Map | null>(null)
+const map = ref<IMap | null>(null)
 const api = ref<GoogleMapsAPI | null>(null)
 
 export const useMap = () => {

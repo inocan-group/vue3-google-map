@@ -1,42 +1,40 @@
-<script lang="ts">
 import { defineComponent, PropType, watch } from 'vue'
 import { useMap } from '@/composables/index'
-import { Rectangle, RectangleOptions } from '@types'
-import { rectangleEvents } from '@/shared/index'
+import { ICircle, ICircleOptions } from '@/@types/index'
+import { circleEvents } from '@/shared/index'
 
 export default defineComponent({
   props: {
     options: {
-      type: Object as PropType<RectangleOptions>,
+      type: Object as PropType<ICircleOptions>,
       required: true,
     },
   },
   setup(props, { emit }) {
-    let rectangle: Rectangle | null = null
+    let circle: ICircle | null = null
     const { map, api } = useMap()
 
     watch([map, () => props.options], (_, __, onInvalidate) => {
       if (map.value && api.value) {
-        rectangle = new api.value.Rectangle({
+        circle = new api.value.Circle({
           ...props.options,
           map: map.value,
         })
 
-        rectangleEvents.forEach(event => {
-          rectangle?.addListener(event, () => emit(event))
+        circleEvents.forEach(event => {
+          circle?.addListener(event, () => emit(event))
         })
       }
 
       onInvalidate(() => {
-        if (rectangle) {
-          api.value?.event.clearInstanceListeners(rectangle)
-          rectangle.setMap(null)
+        if (circle) {
+          api.value?.event.clearInstanceListeners(circle)
+          circle.setMap(null)
         }
       })
     })
 
-    return { rectangle }
+    return { circle }
   },
   render: () => null,
 })
-</script>

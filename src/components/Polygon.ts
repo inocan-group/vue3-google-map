@@ -1,42 +1,40 @@
-<script lang="ts">
 import { defineComponent, PropType, watch } from 'vue'
 import { useMap } from '@/composables/index'
-import { Marker, MarkerOptions } from '@types'
-import { markerEvents } from '@/shared/index'
+import { IPolygon, IPolygonOptions } from '@/@types/index'
+import { polygonEvents } from '@/shared/index'
 
 export default defineComponent({
   props: {
     options: {
-      type: Object as PropType<MarkerOptions>,
+      type: Object as PropType<IPolygonOptions>,
       required: true,
     },
   },
   setup(props, { emit }) {
-    let marker: Marker | null = null
+    let polygon: IPolygon | null = null
     const { map, api } = useMap()
 
     watch([map, () => props.options], (_, __, onInvalidate) => {
       if (map.value && api.value) {
-        marker = new api.value.Marker({
+        polygon = new api.value.Polygon({
           ...props.options,
           map: map.value,
         })
 
-        markerEvents.forEach(event => {
-          marker?.addListener(event, () => emit(event))
+        polygonEvents.forEach(event => {
+          polygon?.addListener(event, () => emit(event))
         })
       }
 
       onInvalidate(() => {
-        if (marker) {
-          api.value?.event.clearInstanceListeners(marker)
-          marker.setMap(null)
+        if (polygon) {
+          api.value?.event.clearInstanceListeners(polygon)
+          polygon.setMap(null)
         }
       })
     })
 
-    return { marker }
+    return { polygon }
   },
   render: () => null,
 })
-</script>

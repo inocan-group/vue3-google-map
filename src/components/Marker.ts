@@ -1,42 +1,40 @@
-<script lang="ts">
 import { defineComponent, PropType, watch } from 'vue'
 import { useMap } from '@/composables/index'
-import { Circle, CircleOptions } from '@types'
-import { circleEvents } from '@/shared/index'
+import { IMarker, IMarkerOptions } from '@/@types/index'
+import { markerEvents } from '@/shared/index'
 
 export default defineComponent({
   props: {
     options: {
-      type: Object as PropType<CircleOptions>,
+      type: Object as PropType<IMarkerOptions>,
       required: true,
     },
   },
   setup(props, { emit }) {
-    let circle: Circle | null = null
+    let marker: IMarker | null = null
     const { map, api } = useMap()
 
     watch([map, () => props.options], (_, __, onInvalidate) => {
       if (map.value && api.value) {
-        circle = new api.value.Circle({
+        marker = new api.value.Marker({
           ...props.options,
           map: map.value,
         })
 
-        circleEvents.forEach(event => {
-          circle?.addListener(event, () => emit(event))
+        markerEvents.forEach(event => {
+          marker?.addListener(event, () => emit(event))
         })
       }
 
       onInvalidate(() => {
-        if (circle) {
-          api.value?.event.clearInstanceListeners(circle)
-          circle.setMap(null)
+        if (marker) {
+          api.value?.event.clearInstanceListeners(marker)
+          marker.setMap(null)
         }
       })
     })
 
-    return { circle }
+    return { marker }
   },
   render: () => null,
 })
-</script>

@@ -1,42 +1,40 @@
-<script lang="ts">
 import { defineComponent, PropType, watch } from 'vue'
 import { useMap } from '@/composables/index'
-import { Polygon, PolygonOptions } from '@types'
-import { polygonEvents } from '@/shared/index'
+import { IPolyline, IPolylineOptions } from '@/@types/index'
+import { polylineEvents } from '@/shared/index'
 
 export default defineComponent({
   props: {
     options: {
-      type: Object as PropType<PolygonOptions>,
+      type: Object as PropType<IPolylineOptions>,
       required: true,
     },
   },
   setup(props, { emit }) {
-    let polygon: Polygon | null = null
+    let polyline: IPolyline | null = null
     const { map, api } = useMap()
 
     watch([map, () => props.options], (_, __, onInvalidate) => {
       if (map.value && api.value) {
-        polygon = new api.value.Polygon({
+        polyline = new api.value.Polyline({
           ...props.options,
           map: map.value,
         })
 
-        polygonEvents.forEach(event => {
-          polygon?.addListener(event, () => emit(event))
+        polylineEvents.forEach(event => {
+          polyline?.addListener(event, () => emit(event))
         })
       }
 
       onInvalidate(() => {
-        if (polygon) {
-          api.value?.event.clearInstanceListeners(polygon)
-          polygon.setMap(null)
+        if (polyline) {
+          api.value?.event.clearInstanceListeners(polyline)
+          polyline.setMap(null)
         }
       })
     })
 
-    return { polygon }
+    return { polyline }
   },
   render: () => null,
 })
-</script>

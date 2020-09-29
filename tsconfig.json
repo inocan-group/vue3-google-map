@@ -11,8 +11,9 @@
     "esModuleInterop": true,
     "allowSyntheticDefaultImports": true,
     "sourceMap": false,
+    "noEmit": true,
+    "types": ["node", "vue"],
     "baseUrl": ".",
-    "types": ["node", "vue", "google-maps"],
     "paths": {
       "@/*": ["src/*"]
     },
@@ -22,6 +23,6 @@
       { "transform": "typescript-transform-paths", "afterDeclarations": true }
     ]
   },
-  "include": ["src/**/*.ts", "src/**/*.vue"],
+  "include": ["src"],
   "exclude": ["node_modules", "dist"]
 }

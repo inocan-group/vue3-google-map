@@ -10,19 +10,19 @@
 import { defineComponent, PropType, ref } from 'vue'
 import { loadNow } from 'connect-google-maps'
 import { useMap } from '@/composables/index'
-import { LatLng, ControlPosition } from '@types'
+import { ILatLng, IControlPosition } from '../@types/index'
 
 export default defineComponent({
   props: {
     apiKey: String,
-    center: Object as PropType<LatLng>,
+    center: Object as PropType<ILatLng>,
     fullscreen: Boolean,
     fullscreenControlPosition: {
-      type: [String, Number] as PropType<ControlPosition>,
+      type: [String, Number] as PropType<IControlPosition>,
     },
     streetView: Boolean,
     streetViewControlPosition: {
-      type: [String, Number] as PropType<ControlPosition>,
+      type: [String, Number] as PropType<IControlPosition>,
     },
     zoom: Number,
   },
