@@ -18,11 +18,11 @@ export default defineComponent({
     center: Object as PropType<ILatLng>,
     fullscreen: Boolean,
     fullscreenControlPosition: {
-      type: [String, Number] as PropType<IControlPosition>,
+      type: String as PropType<IControlPosition>,
     },
     streetView: Boolean,
     streetViewControlPosition: {
-      type: [String, Number] as PropType<IControlPosition>,
+      type: String as PropType<IControlPosition>,
     },
     zoom: Number,
   },
@@ -31,26 +31,26 @@ export default defineComponent({
     const ready = ref(false)
     const { map, api } = useMap()
 
-    const opts = {
+    const opts = () => ({
       center: props.center,
       fullscreenControl: props.fullscreen,
       fullscreenControlOptions: props.fullscreenControlPosition
         ? {
-            position: props.fullscreenControlPosition,
+            position: api.value?.ControlPosition[props.fullscreenControlPosition] || undefined,
           }
         : {},
       streetViewControl: props.streetView,
       streetViewControlOptions: props.streetViewControlPosition
         ? {
-            position: props.streetViewControlPosition,
+            position: api.value?.ControlPosition[props.streetViewControlPosition] || undefined,
           }
         : {},
       zoom: props.zoom,
-    }
+    })
 
     loadNow('places', props.apiKey).then(res => {
       api.value = res.maps
-      map.value = new api.value.Map(mapRef.value as HTMLElement, opts)
+      map.value = new api.value.Map(mapRef.value as HTMLElement, opts())
 
       ready.value = true
     })
