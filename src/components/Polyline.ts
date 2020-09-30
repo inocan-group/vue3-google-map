@@ -1,4 +1,4 @@
-import { defineComponent, PropType, watch } from 'vue'
+import { defineComponent, PropType, watch, ref } from 'vue'
 import { useMap } from '@/composables/index'
 import { IPolyline, IPolylineOptions } from '@/@types/index'
 import { polylineEvents } from '@/shared/index'
@@ -11,25 +11,26 @@ export default defineComponent({
     },
   },
   setup(props, { emit }) {
-    let polyline: IPolyline | null = null
+    let _polyline: IPolyline | null = null
+    const polyline = ref<IPolyline | null>(null)
     const { map, api } = useMap()
 
     watch([map, () => props.options], (_, __, onInvalidate) => {
       if (map.value && api.value) {
-        polyline = new api.value.Polyline({
+        polyline.value = _polyline = new api.value.Polyline({
           ...props.options,
           map: map.value,
         })
 
         polylineEvents.forEach(event => {
-          polyline?.addListener(event, () => emit(event))
+          _polyline?.addListener(event, () => emit(event))
         })
       }
 
       onInvalidate(() => {
-        if (polyline) {
-          api.value?.event.clearInstanceListeners(polyline)
-          polyline.setMap(null)
+        if (_polyline) {
+          api.value?.event.clearInstanceListeners(_polyline)
+          _polyline.setMap(null)
         }
       })
     })

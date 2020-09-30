@@ -1,8 +1,6 @@
 <template>
   <div ref="mapRef">
-    <!-- find out why v-if isn't working with slots -->
     <slot />
-    <!-- <p v-else>API not ready yet</p> -->
   </div>
 </template>
 
@@ -10,7 +8,7 @@
 import { defineComponent, PropType, ref } from 'vue'
 import { loadNow } from 'connect-google-maps'
 import { useMap } from '@/composables/index'
-import { ILatLng, IControlPosition } from '../@types/index'
+import { ILatLng, IControlPosition } from '@/@types/index'
 
 export default defineComponent({
   props: {

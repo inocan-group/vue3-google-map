@@ -1,4 +1,4 @@
-import { defineComponent, PropType, watch } from 'vue'
+import { defineComponent, PropType, watch, ref } from 'vue'
 import { useMap } from '@/composables/index'
 import { IMarker, IMarkerOptions } from '@/@types/index'
 import { markerEvents } from '@/shared/index'
@@ -11,25 +11,26 @@ export default defineComponent({
     },
   },
   setup(props, { emit }) {
-    let marker: IMarker | null = null
+    let _marker: IMarker | null = null
+    const marker = ref<IMarker | null>(null)
     const { map, api } = useMap()
 
     watch([map, () => props.options], (_, __, onInvalidate) => {
       if (map.value && api.value) {
-        marker = new api.value.Marker({
+        marker.value = _marker = new api.value.Marker({
           ...props.options,
           map: map.value,
         })
 
         markerEvents.forEach(event => {
-          marker?.addListener(event, () => emit(event))
+          _marker?.addListener(event, () => emit(event))
         })
       }
 
       onInvalidate(() => {
-        if (marker) {
-          api.value?.event.clearInstanceListeners(marker)
-          marker.setMap(null)
+        if (_marker) {
+          api.value?.event.clearInstanceListeners(_marker)
+          _marker.setMap(null)
         }
       })
     })
