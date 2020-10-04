@@ -23,6 +23,7 @@ export default defineComponent({
       type: String as PropType<IControlPosition>,
     },
     zoom: Number,
+    controlSize: Number,
   },
   setup(props) {
     const mapRef = ref<HTMLElement | null>(null)
@@ -44,6 +45,7 @@ export default defineComponent({
           }
         : {},
       zoom: props.zoom,
+      controlSize: props.controlSize,
     })
 
     loadNow('places', props.apiKey).then(res => {
