@@ -5,7 +5,7 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, PropType, ref } from 'vue'
+import { defineComponent, PropType, ref, watch } from 'vue'
 import { loadNow } from 'connect-google-maps'
 import { useMap } from '@/composables/index'
 import { ILatLng, IControlPosition } from '@/@types/index'
@@ -53,6 +53,10 @@ export default defineComponent({
       map.value = new api.value.Map(mapRef.value as HTMLElement, opts())
 
       ready.value = true
+
+      watch(props, () => {
+        map.value = new api.value!.Map(mapRef.value as HTMLElement, opts())
+      })
     })
 
     return { mapRef, ready, map, api }
