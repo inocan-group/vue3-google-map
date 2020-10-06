@@ -21,7 +21,7 @@
     "build:docs": "yarn vitepress build docs"
   },
   "dependencies": {
-    "connect-google-maps": "https://github.com/inocan-group/connect-google-maps.git"
+    "connect-google-maps": "0.2.0"
   },
   "devDependencies": {
     "@rollup/plugin-commonjs": "^11.1.0",

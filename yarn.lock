@@ -3069,9 +3069,10 @@ concat-stream@^1.5.0:
     readable-stream "^2.2.2"
     typedarray "^0.0.6"
 
-"connect-google-maps@https://github.com/inocan-group/connect-google-maps.git":
-  version "0.1.0"
-  resolved "https://github.com/inocan-group/connect-google-maps.git#84d2f7bdbe2464912a1979ab19e5d784713ce89d"
+connect-google-maps@0.2.0:
+  version "0.2.0"
+  resolved "https://registry.yarnpkg.com/connect-google-maps/-/connect-google-maps-0.2.0.tgz#145ec07fcb334e30d14ab209fce71d9bdc63249c"
+  integrity sha512-RN2f6+NeJbXPqxV5/obGhlY4OUc7IWdwY0gveMZ9375rvsfb6m9Nglg3MmUoximmJJrMqejqls8MvGw0Ui7Djw==
 
 connect-history-api-fallback@^1.6.0:
   version "1.6.0"
