@@ -1,6 +1,6 @@
 <script lang="ts">
 import { defineComponent, ref } from 'vue'
-import { GoogleMap, Marker, CustomControl } from '@/components/index'
+import { GoogleMap, Marker, CustomControl } from '/@/components/index'
 
 export default defineComponent({
   name: 'ServeDev',

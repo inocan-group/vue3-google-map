@@ -1,7 +1,7 @@
 import { defineComponent, PropType, watch, ref } from 'vue'
-import { useMap } from '@/composables/index'
-import { IRectangle, IRectangleOptions } from '@/@types/index'
-import { rectangleEvents } from '@/shared/index'
+import { useMap } from '/@/composables/index'
+import { IRectangle, IRectangleOptions } from '/@/@types/index'
+import { rectangleEvents } from '/@/shared/index'
 
 export default defineComponent({
   props: {

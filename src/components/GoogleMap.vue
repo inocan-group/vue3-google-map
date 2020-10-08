@@ -7,7 +7,7 @@
 <script lang="ts">
 import { defineComponent, PropType, ref, watch } from 'vue'
 import { loadNow } from 'connect-google-maps'
-import { useMap } from '@/composables/index'
+import { useMap } from '/@/composables/index'
 import {
   ILatLng,
   IControlPosition,
@@ -17,7 +17,7 @@ import {
   IMapRestriction,
   IStreetViewPanorama,
   IMapTypeStyle,
-} from '@/@types/index'
+} from '/@/@types/index'
 
 export default defineComponent({
   props: {

@@ -1,7 +1,7 @@
 import { defineComponent, PropType, watch, ref } from 'vue'
-import { useMap } from '@/composables/index'
-import { IPolyline, IPolylineOptions } from '@/@types/index'
-import { polylineEvents } from '@/shared/index'
+import { useMap } from '/@/composables/index'
+import { IPolyline, IPolylineOptions } from '/@/@types/index'
+import { polylineEvents } from '/@/shared/index'
 
 export default defineComponent({
   props: {

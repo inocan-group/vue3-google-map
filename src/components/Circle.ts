@@ -1,7 +1,7 @@
 import { defineComponent, PropType, watch, ref } from 'vue'
-import { useMap } from '@/composables/index'
-import { ICircle, ICircleOptions } from '@/@types/index'
-import { circleEvents } from '@/shared/index'
+import { useMap } from '/@/composables/index'
+import { ICircle, ICircleOptions } from '/@/@types/index'
+import { circleEvents } from '/@/shared/index'
 
 export default defineComponent({
   props: {

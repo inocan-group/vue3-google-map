@@ -4,8 +4,8 @@
 
 <script lang="ts">
 import { defineComponent, PropType, watch, ref } from 'vue'
-import { useMap } from '@/composables/index'
-import { IControlPosition } from '@/@types/index'
+import { useMap } from '/@/composables/index'
+import { IControlPosition } from '/@/@types/index'
 
 export default defineComponent({
   props: {
