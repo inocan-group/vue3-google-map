@@ -22,7 +22,7 @@
     "build:docs": "npx vitepress build ./docs"
   },
   "dependencies": {
-    "connect-google-maps": "0.2.0"
+    "connect-google-maps": "0.2.1"
   },
   "devDependencies": {
     "@rollup/plugin-commonjs": "^11.1.0",
