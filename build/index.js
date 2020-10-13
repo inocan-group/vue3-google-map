@@ -18,7 +18,7 @@ const external = [
   ...(pkg.peerDependencies ? Object.keys(pkg.peerDependencies) : []),
   ...(pkg.optionalDependencies ? Object.keys(pkg.optionalDependencies) : []),
   ...builtinModules,
-]
+].map(i => i.replace('@types/', ''))
 
 // required for IIFE and UMD modules
 const globals = {}
@@ -41,13 +41,14 @@ const moduleConfig = (moduleSystem, minimized) => ({
           typescript({
             rootDir: '.',
             tsconfig: 'tsconfig.es.json',
+            target: minimized ? 'es2015' : 'esnext',
             typescript: require('ttypescript'),
             declaration: false,
           }),
         ]
       : []),
     ...(moduleSystem === 'es' && process.env.ANALYZE ? [analyze()] : []),
-    ...(minimized ? [terser()] : []),
+    // ...(minimized ? [terser()] : []),
   ],
 })
 
@@ -56,7 +57,7 @@ const usesGlobalVars = mod => {
 }
 ;(async () => {
   const mods = process.argv.slice(2)
-  const validModules = ['es', 'cjs', 'iife', 'umd']
+  const validModules = ['es', 'cjs', 'iife', 'umd', 'cjs-min']
   const hasValidModules = mods.every(m => validModules.includes(m))
   if (!hasValidModules) {
     console.log(
@@ -90,7 +91,7 @@ const usesGlobalVars = mod => {
 
   for (let m of mods) {
     let min = false
-    if (m.includes('-min')) {
+    if (m.includes('-min') || ['iife', 'umd'].includes(m)) {
       m = m.replace('-min', '')
       min = true
     }

@@ -12,7 +12,7 @@
     "allowSyntheticDefaultImports": true,
     "sourceMap": false,
     "noEmit": true,
-    "types": ["node", "vue"],
+    "types": ["node", "vue", "google-maps"],
     "baseUrl": ".",
     "paths": {
       "/@/*": ["src/*"]

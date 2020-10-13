@@ -1,5 +1,3 @@
-import 'google-maps'
-
 export type GoogleMapsAPI = typeof google.maps
 export type IMap = google.maps.Map
 export type ILatLng = google.maps.LatLng
