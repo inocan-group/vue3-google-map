@@ -129,16 +129,20 @@ export default defineComponent({
         : {},
     })
 
-    loadNow('places', props.apiKey).then(res => {
-      api.value = res.maps
-      map.value = new api.value.Map(mapRef.value as HTMLElement, opts())
+    // Only run this in a browser env since it needs to use the `document` object
+    // and would error out in a node env (i.e. vitepress/vuepress SSR)
+    if (typeof window !== 'undefined') {
+      loadNow('places', props.apiKey).then(res => {
+        api.value = res.maps
+        map.value = new api.value.Map(mapRef.value as HTMLElement, opts())
 
-      ready.value = true
+        ready.value = true
 
-      watch(props, () => {
-        map.value = new api.value!.Map(mapRef.value as HTMLElement, opts())
+        watch(props, () => {
+          map.value = new api.value!.Map(mapRef.value as HTMLElement, opts())
+        })
       })
-    })
+    }
 
     return { mapRef, ready, map, api }
   },
