@@ -1,5 +1,8 @@
 import theme from 'vitepress/dist/client/theme-default'
 import * as libraryComponents from '/@/components/index'
+import { h } from 'vue'
+
+const GOOGLE_API_KEY = ''
 
 export default {
   ...theme,
@@ -7,7 +10,16 @@ export default {
     // app is the Vue 3 app instance from createApp()
     // router is VitePress' custom router (see `lib/app/router.js`)
     // siteData is a ref of current site-level metadata.
-    for (const key in libraryComponents) {
+
+    const { GoogleMap, ...libraryComponentsRest } = libraryComponents
+
+    app.component('GoogleMap', {
+      render() {
+        return h(GoogleMap, { apiKey: GOOGLE_API_KEY }, this.$slots.default())
+      },
+    })
+
+    for (const key in libraryComponentsRest) {
       app.component(key, libraryComponents[key])
     }
   },

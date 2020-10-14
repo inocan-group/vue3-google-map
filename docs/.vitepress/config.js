@@ -4,51 +4,38 @@ module.exports = {
   title: 'vue3-google-maps',
   description: 'vue3-google-maps documentation',
   themeConfig: {
-    nav: [
-      {
-        text: 'Guide',
-        link: '/guide',
-      },
-      {
-        text: 'API',
-        link: '/api',
-      },
-    ],
+    nav: [],
     sidebar: [
       {
-        text: 'Installation',
-        link: '/installation',
-      },
-      {
-        text: 'Getting Started',
-        link: '/getting-started',
+        text: 'Quick Start',
+        link: '/',
       },
       {
         text: 'Components',
         children: [
           {
-            text: 'Markers',
-            link: '/components/markers',
+            text: 'Marker',
+            link: '/components/marker',
           },
           {
-            text: 'Polylines',
-            link: '/components/polylines',
+            text: 'Polyline',
+            link: '/components/polyline',
           },
           {
-            text: 'Polygons',
-            link: '/components/polygons',
+            text: 'Polygon',
+            link: '/components/polygon',
           },
           {
-            text: 'Rectangles',
-            link: '/components/rectangles',
+            text: 'Rectangle',
+            link: '/components/rectangle',
           },
           {
-            text: 'Circles',
-            link: '/components/circles',
+            text: 'Circle',
+            link: '/components/circle',
           },
           {
-            text: 'Custom Controls',
-            link: '/components/custom-controls',
+            text: 'Custom Control',
+            link: '/components/custom-control',
           },
         ],
       },
