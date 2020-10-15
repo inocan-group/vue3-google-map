@@ -1,8 +1,7 @@
 import theme from 'vitepress/dist/client/theme-default'
 import * as libraryComponents from '/@/components/index'
 import { h } from 'vue'
-
-const GOOGLE_API_KEY = ''
+import { GOOGLE_API_KEY } from '../../env'
 
 export default {
   ...theme,
