@@ -18,8 +18,8 @@
     "build": "run-s clear autoindex build:lib build:types",
     "build:lib": "node ./build/index cjs es",
     "build:types": "echo - Building types && ttsc -P tsconfig.es.json --outDir dist/types --declaration",
-    "serve:docs": "npx vitepress dev ./docs",
-    "build:docs": "npx vitepress build ./docs"
+    "docs": "npx vitepress dev ./docs",
+    "docs:build": "npx vitepress build ./docs"
   },
   "dependencies": {
     "connect-google-maps": "0.2.1"
