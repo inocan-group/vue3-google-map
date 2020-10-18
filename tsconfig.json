@@ -23,6 +23,6 @@
       { "transform": "typescript-transform-paths", "afterDeclarations": true }
     ]
   },
-  "include": ["src"],
+  "include": ["src", "docs"],
   "exclude": ["node_modules", "dist"]
 }
