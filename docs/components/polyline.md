@@ -33,7 +33,7 @@ You can pass a [PolylineOptions](https://developers.google.com/maps/documentatio
   :center="center"
   :zoom="3"
   >
-    <Polyline :options="flightPlanCoordinate " />
+    <Polyline :options="flightPath" />
   </GoogleMap>
 </template>
 
@@ -59,7 +59,7 @@ export default defineComponent({
       strokeWeight: 2,
     }
 
-    return { center, flightPlanCoordinate }
+    return { center, flightPath }
   },
 })
 </script>
