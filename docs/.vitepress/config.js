@@ -39,6 +39,10 @@ module.exports = {
           },
         ],
       },
+      {
+        text: 'Accessing the Google API',
+        link: '/accessing-google-api',
+      },
     ],
   },
   alias: {
