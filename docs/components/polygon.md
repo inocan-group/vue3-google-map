@@ -40,7 +40,7 @@ You can pass a [PolylgonOptions](https://developers.google.com/maps/documentatio
 
 <script>
 import { defineComponent } from 'vue'
-import { GoogleMap, Polygon } from 'vue3-google-maps'
+import { GoogleMap, Polygon } from 'vue3-google-map'
 
 export default defineComponent({
   components: { GoogleMap, Polygon },

@@ -1,15 +1,24 @@
 const path = require('path')
 
 module.exports = {
-  title: 'vue3-google-maps',
-  description: 'vue3-google-maps documentation',
+  title: 'vue3-google-map',
+  description: 'vue3-google-map documentation',
   themeConfig: {
-    nav: [],
-    sidebar: [
+    nav: [
       {
-        text: 'Quick Start',
-        link: '/',
+        text: 'Getting Started',
+        link: '/getting-started/',
       },
+      {
+        text: 'Components',
+        link: '/components/',
+      },
+      {
+        text: 'Advanced Usage',
+        link: '/advanced-usage/',
+      },
+    ],
+    sidebar: [
       {
         text: 'Components',
         children: [
@@ -38,10 +47,6 @@ module.exports = {
             link: '/components/custom-control',
           },
         ],
-      },
-      {
-        text: 'Accessing the Google API',
-        link: '/accessing-google-api',
       },
     ],
   },

@@ -53,7 +53,7 @@ You can pass a [CircleOptions](https://developers.google.com/maps/documentation/
 
 <script>
 import { defineComponent } from 'vue'
-import { GoogleMap, Circle } from 'vue3-google-maps'
+import { GoogleMap, Circle } from 'vue3-google-map'
 
 export default defineComponent({
   components: { GoogleMap, Circle },

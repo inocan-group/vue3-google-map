@@ -36,7 +36,7 @@ You can pass a [RectangleOptions](https://developers.google.com/maps/documentati
 
 <script>
 import { defineComponent } from 'vue'
-import { GoogleMap, Marker } from 'vue3-google-maps'
+import { GoogleMap, Marker } from 'vue3-google-map'
 
 export default defineComponent({
   components: { GoogleMap, Marker },

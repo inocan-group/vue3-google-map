@@ -21,7 +21,7 @@ You can pass a [MarkerOptions](https://developers.google.com/maps/documentation/
 
 <script>
 import { defineComponent } from 'vue'
-import { GoogleMap, Marker } from 'vue3-google-maps'
+import { GoogleMap, Marker } from 'vue3-google-map'
 
 export default defineComponent({
   components: { GoogleMap, Marker },

@@ -28,7 +28,7 @@ Refer to the [Google Maps documentation](https://developers.google.com/maps/docu
 
 <script>
 import { defineComponent } from 'vue'
-import { GoogleMap, CustomControl } from 'vue3-google-maps'
+import { GoogleMap, CustomControl } from 'vue3-google-map'
 
 export default defineComponent({
   components: { GoogleMap, CustomControl },

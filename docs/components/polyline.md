@@ -39,7 +39,7 @@ You can pass a [PolylineOptions](https://developers.google.com/maps/documentatio
 
 <script>
 import { defineComponent } from 'vue'
-import { GoogleMap, Polyline } from 'vue3-google-maps'
+import { GoogleMap, Polyline } from 'vue3-google-map'
 
 export default defineComponent({
   components: { GoogleMap, Polyline },

@@ -1,16 +1,16 @@
-# vue3-google-maps
+# vue3-google-map
 > Composable components for easy use of Google Maps with Vue 3
 
-`vue3-google-maps` offers a set of composable components for easy use of Google Maps in your Vue 3 projects.
+`vue3-google-map` offers a set of composable components for easy use of Google Maps in your Vue 3 projects.
 
 ## Installation
 
 ### NPM
 
 ```bash
-npm install vue3-google-maps
+npm install vue3-google-map
 # OR
-yarn add vue3-google-maps
+yarn add vue3-google-map
 ```
 
 ### CDN
@@ -18,7 +18,7 @@ yarn add vue3-google-maps
 Include the following script tag in your `index.html` (make sure to include it after Vue 3).
 
 ```html
-<script src="https://unpkg.com/vue3-google-maps"></script>
+<script src="https://unpkg.com/vue3-google-map"></script>
 ```
 
 ## Usage

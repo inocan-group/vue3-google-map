@@ -1,6 +1,9 @@
-# Accessing the Google API
+---
+sidebar: auto
+---
+# Advanced Usage
 
-The basic components that `vue3-google-maps` provides are fully reactive and will get you pretty far. Should you need to access the Google Maps API, however, the `GoogleMaps` component exposes the following:
+The basic components that `vue3-google-map` provides are fully reactive and will get you pretty far. Should you need to access the Google Maps API, however, the `GoogleMaps` component exposes the following:
 
 - `ready`: A boolean indicating whether the API has been loaded and is ready for use.
 - `map`: The [Map](https://developers.google.com/maps/documentation/javascript/reference/map#Map) class instance.
@@ -22,7 +25,7 @@ The basic components that `vue3-google-maps` provides are fully reactive and wil
 
 <script>
 import { defineComponent, ref, computed, watch } from 'vue'
-import { GoogleMap } from 'vue3-google-maps'
+import { GoogleMap } from 'vue3-google-map'
 
 export default defineComponent({
   components: { GoogleMap },
