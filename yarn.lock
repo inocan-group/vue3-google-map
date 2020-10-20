@@ -1826,10 +1826,10 @@ dir-glob@^3.0.1:
   dependencies:
     path-type "^4.0.0"
 
-do-devops@^0.4.13:
-  version "0.4.13"
-  resolved "https://registry.yarnpkg.com/do-devops/-/do-devops-0.4.13.tgz#03b93a791adfd53c1eba39d1214d7af6b6987790"
-  integrity sha512-5lNaMKTWBIShV1G0ifg6xlTBQlY9LsM/wBmYoOSRy7q6DobzsKopouACf5S6gUE6mgkXCxBrlAgK+T4RbrPW8A==
+do-devops@^0.5.4:
+  version "0.5.4"
+  resolved "https://registry.yarnpkg.com/do-devops/-/do-devops-0.5.4.tgz#bfbf71bd3d492d7ba182e12258fe0b4f98ba0d9b"
+  integrity sha512-1A/rmpNuC6JK0jYtfvND7/UUyql01Yas6MgjzxPGxvk9pybWseA7zkHKTSRW4he1A35dDK+P8ojesdeB156o+A==
   dependencies:
     "@types/command-line-args" "^5.0.0"
     "@types/command-line-usage" "^5.0.1"

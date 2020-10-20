@@ -12,7 +12,6 @@
     "allowSyntheticDefaultImports": true,
     "sourceMap": false,
     "noEmit": true,
-    "types": ["node", "vue", "google-maps"],
     "baseUrl": ".",
     "paths": {
       "/@/*": ["src/*"]
@@ -23,6 +22,5 @@
       { "transform": "typescript-transform-paths", "afterDeclarations": true }
     ]
   },
-  "include": ["src", "docs"],
-  "exclude": ["node_modules", "dist"]
+  "include": ["src", "docs"]
 }

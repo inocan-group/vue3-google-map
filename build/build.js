@@ -9,6 +9,30 @@ const analyze = require('rollup-plugin-analyzer')
 const typescript = require('rollup-plugin-typescript2')
 const vue = require('rollup-plugin-vue')
 
+async function minimizeCjs() {
+  const input = `dist/cjs/index.js`
+  const external = [
+    ...(pkg.peerDependencies ? Object.keys(pkg.peerDependencies) : []),
+    ...(pkg.optionalDependencies ? Object.keys(pkg.optionalDependencies) : []),
+    ...builtinModules,
+  ].map(i => i.replace('@types/', ''))
+
+  const moduleConfig = () => ({
+    input,
+    external,
+    plugins: [commonjs(), resolve(), terser()],
+  })
+
+  ;(async () => {
+    const bundle = await rollup.rollup(moduleConfig())
+    await bundle.write({
+      file: `dist/cjs/index.min.js`,
+      format: 'cjs',
+      sourcemap: false,
+    })
+  })()
+}
+
 const usesTypescript = Object.keys(pkg.devDependencies).includes('typescript') ? true : false
 
 const input = `src/index.${usesTypescript ? 'ts' : 'js'}`
@@ -56,8 +80,9 @@ const usesGlobalVars = mod => {
   return ['umd', 'iife'].includes(mod)
 }
 ;(async () => {
-  const mods = process.argv.slice(2)
-  const validModules = ['es', 'cjs', 'iife', 'umd', 'cjs-min']
+  const minimize = process.argv.includes('--min')
+  const mods = process.argv.slice(2).filter(i => i !== '--min')
+  const validModules = ['es', 'cjs', 'iife', 'umd']
   const hasValidModules = mods.every(m => validModules.includes(m))
   if (!hasValidModules) {
     console.log(
@@ -84,11 +109,6 @@ const usesGlobalVars = mod => {
   }
   console.log()
 
-  // add minification step for CJS builds only
-  if (mods.includes('cjs')) {
-    mods.push('cjs-min')
-  }
-
   for (let m of mods) {
     let min = false
     if (m.includes('-min') || ['iife', 'umd'].includes(m)) {
@@ -103,6 +123,15 @@ const usesGlobalVars = mod => {
       format: m,
       sourcemap: false,
     })
+  }
+
+  if (minimize) {
+    if (!mods.includes('cjs')) {
+      throw new Error(
+        'Minimization was requested but no CJS module was built; either include CJS module build or remove minimization',
+      )
+    }
+    await minimizeCjs()
   }
 
   console.log('\n- Build completed!\n')

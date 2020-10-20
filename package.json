@@ -13,10 +13,10 @@
   ],
   "scripts": {
     "dev": "vite",
-    "autoindex": "yarn do autoindex",
+    "autoindex": "yarn do autoindex --sfc",
     "clear": "rimraf dist/**/*",
     "build": "run-s clear autoindex build:lib build:types",
-    "build:lib": "node ./build/index cjs es",
+    "build:lib": "node ./build/build cjs es --min",
     "build:types": "echo - Building types && ttsc -P tsconfig.es.json --outDir dist/types --declaration",
     "docs": "npx vitepress dev ./docs",
     "docs:build": "npx vitepress build ./docs"
@@ -35,7 +35,7 @@
     "@vue/eslint-config-typescript": "^5.0.2",
     "common-types": "^1.15.8",
     "cross-env": "^7.0.2",
-    "do-devops": "^0.4.13",
+    "do-devops": "^0.5.4",
     "eslint": "^7.10.0",
     "eslint-plugin-prettier": "^3.1.3",
     "eslint-plugin-vue": "^7.0.0-0",

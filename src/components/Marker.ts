@@ -1,7 +1,7 @@
 import { defineComponent, PropType, watch, ref } from 'vue'
-import { useMap } from '/@/composables/index'
-import { IMarker, IMarkerOptions } from '/@/@types/index'
-import { markerEvents } from '/@/shared/index'
+import { useMap } from '../composables/index'
+import { IMarker, IMarkerOptions } from '../@types/index'
+import { markerEvents } from '../shared/index'
 
 export default defineComponent({
   props: {
