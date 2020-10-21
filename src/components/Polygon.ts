@@ -1,6 +1,6 @@
-import { defineComponent, PropType, watch, ref } from 'vue'
-import { useMap } from '/@/composables/index'
-import { IPolygon, IPolygonOptions } from '/@/@types/index'
+import { defineComponent, PropType, toRef } from 'vue'
+import { useSetupMapComponent } from '/@/composables/index'
+import { IPolygonOptions } from '/@/@types/index'
 import { polygonEvents } from '/@/shared/index'
 
 export default defineComponent({
@@ -11,29 +11,8 @@ export default defineComponent({
     },
   },
   setup(props, { emit }) {
-    let _polygon: IPolygon | null = null
-    const polygon = ref<IPolygon | null>(null)
-    const { map, api } = useMap()
-
-    watch([map, () => props.options], (_, __, onInvalidate) => {
-      if (map.value && api.value) {
-        polygon.value = _polygon = new api.value.Polygon({
-          ...props.options,
-          map: map.value,
-        })
-
-        polygonEvents.forEach(event => {
-          _polygon?.addListener(event, () => emit(event))
-        })
-      }
-
-      onInvalidate(() => {
-        if (_polygon) {
-          api.value?.event.clearInstanceListeners(_polygon)
-          _polygon.setMap(null)
-        }
-      })
-    })
+    const options = toRef(props, 'options')
+    const polygon = useSetupMapComponent('Polygon', polygonEvents, options, emit)
 
     return { polygon }
   },
