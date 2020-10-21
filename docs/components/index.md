@@ -4,4 +4,9 @@ This library is intended to be used in a _composable_ fashion and therefore you 
 
 The main mapping component is `GoogleMap`, however the following components are available at your disposal:
 
-- [`Marker`](./marker.md)
+- [Marker](./marker.md)
+- [Polyline](./polyline.md)
+- [Polygon](./polygon.md)
+- [Rectangle](./rectangle.md)
+- [Circle](./circle.md)
+- [CustomControl](./custom-control.md)
