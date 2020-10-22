@@ -1,14 +1,20 @@
-//#autoindex, exclude: shims-vue.d, composables, shared, themes
+// #autoindex
 
 // #region autoindexed files
 
-// index last changed at: 10th Oct, 2020, 03:00 AM ( GMT+2 )
-// export: named; exclusions: shims-vue.d, composables, shared, themes, index, private.
-// directories: @types, components.
+// index last changed at: 10th Oct, 2020, 02:23 AM ( GMT+2 )
+// export: named; exclusions: index, private.
+// files: aubergine, dark, grey, minimal, retro, roadways, roadwaysMinimal, ultraLight.
 
-// directory exports
-export * from "./@types/index";
-export * from "./components/index";
+// local file exports
+export * from "./aubergine";
+export * from "./dark";
+export * from "./grey";
+export * from "./minimal";
+export * from "./retro";
+export * from "./roadways";
+export * from "./roadwaysMinimal";
+export * from "./ultraLight";
 
 // Note:
 // -----

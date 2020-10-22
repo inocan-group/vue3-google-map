@@ -17,6 +17,7 @@ import {
   IMapRestriction,
   IStreetViewPanorama,
   IMapTypeStyle,
+  ITheme,
 } from '/@/@types/index'
 
 export default defineComponent({
@@ -60,86 +61,97 @@ export default defineComponent({
     zoom: Number,
     zoomControl: { type: Boolean, default: undefined },
     zoomControlPosition: String as PropType<IControlPosition>,
+    theme: String as PropType<ITheme>,
   },
   setup(props) {
     const mapRef = ref<HTMLElement | null>(null)
     const ready = ref(false)
     const { map, api } = useMap()
 
-    const opts = () => ({
-      backgroundColor: props.backgroundColor,
-      center: props.center,
-      clickableIcons: props.clickableIcons,
-      controlSize: props.controlSize,
-      disableDefaultUi: props.disableDefaultUi,
-      disableDoubleClickZoom: props.disableDoubleClickZoom,
-      draggable: props.draggable,
-      draggableCursor: props.draggableCursor,
-      draggingCursor: props.draggingCursor,
-      fullscreenControl: props.fullscreenControl,
-      fullscreenControlOptions: props.fullscreenControlPosition
-        ? {
-            position: api.value?.ControlPosition[props.fullscreenControlPosition],
-          }
-        : {},
-      gestureHandling: props.gestureHandling,
-      heading: props.heading,
-      keyboardShortcuts: props.keyboardShortcuts,
-      mapTypeControl: props.mapTypeControl,
-      mapTypeControlOptions: props.mapTypeControlOptions,
-      mapTypeId: props.mapTypeId,
-      maxZoom: props.maxZoom,
-      minZoom: props.minZoom,
-      noClear: props.noClear,
-      panControl: props.panControl,
-      panControlOptions: props.panControlPosition
-        ? {
-            position: api.value?.ControlPosition[props.panControlPosition],
-          }
-        : {},
-      restriction: props.restriction,
-      rotateControl: props.rotateControl,
-      rotateControlOptions: props.rotateControlPosition
-        ? {
-            position: api.value?.ControlPosition[props.rotateControlPosition],
-          }
-        : {},
-      scaleControl: props.scaleControl,
-      scaleControlOptions: props.scaleControlStyle
-        ? {
-            style: props.scaleControlStyle,
-          }
-        : {},
-      scrollwheel: props.scrollwheel,
-      streetView: props.streetView,
-      streetViewControl: props.streetViewControl,
-      streetViewControlOptions: props.streetViewControlPosition
-        ? {
-            position: api.value?.ControlPosition[props.streetViewControlPosition],
-          }
-        : {},
-      styles: props.styles,
-      tilt: props.tilt,
-      zoom: props.zoom,
-      zoomControl: props.zoomControl,
-      zoomControlOptions: props.zoomControlPosition
-        ? {
-            position: api.value?.ControlPosition[props.zoomControlPosition],
-          }
-        : {},
-    })
+    const resolveOptions = async () => {
+      let theme
+
+      if (props.theme) {
+        ;({ [props.theme]: theme } = await import(`/@/themes/index`))
+      }
+
+      return {
+        backgroundColor: props.backgroundColor,
+        center: props.center,
+        clickableIcons: props.clickableIcons,
+        controlSize: props.controlSize,
+        disableDefaultUi: props.disableDefaultUi,
+        disableDoubleClickZoom: props.disableDoubleClickZoom,
+        draggable: props.draggable,
+        draggableCursor: props.draggableCursor,
+        draggingCursor: props.draggingCursor,
+        fullscreenControl: props.fullscreenControl,
+        fullscreenControlOptions: props.fullscreenControlPosition
+          ? {
+              position: api.value?.ControlPosition[props.fullscreenControlPosition],
+            }
+          : {},
+        gestureHandling: props.gestureHandling,
+        heading: props.heading,
+        keyboardShortcuts: props.keyboardShortcuts,
+        mapTypeControl: props.mapTypeControl,
+        mapTypeControlOptions: props.mapTypeControlOptions,
+        mapTypeId: props.mapTypeId,
+        maxZoom: props.maxZoom,
+        minZoom: props.minZoom,
+        noClear: props.noClear,
+        panControl: props.panControl,
+        panControlOptions: props.panControlPosition
+          ? {
+              position: api.value?.ControlPosition[props.panControlPosition],
+            }
+          : {},
+        restriction: props.restriction,
+        rotateControl: props.rotateControl,
+        rotateControlOptions: props.rotateControlPosition
+          ? {
+              position: api.value?.ControlPosition[props.rotateControlPosition],
+            }
+          : {},
+        scaleControl: props.scaleControl,
+        scaleControlOptions: props.scaleControlStyle
+          ? {
+              style: props.scaleControlStyle,
+            }
+          : {},
+        scrollwheel: props.scrollwheel,
+        streetView: props.streetView,
+        streetViewControl: props.streetViewControl,
+        streetViewControlOptions: props.streetViewControlPosition
+          ? {
+              position: api.value?.ControlPosition[props.streetViewControlPosition],
+            }
+          : {},
+        styles: theme || props.styles,
+        tilt: props.tilt,
+        zoom: props.zoom,
+        zoomControl: props.zoomControl,
+        zoomControlOptions: props.zoomControlPosition
+          ? {
+              position: api.value?.ControlPosition[props.zoomControlPosition],
+            }
+          : {},
+      }
+    }
 
     // Only run this in a browser env since it needs to use the `document` object
     // and would error out in a node env (i.e. vitepress/vuepress SSR)
     if (typeof window !== 'undefined') {
-      loadNow('places', props.apiKey).then(res => {
-        api.value = res.maps
-        map.value = new api.value.Map(mapRef.value as HTMLElement, opts())
+      Promise.all([loadNow('places', props.apiKey), resolveOptions()]).then(([{ maps }, options]) => {
+        const { Map } = (api.value = maps)
+        map.value = new Map(mapRef.value as HTMLElement, options)
 
         ready.value = true
 
         watch(props, () => {
-          map.value = new api.value!.Map(mapRef.value as HTMLElement, opts())
+          resolveOptions().then(options => {
+            map.value = new Map(mapRef.value as HTMLElement, options)
+          })
         })
       })
     }

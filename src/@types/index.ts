@@ -1,3 +1,5 @@
+import * as themes from '/@/themes/index'
+
 export type GoogleMapsAPI = typeof google.maps
 export type IMap = google.maps.Map
 export type ILatLng = google.maps.LatLng
@@ -20,3 +22,5 @@ export type IPolylineOptions = google.maps.PolylineOptions
 export type IPolygonOptions = google.maps.PolygonOptions
 export type IRectangleOptions = google.maps.RectangleOptions
 export type ICircleOptions = google.maps.CircleOptions
+
+export type ITheme = keyof typeof themes
