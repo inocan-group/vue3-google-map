@@ -1,4 +1,5 @@
 # vue3-google-map
+
 > Composable components for easy use of Google Maps with Vue 3
 
 `vue3-google-map` offers a set of composable components for easy use of Google Maps in your Vue 3 projects.
@@ -22,7 +23,8 @@ Include the following script tag in your `index.html` (make sure to include it a
 ```
 
 ## Usage
-Please refer to the [documentation](https://focused-nobel-8968c7.netlify.app)
+
+Please refer to the [documentation](https://vue3-google-map.netlify.app/)
 
 ## Development Setup
 
@@ -43,7 +45,9 @@ yarn docs
 ```
 
 ## Contribution
+
 All contributions are welcome. Before submitting a PR though it would be nice if you created an issue explaining what you want to acheive and why.
 
 ## License
+
 [MIT](http://opensource.org/licenses/MIT)
