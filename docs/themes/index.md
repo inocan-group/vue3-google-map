@@ -22,7 +22,7 @@ To use a default theme simply pass the theme's name to the `theme` prop of the `
 <!-- prettier-ignore -->
 ```vue
 <template>
-  <GoogleMap api-key="YOUR_GOOGLE_MAPS_API_KEY" :center="center" :zoom="2" :theme="theme" />
+  <GoogleMap api-key="YOUR_GOOGLE_MAPS_API_KEY" :center="center" :zoom="4" :theme="theme" />
   <label for="theme">Theme</label>
   <select v-model="theme" id="theme">
     <option value="">-- None --</option>
@@ -37,7 +37,7 @@ import { GoogleMap } from 'vue3-google-map'
 export default defineComponent({
   components: { GoogleMap },
   setup() {
-    const center = { lat: 0, lng: 0 }
+    const center = { lat: 39.50024, lng: -98.350891 }
     const themes = ['aubergine', 'dark', 'grey', 'minimal', 'retro', 'roadways', 'roadwaysMinimal', 'ultraLight']
     const theme = ref('')
 

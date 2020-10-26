@@ -1,5 +1,5 @@
 <template>
-  <GoogleMap :center="center" :theme="theme" :zoom="2" v-bind="$attrs" />
+  <GoogleMap :center="center" :theme="theme" :zoom="4" v-bind="$attrs" />
   <label for="theme">Theme</label>
   <select v-model="theme" id="theme">
     <option value="">-- None --</option>
@@ -14,7 +14,7 @@ import { GoogleMap } from '/@/components/index'
 export default defineComponent({
   components: { GoogleMap },
   setup() {
-    const center = { lat: 0, lng: 0 }
+    const center = { lat: 39.50024, lng: -98.350891 }
     const themes = ['aubergine', 'dark', 'grey', 'minimal', 'retro', 'roadways', 'roadwaysMinimal', 'ultraLight']
     const theme = ref('')
 
