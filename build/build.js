@@ -13,7 +13,9 @@ async function minimizeCjs() {
   const input = `dist/cjs/index.js`
   const external = [
     ...(pkg.peerDependencies ? Object.keys(pkg.peerDependencies) : []),
+
     ...(pkg.optionalDependencies ? Object.keys(pkg.optionalDependencies) : []),
+
     ...builtinModules,
   ].map(i => i.replace('@types/', ''))
 
@@ -60,17 +62,15 @@ const moduleConfig = (moduleSystem, minimized) => ({
         isProduction: true,
       },
     }),
-    ...(usesTypescript
-      ? [
-          typescript({
-            rootDir: '.',
-            tsconfig: 'tsconfig.es.json',
-            target: minimized ? 'es2015' : 'esnext',
-            typescript: require('ttypescript'),
-            declaration: false,
-          }),
-        ]
-      : []),
+    typescript({
+      // rootDir: '.',
+      tsconfig: 'tsconfig.es.json',
+      target: minimized ? 'es2015' : 'esnext',
+      outDir: `dist/${moduleSystem}`,
+      // typescript: require('ttypescript'),
+      declaration: false,
+    }),
+
     ...(moduleSystem === 'es' && process.env.ANALYZE ? [analyze()] : []),
     // ...(minimized ? [terser()] : []),
   ],

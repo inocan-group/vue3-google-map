@@ -2,9 +2,9 @@
 
 // #region autoindexed files
 
-// index last changed at: 10th Oct, 2020, 04:41 PM ( GMT+2 )
+// index last changed at: 10th Oct, 2020, 12:17 AM ( GMT+2 )
 // export: named; exclusions: index, private.
-// files: useMap, useSetupMap.
+// files: useMap, useSetupMapComponent.
 
 // local file exports
 export * from "./useMap";
@@ -37,4 +37,3 @@ export * from "./useSetupMapComponent";
 // Keep on being awesome.
 
 // #endregion
-
