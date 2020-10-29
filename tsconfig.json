@@ -13,9 +13,6 @@
     "sourceMap": false,
     "noEmit": true,
     "baseUrl": ".",
-    "paths": {
-      "/@/*": ["src/*"]
-    },
     "lib": ["esnext", "dom", "dom.iterable", "scripthost"]
   },
   "include": ["src", "docs"]

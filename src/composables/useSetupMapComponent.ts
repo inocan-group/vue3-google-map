@@ -1,5 +1,5 @@
 import { watch, ref, Ref } from 'vue'
-import { useMap } from '/@/composables/index'
+import { useMap } from '../composables/index'
 import {
   IMarker,
   IPolyline,
@@ -11,7 +11,7 @@ import {
   IPolygonOptions,
   IRectangleOptions,
   ICircleOptions,
-} from '/@/@types/index'
+} from '../@types/index'
 
 type IComponent = IMarker | IPolyline | IPolygon | IRectangle | ICircle
 type IComponentOptions = IMarkerOptions | IPolylineOptions | IPolygonOptions | IRectangleOptions | ICircleOptions

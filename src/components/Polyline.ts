@@ -1,7 +1,7 @@
 import { defineComponent, PropType, toRef } from 'vue'
-import { useSetupMapComponent } from '/@/composables/index'
-import { IPolylineOptions } from '/@/@types/index'
-import { polylineEvents } from '/@/shared/index'
+import { useSetupMapComponent } from '../composables/index'
+import { IPolylineOptions } from '../@types/index'
+import { polylineEvents } from '../shared/index'
 
 export default defineComponent({
   props: {

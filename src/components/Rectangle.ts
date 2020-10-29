@@ -1,7 +1,7 @@
 import { defineComponent, PropType, toRef } from 'vue'
-import { useSetupMapComponent } from '/@/composables/index'
-import { IRectangleOptions } from '/@/@types/index'
-import { rectangleEvents } from '/@/shared/index'
+import { useSetupMapComponent } from '../composables/index'
+import { IRectangleOptions } from '../@types/index'
+import { rectangleEvents } from '../shared/index'
 
 export default defineComponent({
   props: {

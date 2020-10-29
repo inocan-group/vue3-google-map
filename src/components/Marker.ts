@@ -1,7 +1,7 @@
 import { defineComponent, PropType, toRef } from 'vue'
-import { useSetupMapComponent } from '/@/composables/index'
-import { IMarkerOptions } from '/@/@types/index'
-import { markerEvents } from '/@/shared/index'
+import { useSetupMapComponent } from '../composables/index'
+import { IMarkerOptions } from '../@types/index'
+import { markerEvents } from '../shared/index'
 
 export default defineComponent({
   props: {

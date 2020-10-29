@@ -1,4 +1,4 @@
-import { IMapTypeStyle } from '/@/@types/index'
+import { IMapTypeStyle } from '../@types/index'
 
 /**
  * Dark mode theme from:

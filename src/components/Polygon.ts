@@ -1,7 +1,7 @@
 import { defineComponent, PropType, toRef } from 'vue'
-import { useSetupMapComponent } from '/@/composables/index'
-import { IPolygonOptions } from '/@/@types/index'
-import { polygonEvents } from '/@/shared/index'
+import { useSetupMapComponent } from '../composables/index'
+import { IPolygonOptions } from '../@types/index'
+import { polygonEvents } from '../shared/index'
 
 export default defineComponent({
   props: {
