@@ -1,8 +1,13 @@
 {
   "name": "vue3-google-map",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "license": "MIT",
-  "description": "",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/inocan-group/vue3-google-maps.git"
+  },
+  "homepage": "https://github.com/inocan-group/vue3-google-maps#readme",
+  "description": "A set of composable components for easy use of Google Maps in your Vue 3 projects.",
   "unpkg": "dist/cjs/index.min.js",
   "jsdelivr": "dist/cjs/index.min.js",
   "main": "dist/cjs/index.js",
