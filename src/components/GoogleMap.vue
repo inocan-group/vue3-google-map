@@ -5,10 +5,11 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, PropType, ref, watch } from 'vue'
+import { defineComponent, PropType, ref, watch, toRef } from 'vue'
 import { loadNow } from 'connect-google-maps'
 import { useMap } from '/@/composables/index'
 import {
+  IMapOptions,
   ILatLng,
   IControlPosition,
   IScaleControlStyle,
@@ -17,7 +18,6 @@ import {
   IMapRestriction,
   IStreetViewPanorama,
   IMapTypeStyle,
-  ITheme,
 } from '/@/@types/index'
 
 export default defineComponent({
@@ -61,26 +61,19 @@ export default defineComponent({
     zoom: Number,
     zoomControl: { type: Boolean, default: undefined },
     zoomControlPosition: String as PropType<IControlPosition>,
-    theme: String as PropType<ITheme>,
   },
   setup(props) {
     const mapRef = ref<HTMLElement | null>(null)
     const ready = ref(false)
     const { map, api } = useMap()
 
-    const resolveOptions = async () => {
-      let theme
-
-      if (props.theme) {
-        ;({ [props.theme]: theme } = await import(`/@/themes/index`))
-      }
-
-      return {
+    const resolveOptions = () => {
+      const opts = {
         backgroundColor: props.backgroundColor,
         center: props.center,
         clickableIcons: props.clickableIcons,
         controlSize: props.controlSize,
-        disableDefaultUi: props.disableDefaultUi,
+        disableDefaultUI: props.disableDefaultUi,
         disableDoubleClickZoom: props.disableDoubleClickZoom,
         draggable: props.draggable,
         draggableCursor: props.draggableCursor,
@@ -127,7 +120,7 @@ export default defineComponent({
               position: api.value?.ControlPosition[props.streetViewControlPosition],
             }
           : {},
-        styles: theme || props.styles,
+        styles: props.styles,
         tilt: props.tilt,
         zoom: props.zoom,
         zoomControl: props.zoomControl,
@@ -137,22 +130,45 @@ export default defineComponent({
             }
           : {},
       }
+
+      // Strip undefined keys. Without this Map.setOptions doesn't behave very well.
+      ;(Object.keys(opts) as (keyof IMapOptions)[]).forEach(key => opts[key] === undefined && delete opts[key])
+
+      return opts
     }
 
     // Only run this in a browser env since it needs to use the `document` object
     // and would error out in a node env (i.e. vitepress/vuepress SSR)
     if (typeof window !== 'undefined') {
-      Promise.all([loadNow('places', props.apiKey), resolveOptions()]).then(([{ maps }, options]) => {
+      loadNow('places', props.apiKey).then(({ maps }) => {
         const { Map } = (api.value = maps)
-        map.value = new Map(mapRef.value as HTMLElement, options)
+        map.value = new Map(mapRef.value as HTMLElement, resolveOptions())
 
         ready.value = true
 
-        watch(props, () => {
-          resolveOptions().then(options => {
-            map.value = new Map(mapRef.value as HTMLElement, options)
-          })
-        })
+        const otherPropsAsRefs = (Object.keys(props) as (keyof typeof props)[])
+          .filter(key => !['center', 'zoom'].includes(key))
+          .map(key => toRef(props, key))
+
+        watch(
+          [() => props.center, () => props.zoom, ...otherPropsAsRefs] as const,
+          ([center, zoom], [oldCenter, oldZoom]) => {
+            // eslint-disable-next-line @typescript-eslint/no-unused-vars
+            const { center: _, zoom: __, ...otherOptions } = resolveOptions()
+
+            map.value?.setOptions(otherOptions)
+
+            if (zoom !== undefined && zoom !== oldZoom) {
+              map.value?.setZoom(zoom)
+            }
+
+            if (center) {
+              if (!oldCenter || center.lng !== oldCenter.lng || center.lat !== oldCenter.lat) {
+                map.value?.panTo(center)
+              }
+            }
+          },
+        )
       })
     }
 
