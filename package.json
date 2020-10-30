@@ -40,7 +40,6 @@
     "@vue/compiler-sfc": "^3.0.0",
     "@vue/eslint-config-prettier": "^6.0.0",
     "@vue/eslint-config-typescript": "^7.0.0",
-    "common-types": "^1.16.2",
     "cross-env": "^7.0.2",
     "do-devops": "^0.5.4",
     "eslint": "^7.10.0",

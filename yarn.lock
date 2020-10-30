@@ -1463,7 +1463,7 @@ commander@^2.20.0:
   resolved "https://registry.yarnpkg.com/commander/-/commander-2.20.3.tgz#fd485e84c03eb4881c20722ba48035e8531aeb33"
   integrity sha512-GpVkmM8vF2vQUkj2LvZmD35JxeJOLCwJ9cUkugyk2nuhbv3+mJvpLYYt+0+USMxE+oj+ey/lJEnhZw75x/OMcQ==
 
-common-types@^1.12.12, common-types@^1.15.7, common-types@^1.16.2, common-types@^1.8.16:
+common-types@^1.12.12, common-types@^1.15.7, common-types@^1.8.16:
   version "1.16.2"
   resolved "https://registry.yarnpkg.com/common-types/-/common-types-1.16.2.tgz#1271633340638744c56873f0738b14eb7a0f4864"
   integrity sha512-zp7kLHSEW+c5/T0WTrlEpaqKDmj5YmcxerAUvabvjPO9wkPhrTmEWwXEHSItZkBqLRg4vdDUaxvxyxBVsQ8dZg==
