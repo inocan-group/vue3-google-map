@@ -15,7 +15,7 @@ export default {
 
     app.component('GoogleMap', {
       render() {
-        return h(GoogleMap, { apiKey: GOOGLE_API_KEY }, this.$slots.default());
+        return h(GoogleMap, { apiKey: GOOGLE_API_KEY }, this.$slots.default);
       },
     });
 
