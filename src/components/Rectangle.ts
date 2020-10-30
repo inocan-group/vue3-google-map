@@ -1,7 +1,7 @@
-import { defineComponent, PropType, toRef } from 'vue'
-import { useSetupMapComponent } from '../composables/index'
-import { IRectangleOptions } from '../@types/index'
-import { rectangleEvents } from '../shared/index'
+import { defineComponent, PropType, toRef } from 'vue';
+import { useSetupMapComponent } from '../composables/index';
+import { IRectangleOptions } from '../@types/index';
+import { rectangleEvents } from '../shared/index';
 
 export default defineComponent({
   props: {
@@ -11,10 +11,10 @@ export default defineComponent({
     },
   },
   setup(props, { emit }) {
-    const options = toRef(props, 'options')
-    const rectangle = useSetupMapComponent('Rectangle', rectangleEvents, options, emit)
+    const options = toRef(props, 'options');
+    const rectangle = useSetupMapComponent('Rectangle', rectangleEvents, options, emit);
 
-    return { rectangle }
+    return { rectangle };
   },
   render: () => null,
-})
+});

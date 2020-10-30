@@ -1,4 +1,4 @@
-import { IMapTypeStyle } from '../@types/index'
+import { IMapTypeStyle } from '../@types/index';
 
 /**
  * Dark mode theme from:
@@ -83,4 +83,4 @@ export const dark: IMapTypeStyle[] = [
     elementType: 'labels.text.stroke',
     stylers: [{ color: '#17263c' }],
   },
-]
+];

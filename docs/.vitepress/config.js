@@ -1,4 +1,4 @@
-const path = require('path')
+const path = require('path');
 
 module.exports = {
   title: 'vue3-google-map',
@@ -58,4 +58,4 @@ module.exports = {
     '/@/': path.resolve(__dirname, '../../src'),
     '/docs/': path.resolve(__dirname, '..'),
   },
-}
+};

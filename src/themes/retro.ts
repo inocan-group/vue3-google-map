@@ -1,4 +1,4 @@
-import { IMapTypeStyle } from '../@types/index'
+import { IMapTypeStyle } from '../@types/index';
 
 export const retro: IMapTypeStyle[] = [
   { elementType: 'geometry', stylers: [{ color: '#ebe3cd' }] },
@@ -109,4 +109,4 @@ export const retro: IMapTypeStyle[] = [
     elementType: 'labels.text.fill',
     stylers: [{ color: '#92998d' }],
   },
-]
+];

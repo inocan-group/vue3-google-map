@@ -8,19 +8,19 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, ref } from 'vue'
-import { GoogleMap } from '/@/components/index'
-import * as themes from '/@/themes/index'
+import { defineComponent, ref } from 'vue';
+import { GoogleMap } from '/@/components/index';
+import * as themes from '/@/themes/index';
 
 export default defineComponent({
   components: { GoogleMap },
   setup() {
-    const center = { lat: 39.50024, lng: -98.350891 }
-    const theme = ref('')
+    const center = { lat: 39.50024, lng: -98.350891 };
+    const theme = ref('');
 
-    return { center, themes, theme }
+    return { center, themes, theme };
   },
-})
+});
 </script>
 
 <style scoped>

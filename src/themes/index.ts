@@ -7,14 +7,14 @@
 // files: aubergine, dark, grey, minimal, retro, roadways, roadwaysMinimal, ultraLight.
 
 // local file exports
-export * from "./aubergine";
-export * from "./dark";
-export * from "./grey";
-export * from "./minimal";
-export * from "./retro";
-export * from "./roadways";
-export * from "./roadwaysMinimal";
-export * from "./ultraLight";
+export * from './aubergine';
+export * from './dark';
+export * from './grey';
+export * from './minimal';
+export * from './retro';
+export * from './roadways';
+export * from './roadwaysMinimal';
+export * from './ultraLight';
 
 // Note:
 // -----

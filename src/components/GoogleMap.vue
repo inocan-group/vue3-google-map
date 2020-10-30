@@ -5,9 +5,9 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, PropType, ref, watch, toRef } from 'vue'
-import { loadNow } from 'connect-google-maps'
-import { useMap } from '../composables/index'
+import { defineComponent, PropType, ref, watch, toRef } from 'vue';
+import { loadNow } from 'connect-google-maps';
+import { useMap } from '../composables/index';
 import {
   IMapOptions,
   ILatLng,
@@ -18,7 +18,7 @@ import {
   IMapRestriction,
   IStreetViewPanorama,
   IMapTypeStyle,
-} from '../@types/index'
+} from '../@types/index';
 
 export default defineComponent({
   props: {
@@ -63,9 +63,9 @@ export default defineComponent({
     zoomControlPosition: String as PropType<IControlPosition>,
   },
   setup(props) {
-    const mapRef = ref<HTMLElement | null>(null)
-    const ready = ref(false)
-    const { map, api } = useMap()
+    const mapRef = ref<HTMLElement | null>(null);
+    const ready = ref(false);
+    const { map, api } = useMap();
 
     const resolveOptions = () => {
       const opts = {
@@ -129,50 +129,50 @@ export default defineComponent({
               position: api.value?.ControlPosition[props.zoomControlPosition],
             }
           : {},
-      }
+      };
 
       // Strip undefined keys. Without this Map.setOptions doesn't behave very well.
-      ;(Object.keys(opts) as (keyof IMapOptions)[]).forEach(key => opts[key] === undefined && delete opts[key])
+      (Object.keys(opts) as (keyof IMapOptions)[]).forEach(key => opts[key] === undefined && delete opts[key]);
 
-      return opts
-    }
+      return opts;
+    };
 
     // Only run this in a browser env since it needs to use the `document` object
     // and would error out in a node env (i.e. vitepress/vuepress SSR)
     if (typeof window !== 'undefined') {
       loadNow('places', props.apiKey).then(({ maps }) => {
-        const { Map } = (api.value = maps)
-        map.value = new Map(mapRef.value as HTMLElement, resolveOptions())
+        const { Map } = (api.value = maps);
+        map.value = new Map(mapRef.value as HTMLElement, resolveOptions());
 
-        ready.value = true
+        ready.value = true;
 
         const otherPropsAsRefs = (Object.keys(props) as (keyof typeof props)[])
           .filter(key => !['center', 'zoom'].includes(key))
-          .map(key => toRef(props, key))
+          .map(key => toRef(props, key));
 
         watch(
           [() => props.center, () => props.zoom, ...otherPropsAsRefs] as const,
           ([center, zoom], [oldCenter, oldZoom]) => {
             // eslint-disable-next-line @typescript-eslint/no-unused-vars
-            const { center: _, zoom: __, ...otherOptions } = resolveOptions()
+            const { center: _, zoom: __, ...otherOptions } = resolveOptions();
 
-            map.value?.setOptions(otherOptions)
+            map.value?.setOptions(otherOptions);
 
             if (zoom !== undefined && zoom !== oldZoom) {
-              map.value?.setZoom(zoom)
+              map.value?.setZoom(zoom);
             }
 
             if (center) {
               if (!oldCenter || center.lng !== oldCenter.lng || center.lat !== oldCenter.lat) {
-                map.value?.panTo(center)
+                map.value?.panTo(center);
               }
             }
           },
-        )
-      })
+        );
+      });
     }
 
-    return { mapRef, ready, map, api }
+    return { mapRef, ready, map, api };
   },
-})
+});
 </script>

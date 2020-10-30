@@ -1,4 +1,4 @@
-import { IMapTypeStyle } from '../@types/index'
+import { IMapTypeStyle } from '../@types/index';
 
 export const minimal: IMapTypeStyle[] = [
   {
@@ -260,4 +260,4 @@ export const minimal: IMapTypeStyle[] = [
       },
     ],
   },
-]
+];
