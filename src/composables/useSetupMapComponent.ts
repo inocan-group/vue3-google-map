@@ -21,7 +21,7 @@ export const useSetupMapComponent = (
   events: string[],
   options: Ref<IComponentOptions>,
   emit: (event: string, ...args: any[]) => void,
-) => {
+): { component: Ref<IComponent | null> } => {
   let _component: IComponent | null = null;
   const component = ref<IComponent | null>(null);
   const { map, api } = useMap();
