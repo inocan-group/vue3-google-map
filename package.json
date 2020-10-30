@@ -57,12 +57,15 @@
     "rollup-plugin-typescript2": "^0.28.0",
     "rollup-plugin-vue": "^6.0.0-beta.10",
     "typescript": "~4.0.3",
-    "vite": "^1.0.0-rc.4",
-    "vitepress": "^0.7.0",
+    "vite": "1.0.0-rc.4",
+    "vitepress": "0.7.0",
     "vue": "3"
   },
   "peerDependencies": {
     "vue": "3"
+  },
+  "resolutions": {
+    "vite": "1.0.0-rc.4"
   },
   "engines": {
     "node": ">=10"
