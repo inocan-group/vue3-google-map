@@ -1,0 +1,25 @@
+name: Build & Publish
+on:
+  push:
+    branches:
+      - master
+
+jobs:
+  build:
+    name: Main Job
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout 🛎
+        uses: actions/checkout@v2
+
+      - name: Install dependencies 👨🏻‍💻
+        run: yarn install --frozen-lockfile
+
+      - name: Build library 🛠
+        run: yarn build
+
+      - name: Publish package 📦
+        uses: JS-DevTools/npm-publish@v1
+        with:
+          token: ${{ secrets.NPM_TOKEN }}
