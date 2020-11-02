@@ -1,4 +1,4 @@
-import { IMapTypeStyle } from '/@/@types/index'
+import { IMapTypeStyle } from '../@types/index';
 
 export const aubergine: IMapTypeStyle[] = [
   {
@@ -232,4 +232,4 @@ export const aubergine: IMapTypeStyle[] = [
       },
     ],
   },
-]
+];

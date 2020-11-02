@@ -1,6 +1,6 @@
 {
   "name": "vue3-google-map",
-  "version": "0.1.2",
+  "version": "0.2.0",
   "license": "MIT",
   "repository": {
     "type": "git",
@@ -20,7 +20,8 @@
     "dev": "vite",
     "autoindex": "yarn do autoindex --sfc",
     "clear": "rimraf dist/**/*",
-    "lint": "yarn tsc",
+    "lint": "yarn eslint --ext .js,.ts,.vue src dev docs",
+    "lint:autofix": "yarn lint --fix",
     "build": "run-s clear autoindex build:lib build:types",
     "build:lib": "node ./build/build cjs es --min",
     "build:types": "echo - Building types && tsc -P tsconfig.es.json --outDir dist/types --declaration",
@@ -39,7 +40,6 @@
     "@vue/compiler-sfc": "^3.0.0",
     "@vue/eslint-config-prettier": "^6.0.0",
     "@vue/eslint-config-typescript": "^7.0.0",
-    "common-types": "^1.16.2",
     "cross-env": "^7.0.2",
     "do-devops": "^0.5.4",
     "eslint": "^7.10.0",
@@ -56,12 +56,15 @@
     "rollup-plugin-typescript2": "^0.28.0",
     "rollup-plugin-vue": "^6.0.0-beta.10",
     "typescript": "~4.0.3",
-    "vite": "^1.0.0-rc.4",
-    "vitepress": "^0.7.0",
+    "vite": "1.0.0-rc.4",
+    "vitepress": "0.7.0",
     "vue": "3"
   },
   "peerDependencies": {
     "vue": "3"
+  },
+  "resolutions": {
+    "vite": "1.0.0-rc.4"
   },
   "engines": {
     "node": ">=10"

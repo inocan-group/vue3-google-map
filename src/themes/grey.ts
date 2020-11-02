@@ -1,4 +1,4 @@
-import { IMapTypeStyle } from '/@/@types/index'
+import { IMapTypeStyle } from '../@types/index';
 
 export const grey: IMapTypeStyle[] = [
   {
@@ -166,4 +166,4 @@ export const grey: IMapTypeStyle[] = [
       },
     ],
   },
-]
+];

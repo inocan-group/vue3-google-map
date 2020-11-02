@@ -1,6 +1,6 @@
 <script lang="ts">
-import { defineComponent, ref } from 'vue'
-import { GoogleMap, Marker, CustomControl } from '/@/components/index'
+import { defineComponent, ref } from 'vue';
+import { GoogleMap, Marker, CustomControl } from '/@/components/index';
 
 export default defineComponent({
   name: 'ServeDev',
@@ -10,16 +10,16 @@ export default defineComponent({
     CustomControl,
   },
   setup() {
-    const greet = () => alert('hi')
-    const dist = ref(0)
+    const greet = () => alert('hi');
+    const dist = ref(0);
 
     setInterval(() => {
-      dist.value += 0.005
-    }, 1000)
+      dist.value += 0.005;
+    }, 1000);
 
-    return { greet, dist }
+    return { greet, dist };
   },
-})
+});
 </script>
 
 <template>

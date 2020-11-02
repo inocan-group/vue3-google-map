@@ -5,43 +5,43 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, ref, computed, watch } from 'vue'
-import { GoogleMap } from '/@/components/index'
-import { IMap } from '/@/@types/index'
+import { defineComponent, ref, computed, watch } from 'vue';
+import { GoogleMap } from '/@/components/index';
+import { IMap } from '/@/@types/index';
 
-type IGoogleMap = ReturnType<typeof defineComponent> & { ready: boolean; map: IMap }
+type IGoogleMap = ReturnType<typeof defineComponent> & { ready: boolean; map: IMap };
 
 export default defineComponent({
   components: { GoogleMap },
   setup() {
-    const mapRef = ref<IGoogleMap | null>(null)
-    const center = { lat: 0, lng: 0 }
+    const mapRef = ref<IGoogleMap | null>(null);
+    const center = { lat: 0, lng: 0 };
 
-    const _lng = ref(0)
+    const _lng = ref(0);
     const lng = computed({
       get: () => _lng.value,
       set: v => {
         if (!Number.isFinite(v)) {
-          _lng.value = 0
+          _lng.value = 0;
         } else if (v > 180) {
-          _lng.value = 180
+          _lng.value = 180;
         } else if (v < -180) {
-          _lng.value = -180
+          _lng.value = -180;
         } else {
-          _lng.value = v
+          _lng.value = v;
         }
       },
-    })
+    });
 
     watch(lng, () => {
       if (mapRef.value?.ready) {
-        mapRef.value.map.panTo({ lat: 0, lng: lng.value })
+        mapRef.value.map.panTo({ lat: 0, lng: lng.value });
       }
-    })
+    });
 
-    return { mapRef, center, lng }
+    return { mapRef, center, lng };
   },
-})
+});
 </script>
 
 <style scoped>

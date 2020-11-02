@@ -1,4 +1,4 @@
-import { IMapTypeStyle } from '/@/@types/index'
+import { IMapTypeStyle } from '../@types/index';
 
 export const roadways: IMapTypeStyle[] = [
   {
@@ -262,4 +262,4 @@ export const roadways: IMapTypeStyle[] = [
       },
     ],
   },
-]
+];

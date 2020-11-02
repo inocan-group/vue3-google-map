@@ -1,4 +1,4 @@
-import { IMapTypeStyle } from '/@/@types/index'
+import { IMapTypeStyle } from '../@types/index';
 
 export const ultraLight: IMapTypeStyle[] = [
   {
@@ -175,4 +175,4 @@ export const ultraLight: IMapTypeStyle[] = [
       },
     ],
   },
-]
+];

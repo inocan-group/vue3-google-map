@@ -1,3 +1,25 @@
+export const mapEvents = [
+  'bounds_changed',
+  'center_changed',
+  'click',
+  'dblclick',
+  'drag',
+  'dragend',
+  'dragstart',
+  'heading_changed',
+  'idle',
+  'maptypeid_changed',
+  'mousemove',
+  'mouseout',
+  'mouseover',
+  'projection_changed',
+  'resize',
+  'rightclick',
+  'tilesloaded',
+  'tilt_changed',
+  'zoom_changed',
+];
+
 export const markerEvents = [
   'animation_changed',
   'click',
@@ -20,7 +42,7 @@ export const markerEvents = [
   'shape_changed',
   'title_changed',
   'visible_changed',
-]
+];
 
 export const polylineEvents = [
   'click',
@@ -34,10 +56,10 @@ export const polylineEvents = [
   'mouseover',
   'mouseup',
   'rightclick',
-]
+];
 
-export const polygonEvents = polylineEvents
+export const polygonEvents = polylineEvents;
 
-export const rectangleEvents = polylineEvents.concat(['bounds_changed'])
+export const rectangleEvents = polylineEvents.concat(['bounds_changed']);
 
-export const circleEvents = polylineEvents.concat(['center_changed', 'radius_changed'])
+export const circleEvents = polylineEvents.concat(['center_changed', 'radius_changed']);
