@@ -5,7 +5,7 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, PropType, ref, watch, toRef } from 'vue';
+import { defineComponent, PropType, ref, onBeforeUnmount, watch, toRef } from 'vue';
 import { loadNow } from 'connect-google-maps';
 import { useMap } from '../composables/index';
 import {
@@ -19,6 +19,7 @@ import {
   IStreetViewPanorama,
   IMapTypeStyle,
 } from '../@types/index';
+import { mapEvents } from '../shared/index';
 
 export default defineComponent({
   props: {
@@ -62,7 +63,7 @@ export default defineComponent({
     zoomControl: { type: Boolean, default: undefined },
     zoomControlPosition: String as PropType<IControlPosition>,
   },
-  setup(props) {
+  setup(props, { emit }) {
     const mapRef = ref<HTMLElement | null>(null);
     const ready = ref(false);
     const { map, api } = useMap();
@@ -137,12 +138,22 @@ export default defineComponent({
       return opts;
     };
 
+    onBeforeUnmount(() => {
+      if (map.value) {
+        api.value?.event.clearInstanceListeners(map.value);
+      }
+    });
+
     // Only run this in a browser env since it needs to use the `document` object
     // and would error out in a node env (i.e. vitepress/vuepress SSR)
     if (typeof window !== 'undefined') {
       loadNow('places', props.apiKey).then(({ maps }) => {
         const { Map } = (api.value = maps);
         map.value = new Map(mapRef.value as HTMLElement, resolveOptions());
+
+        mapEvents.forEach(event => {
+          map.value?.addListener(event, () => emit(event));
+        });
 
         ready.value = true;
 
