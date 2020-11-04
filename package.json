@@ -23,6 +23,7 @@
     "lint": "yarn eslint --ext .js,.ts,.vue src dev docs",
     "lint:autofix": "yarn lint --fix",
     "build": "run-s clear autoindex build:lib build:types",
+    "build:closure": "node ./build/build cjs es --min --closure",
     "build:lib": "node ./build/build cjs es --min",
     "build:types": "echo - Building types && tsc -P tsconfig.es.json --outDir dist/types --declaration",
     "docs": "npx vitepress dev ./docs",
