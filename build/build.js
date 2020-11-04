@@ -8,6 +8,7 @@ const { builtinModules } = require('module');
 const analyze = require('rollup-plugin-analyzer');
 const typescript = require('rollup-plugin-typescript2');
 const vue = require('rollup-plugin-vue');
+const compiler = require('@ampproject/rollup-plugin-closure-compiler');
 
 async function minimizeCjs() {
   const input = `dist/cjs/index.js`;
@@ -22,7 +23,7 @@ async function minimizeCjs() {
   const moduleConfig = () => ({
     input,
     external,
-    plugins: [commonjs(), resolve(), terser()],
+    plugins: [commonjs(), resolve(), compiler()],
   });
 
   (async () => {

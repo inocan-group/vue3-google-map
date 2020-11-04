@@ -32,6 +32,7 @@
     "connect-google-maps": "0.2.1"
   },
   "devDependencies": {
+    "@ampproject/rollup-plugin-closure-compiler": "^0.26.0",
     "@rollup/plugin-commonjs": "^16.0.0",
     "@rollup/plugin-node-resolve": "^10.0.0",
     "@types/google-maps": "^3.2.0",
