@@ -1,6 +1,6 @@
 {
   "name": "vue3-google-map",
-  "version": "0.2.0",
+  "version": "0.3.0",
   "license": "MIT",
   "repository": {
     "type": "git",
@@ -22,7 +22,8 @@
     "clear": "rimraf dist/**/*",
     "lint": "yarn eslint --ext .js,.ts,.vue src dev docs",
     "lint:autofix": "yarn lint --fix",
-    "build": "run-s clear autoindex build:lib build:types",
+    "build": "run-s clear autoindex build:closure build:types",
+    "build:closure": "node ./build/build cjs es --min --closure",
     "build:lib": "node ./build/build cjs es --min",
     "build:types": "echo - Building types && tsc -P tsconfig.es.json --outDir dist/types --declaration",
     "docs": "npx vitepress dev ./docs",
@@ -32,6 +33,7 @@
     "connect-google-maps": "0.2.1"
   },
   "devDependencies": {
+    "@ampproject/rollup-plugin-closure-compiler": "^0.26.0",
     "@rollup/plugin-commonjs": "^16.0.0",
     "@rollup/plugin-node-resolve": "^10.0.0",
     "@types/google-maps": "^3.2.0",
