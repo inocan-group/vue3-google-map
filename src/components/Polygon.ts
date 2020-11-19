@@ -10,6 +10,7 @@ export default defineComponent({
       required: true,
     },
   },
+  emits: polygonEvents,
   setup(props, { emit }) {
     const options = toRef(props, 'options');
     const polygon = useSetupMapComponent('Polygon', polygonEvents, options, emit);

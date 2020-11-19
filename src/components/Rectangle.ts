@@ -10,6 +10,7 @@ export default defineComponent({
       required: true,
     },
   },
+  emits: rectangleEvents,
   setup(props, { emit }) {
     const options = toRef(props, 'options');
     const rectangle = useSetupMapComponent('Rectangle', rectangleEvents, options, emit);

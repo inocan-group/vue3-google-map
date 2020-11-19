@@ -10,6 +10,7 @@ export default defineComponent({
       required: true,
     },
   },
+  emits: circleEvents,
   setup(props, { emit }) {
     const options = toRef(props, 'options');
     const circle = useSetupMapComponent('Circle', circleEvents, options, emit);

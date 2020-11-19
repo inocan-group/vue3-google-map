@@ -10,6 +10,7 @@ export default defineComponent({
       required: true,
     },
   },
+  emits: polylineEvents,
   setup(props, { emit }) {
     const options = toRef(props, 'options');
     const polyline = useSetupMapComponent('Polyline', polylineEvents, options, emit);
