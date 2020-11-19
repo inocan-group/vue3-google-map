@@ -63,6 +63,7 @@ export default defineComponent({
     zoomControl: { type: Boolean, default: undefined },
     zoomControlPosition: String as PropType<IControlPosition>,
   },
+  emits: mapEvents,
   setup(props, { emit }) {
     const mapRef = ref<HTMLElement | null>(null);
     const ready = ref(false);

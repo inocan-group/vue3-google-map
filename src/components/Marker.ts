@@ -10,6 +10,7 @@ export default defineComponent({
       required: true,
     },
   },
+  emits: markerEvents,
   setup(props, { emit }) {
     const options = toRef(props, 'options');
     const marker = useSetupMapComponent('Marker', markerEvents, options, emit);
