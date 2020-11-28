@@ -34,7 +34,7 @@ export const useSetupMapComponent = (
       });
 
       events.forEach(event => {
-        _component?.addListener(event, () => emit(event));
+        _component?.addListener(event, (e: unknown) => emit(event, e));
       });
     }
 
