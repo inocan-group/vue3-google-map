@@ -153,7 +153,7 @@ export default defineComponent({
         map.value = new Map(mapRef.value as HTMLElement, resolveOptions());
 
         mapEvents.forEach(event => {
-          map.value?.addListener(event, () => emit(event));
+          map.value?.addListener(event, (e: unknown) => emit(event, e));
         });
 
         ready.value = true;
