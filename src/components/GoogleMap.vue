@@ -24,6 +24,8 @@ import { mapEvents } from '../shared/index';
 export default defineComponent({
   props: {
     apiKey: String,
+    region: String,
+    language: String,
     backgroundColor: String,
     center: Object as PropType<ILatLng>,
     clickableIcons: { type: Boolean, default: undefined },
@@ -148,7 +150,7 @@ export default defineComponent({
     // Only run this in a browser env since it needs to use the `document` object
     // and would error out in a node env (i.e. vitepress/vuepress SSR)
     if (typeof window !== 'undefined') {
-      loadNow('places', props.apiKey).then(({ maps }) => {
+      loadNow('places', props.apiKey, props.region, props.language).then(({ maps }) => {
         const { Map } = (api.value = maps);
         map.value = new Map(mapRef.value as HTMLElement, resolveOptions());
 
