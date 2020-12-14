@@ -30,7 +30,7 @@
     "docs:build": "npx vitepress build ./docs"
   },
   "dependencies": {
-    "connect-google-maps": "0.2.1"
+    "connect-google-maps": "0.3.0"
   },
   "devDependencies": {
     "@ampproject/rollup-plugin-closure-compiler": "^0.26.0",
