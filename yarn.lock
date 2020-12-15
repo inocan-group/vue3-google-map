@@ -1563,10 +1563,10 @@ concat-stream@^1.5.0:
     readable-stream "^2.2.2"
     typedarray "^0.0.6"
 
-connect-google-maps@0.2.1:
-  version "0.2.1"
-  resolved "https://registry.yarnpkg.com/connect-google-maps/-/connect-google-maps-0.2.1.tgz#0420bc3a67d11b75a610a6ce890d42b3659b43e1"
-  integrity sha512-VGSLB66NfGL4I57cQR2vuxtqYvqbPsT7v1eFXRPY7/zJLhVEr911Fg+bIc5TZRrjbEsJkHavA2qLtJ4MBaNBqA==
+connect-google-maps@0.3.1:
+  version "0.3.1"
+  resolved "https://registry.yarnpkg.com/connect-google-maps/-/connect-google-maps-0.3.1.tgz#2a1a5996011bc9e4f18a719607131e3d6158b0e6"
+  integrity sha512-q+m3yy36EYK22DIQ0+G8qWT07Bj9pyP3kLxuwrhoXIOw45AMJ5CqrTXC2KT8dd02sfpiVJL6qD2GOsEofUzqLQ==
 
 console-browserify@^1.1.0:
   version "1.2.0"
