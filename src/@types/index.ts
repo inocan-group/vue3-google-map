@@ -1,6 +1,6 @@
 import * as themes from '../themes/index';
 
-export type GoogleMapsAPI = typeof google.maps;
+export type IGoogleMapsAPI = typeof google.maps;
 export type IMap = google.maps.Map;
 export type IMapOptions = google.maps.MapOptions;
 export type ILatLng = google.maps.LatLng;
