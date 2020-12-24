@@ -3,8 +3,8 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, PropType, watch, ref } from 'vue';
-import { useMap } from '../composables/index';
+import { defineComponent, PropType, watch, ref, inject } from 'vue';
+import { ApiSymbol, MapSymbol } from '../shared/index';
 import { IControlPosition } from '../@types/index';
 
 export default defineComponent({
@@ -17,7 +17,9 @@ export default defineComponent({
   },
   setup(props) {
     const controlRef = ref<HTMLElement | null>(null);
-    const { map, api } = useMap();
+
+    const map = inject(MapSymbol, ref(null));
+    const api = inject(ApiSymbol, ref(null));
 
     watch([map, () => props.position, () => props.index], (_, oldValues, onInvalidate) => {
       if (map.value && api.value) {

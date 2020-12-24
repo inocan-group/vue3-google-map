@@ -1,6 +1,6 @@
 {
   "name": "vue3-google-map",
-  "version": "0.5.0",
+  "version": "0.5.1",
   "license": "MIT",
   "repository": {
     "type": "git",
@@ -30,7 +30,7 @@
     "docs:build": "npx vitepress build ./docs"
   },
   "dependencies": {
-    "connect-google-maps": "0.3.1"
+    "@googlemaps/js-api-loader": "^1.11.1"
   },
   "devDependencies": {
     "@ampproject/rollup-plugin-closure-compiler": "^0.26.0",

@@ -1,5 +1,4 @@
-import { watch, ref, Ref } from 'vue';
-import { useMap } from '../composables/index';
+import { watch, ref, Ref, inject } from 'vue';
 import {
   IMarker,
   IPolyline,
@@ -12,6 +11,7 @@ import {
   IRectangleOptions,
   ICircleOptions,
 } from '../@types/index';
+import { ApiSymbol, MapSymbol } from '../shared/index';
 
 type IComponent = IMarker | IPolyline | IPolygon | IRectangle | ICircle;
 type IComponentOptions = IMarkerOptions | IPolylineOptions | IPolygonOptions | IRectangleOptions | ICircleOptions;
@@ -24,7 +24,9 @@ export const useSetupMapComponent = (
 ): { component: Ref<IComponent | null> } => {
   let _component: IComponent | null = null;
   const component = ref<IComponent | null>(null);
-  const { map, api } = useMap();
+
+  const map = inject(MapSymbol, ref(null));
+  const api = inject(ApiSymbol, ref(null));
 
   watch([map, options], (_, __, onInvalidate) => {
     if (map.value && api.value) {
