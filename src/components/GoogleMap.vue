@@ -5,10 +5,11 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, PropType, ref, onBeforeUnmount, watch, toRef } from 'vue';
-import { loadNow } from 'connect-google-maps';
-import { useMap } from '../composables/index';
+import { defineComponent, PropType, ref, onBeforeUnmount, watch, toRef, provide } from 'vue';
+import { Loader } from '@googlemaps/js-api-loader';
 import {
+  IGoogleMapsAPI,
+  IMap,
   IMapOptions,
   ILatLng,
   IControlPosition,
@@ -19,11 +20,11 @@ import {
   IStreetViewPanorama,
   IMapTypeStyle,
 } from '../@types/index';
-import { mapEvents } from '../shared/index';
+import { MapSymbol, ApiSymbol, mapEvents } from '../shared/index';
 
 export default defineComponent({
   props: {
-    apiKey: String,
+    apiKey: { type: String, default: '' },
     region: String,
     language: String,
     backgroundColor: String,
@@ -69,7 +70,11 @@ export default defineComponent({
   setup(props, { emit }) {
     const mapRef = ref<HTMLElement | null>(null);
     const ready = ref(false);
-    const { map, api } = useMap();
+    const map = ref<IMap | null>(null);
+    const api = ref<IGoogleMapsAPI | null>(null);
+
+    provide(MapSymbol, map);
+    provide(ApiSymbol, api);
 
     const resolveOptions = () => {
       const opts = {
@@ -150,8 +155,17 @@ export default defineComponent({
     // Only run this in a browser env since it needs to use the `document` object
     // and would error out in a node env (i.e. vitepress/vuepress SSR)
     if (typeof window !== 'undefined') {
-      loadNow('places', props.apiKey, props.region, props.language).then(({ maps }) => {
-        const { Map } = (api.value = maps);
+      const loader = new Loader({
+        apiKey: props.apiKey,
+        version: 'weekly',
+        libraries: ['places'],
+        language: props.language,
+        region: props.region,
+      });
+
+      loader.load().then(() => {
+        // eslint-disable-next-line no-undef
+        const { Map } = (api.value = google.maps);
         map.value = new Map(mapRef.value as HTMLElement, resolveOptions());
 
         mapEvents.forEach(event => {
