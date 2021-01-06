@@ -1,5 +1,6 @@
 <template>
-  <div ref="mapRef">
+  <div>
+    <div v-bind="$attrs" ref="mapRef" />
     <slot />
   </div>
 </template>
