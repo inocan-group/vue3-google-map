@@ -28,25 +28,31 @@ export const useSetupMapComponent = (
   const map = inject(MapSymbol, ref(null));
   const api = inject(ApiSymbol, ref(null));
 
-  watch([map, options], (_, __, onInvalidate) => {
-    if (map.value && api.value) {
-      component.value = _component = new api.value[componentName]({
-        ...options.value,
-        map: map.value,
-      });
+  watch(
+    [map, options],
+    (_, __, onInvalidate) => {
+      if (map.value && api.value) {
+        component.value = _component = new api.value[componentName]({
+          ...options.value,
+          map: map.value,
+        });
 
-      events.forEach(event => {
-        _component?.addListener(event, (e: unknown) => emit(event, e));
-      });
-    }
-
-    onInvalidate(() => {
-      if (_component) {
-        api.value?.event.clearInstanceListeners(_component);
-        _component.setMap(null);
+        events.forEach(event => {
+          _component?.addListener(event, (e: unknown) => emit(event, e));
+        });
       }
-    });
-  });
+
+      onInvalidate(() => {
+        if (_component) {
+          api.value?.event.clearInstanceListeners(_component);
+          _component.setMap(null);
+        }
+      });
+    },
+    {
+      immediate: true,
+    },
+  );
 
   return { component };
 };

@@ -21,35 +21,41 @@ export default defineComponent({
     const map = inject(MapSymbol, ref(null));
     const api = inject(ApiSymbol, ref(null));
 
-    watch([map, () => props.position, () => props.index], (_, oldValues, onInvalidate) => {
-      if (map.value && api.value) {
-        if (props.index) {
-          (controlRef.value as HTMLElement & { index: number }).index = props.index;
-        }
+    watch(
+      [map, () => props.position, () => props.index] as const,
+      (_, [__, oldPosition], onInvalidate) => {
+        if (map.value && api.value) {
+          if (props.index) {
+            (controlRef.value as HTMLElement & { index: number }).index = props.index;
+          }
 
-        if (controlRef.value) {
-          map.value.controls[api.value.ControlPosition[props.position]].push(controlRef.value);
-        }
-      }
-
-      onInvalidate(() => {
-        if (map.value && api.value && controlRef.value) {
-          let index: number | undefined = undefined;
-
-          // Not a native array so we have to iterate using forEach of MVCArray:
-          // https://developers.google.com/maps/documentation/javascript/reference/event?hl=en#MVCArray
-          map.value.controls[api.value.ControlPosition[oldValues[1] as IControlPosition]].forEach((c, i) => {
-            if (c === controlRef.value) {
-              index = i;
-            }
-          });
-
-          if (index) {
-            map.value.controls[api.value.ControlPosition[oldValues[1] as IControlPosition]].removeAt(index);
+          if (controlRef.value) {
+            map.value.controls[api.value.ControlPosition[props.position]].push(controlRef.value);
           }
         }
-      });
-    });
+
+        onInvalidate(() => {
+          if (map.value && api.value && oldPosition) {
+            let index: number | undefined = undefined;
+
+            // Not a native array so we have to iterate using forEach of MVCArray:
+            // https://developers.google.com/maps/documentation/javascript/reference/event?hl=en#MVCArray
+            map.value.controls[api.value.ControlPosition[oldPosition]].forEach((c, i) => {
+              if (c === controlRef.value) {
+                index = i;
+              }
+            });
+
+            if (index) {
+              map.value.controls[api.value.ControlPosition[oldPosition]].removeAt(index);
+            }
+          }
+        });
+      },
+      {
+        immediate: true,
+      },
+    );
 
     return { controlRef };
   },
