@@ -22,7 +22,7 @@ To use a default theme simply pass the theme's name to the `theme` prop of the `
 <!-- prettier-ignore -->
 ```vue
 <template>
-  <GoogleMap api-key="YOUR_GOOGLE_MAPS_API_KEY" :center="center" :zoom="4" :theme="theme" />
+  <GoogleMap api-key="YOUR_GOOGLE_MAPS_API_KEY" :center="center" :zoom="4" :styles="theme" />
   <label for="theme">Theme</label>
   <select v-model="theme" id="theme">
     <option value="">-- None --</option>
