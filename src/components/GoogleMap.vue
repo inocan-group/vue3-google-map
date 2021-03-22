@@ -26,6 +26,7 @@ import { MapSymbol, ApiSymbol, mapEvents } from '../shared/index';
 export default defineComponent({
   props: {
     apiKey: { type: String, default: '' },
+    libraries: Array as PropType<('drawing' | 'geometry' | 'localContext' | 'places' | 'visualization')[]>,
     region: String,
     language: String,
     backgroundColor: String,
@@ -159,7 +160,7 @@ export default defineComponent({
       const loader = new Loader({
         apiKey: props.apiKey,
         version: 'weekly',
-        libraries: ['places'],
+        libraries: props.libraries || ['places'],
         language: props.language,
         region: props.region,
       });
