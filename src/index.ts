@@ -1,14 +1,15 @@
-//#autoindex, exclude: shims-vue.d, composables, shared, themes
+//#autoindex, exclude: shims-vue.d, composables, shared
 
 // #region autoindexed files
 
-// index last changed at: 10th Oct, 2020, 03:00 AM ( GMT+2 )
-// export: named; exclusions: shims-vue.d, composables, shared, themes, index, private.
-// directories: @types, components.
+// index last changed at: 4th Apr, 2021, 05:18 AM ( GMT+2 )
+// export: named; exclusions: shims-vue.d, composables, shared, index, private.
+// directories: @types, components, themes.
 
 // directory exports
-export * from './@types/index';
-export * from './components/index';
+export * from "./@types/index";
+export * from "./components/index";
+export * from "./themes/index";
 
 // Note:
 // -----
