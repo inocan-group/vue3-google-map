@@ -5,9 +5,9 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, ref, computed, watch } from 'vue';
-import { GoogleMap } from '/@/components/index';
-import { IMap } from '/@/@types/index';
+import { defineComponent, ref, computed, watch } from "vue";
+import { GoogleMap } from "/@/components/index";
+import { IMap } from "/@/@types/index";
 
 type IGoogleMap = ReturnType<typeof defineComponent> & { ready: boolean; map: IMap };
 
@@ -20,7 +20,7 @@ export default defineComponent({
     const _lng = ref(0);
     const lng = computed({
       get: () => _lng.value,
-      set: v => {
+      set: (v) => {
         if (!Number.isFinite(v)) {
           _lng.value = 0;
         } else if (v > 180) {
@@ -51,7 +51,7 @@ export default defineComponent({
 
 .map::after {
   position: absolute;
-  content: '';
+  content: "";
   width: 1px;
   height: 100%;
   top: 0;
@@ -59,7 +59,7 @@ export default defineComponent({
   background: red;
 }
 
-input[type='number'] {
+input[type="number"] {
   width: 200px;
   margin-top: 20px;
   margin-left: 10px;

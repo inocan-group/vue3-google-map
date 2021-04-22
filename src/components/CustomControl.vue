@@ -3,9 +3,9 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, PropType, watch, ref, inject } from 'vue';
-import { ApiSymbol, MapSymbol } from '../shared/index';
-import { IControlPosition } from '../@types/index';
+import { defineComponent, PropType, watch, ref, inject } from "vue";
+import { ApiSymbol, MapSymbol } from "../shared/index";
+import { IControlPosition } from "../@types/index";
 
 export default defineComponent({
   props: {
@@ -23,7 +23,7 @@ export default defineComponent({
 
     watch(
       [map, () => props.position, () => props.index] as const,
-      (_, [__, oldPosition], onInvalidate) => {
+      (_, [_ignore, oldPosition], onInvalidate) => {
         if (map.value && api.value) {
           if (props.index) {
             (controlRef.value as HTMLElement & { index: number }).index = props.index;
@@ -54,7 +54,7 @@ export default defineComponent({
       },
       {
         immediate: true,
-      },
+      }
     );
 
     return { controlRef };
