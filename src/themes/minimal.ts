@@ -1,21 +1,21 @@
-import { IMapTypeStyle } from '../@types/index';
+import { IMapTypeStyle } from "../@types/index";
 
 export const minimal: IMapTypeStyle[] = [
   {
-    featureType: 'administrative.land_parcel',
-    elementType: 'all',
+    featureType: "administrative.land_parcel",
+    elementType: "all",
     stylers: [
       {
-        visibility: 'off',
+        visibility: "off",
       },
     ],
   },
   {
-    featureType: 'administrative.land_parcel',
-    elementType: 'geometry.stroke',
+    featureType: "administrative.land_parcel",
+    elementType: "geometry.stroke",
     stylers: [
       {
-        visibility: 'off',
+        visibility: "off",
       },
       {
         weight: 7,
@@ -23,49 +23,49 @@ export const minimal: IMapTypeStyle[] = [
     ],
   },
   {
-    featureType: 'administrative.locality',
-    elementType: 'geometry.stroke',
+    featureType: "administrative.locality",
+    elementType: "geometry.stroke",
     stylers: [
       {
-        visibility: 'on',
+        visibility: "on",
       },
     ],
   },
   {
-    featureType: 'administrative.locality',
-    elementType: 'labels.text.fill',
+    featureType: "administrative.locality",
+    elementType: "labels.text.fill",
     stylers: [
       {
-        visibility: 'on',
+        visibility: "on",
       },
     ],
   },
   {
-    featureType: 'administrative.locality',
-    elementType: 'labels.text.stroke',
+    featureType: "administrative.locality",
+    elementType: "labels.text.stroke",
     stylers: [
       {
-        visibility: 'on',
+        visibility: "on",
       },
     ],
   },
   {
-    featureType: 'administrative.neighborhood',
+    featureType: "administrative.neighborhood",
     stylers: [
       {
-        visibility: 'off',
+        visibility: "off",
       },
     ],
   },
   {
-    featureType: 'administrative.neighborhood',
-    elementType: 'geometry.fill',
+    featureType: "administrative.neighborhood",
+    elementType: "geometry.fill",
     stylers: [
       {
-        color: '#00ff28',
+        color: "#00ff28",
       },
       {
-        visibility: 'on',
+        visibility: "on",
       },
       {
         weight: 2,
@@ -73,127 +73,127 @@ export const minimal: IMapTypeStyle[] = [
     ],
   },
   {
-    featureType: 'administrative.neighborhood',
-    elementType: 'geometry.stroke',
+    featureType: "administrative.neighborhood",
+    elementType: "geometry.stroke",
     stylers: [
       {
-        color: '#00ff28',
+        color: "#00ff28",
       },
       {
-        visibility: 'on',
-      },
-    ],
-  },
-  {
-    featureType: 'administrative.neighborhood',
-    elementType: 'labels.icon',
-    stylers: [
-      {
-        visibility: 'off',
+        visibility: "on",
       },
     ],
   },
   {
-    featureType: 'administrative.neighborhood',
-    elementType: 'labels.text.stroke',
+    featureType: "administrative.neighborhood",
+    elementType: "labels.icon",
     stylers: [
       {
-        visibility: 'off',
+        visibility: "off",
       },
     ],
   },
   {
-    featureType: 'landscape.natural',
-    elementType: 'geometry.fill',
+    featureType: "administrative.neighborhood",
+    elementType: "labels.text.stroke",
     stylers: [
       {
-        visibility: 'on',
+        visibility: "off",
       },
     ],
   },
   {
-    featureType: 'poi',
-    elementType: 'labels.text',
+    featureType: "landscape.natural",
+    elementType: "geometry.fill",
     stylers: [
       {
-        visibility: 'off',
+        visibility: "on",
       },
     ],
   },
   {
-    featureType: 'poi.attraction',
+    featureType: "poi",
+    elementType: "labels.text",
     stylers: [
       {
-        visibility: 'off',
+        visibility: "off",
       },
     ],
   },
   {
-    featureType: 'poi.business',
-    elementType: 'all',
+    featureType: "poi.attraction",
     stylers: [
       {
-        visibility: 'off',
+        visibility: "off",
       },
     ],
   },
   {
-    featureType: 'poi.medical',
-    elementType: 'all',
+    featureType: "poi.business",
+    elementType: "all",
     stylers: [
       {
-        visibility: 'off',
+        visibility: "off",
       },
     ],
   },
   {
-    featureType: 'poi.place_of_worship',
-    elementType: 'all',
+    featureType: "poi.medical",
+    elementType: "all",
     stylers: [
       {
-        visibility: 'off',
+        visibility: "off",
       },
     ],
   },
   {
-    featureType: 'poi.school',
-    elementType: 'all',
+    featureType: "poi.place_of_worship",
+    elementType: "all",
     stylers: [
       {
-        visibility: 'off',
+        visibility: "off",
       },
     ],
   },
   {
-    featureType: 'poi.sports_complex',
-    elementType: 'geometry.fill',
+    featureType: "poi.school",
+    elementType: "all",
     stylers: [
       {
-        visibility: 'on',
+        visibility: "off",
       },
     ],
   },
   {
-    featureType: 'poi.sports_complex',
-    elementType: 'labels.icon',
+    featureType: "poi.sports_complex",
+    elementType: "geometry.fill",
     stylers: [
       {
-        visibility: 'off',
+        visibility: "on",
       },
     ],
   },
   {
-    featureType: 'road',
-    elementType: 'labels.text',
+    featureType: "poi.sports_complex",
+    elementType: "labels.icon",
     stylers: [
       {
-        visibility: 'on',
+        visibility: "off",
+      },
+    ],
+  },
+  {
+    featureType: "road",
+    elementType: "labels.text",
+    stylers: [
+      {
+        visibility: "on",
       },
       {
         lightness: -10,
       },
       {
-        color: '#b5b5b5',
+        color: "#b5b5b5",
       },
       {
         weight: 0.2,
@@ -201,20 +201,20 @@ export const minimal: IMapTypeStyle[] = [
     ],
   },
   {
-    featureType: 'road',
-    elementType: 'labels.icon',
+    featureType: "road",
+    elementType: "labels.icon",
     stylers: [
       {
-        visibility: 'off',
+        visibility: "off",
       },
     ],
   },
   {
-    featureType: 'road.local',
-    elementType: 'geometry.fill',
+    featureType: "road.local",
+    elementType: "geometry.fill",
     stylers: [
       {
-        color: '#fbfbfb',
+        color: "#fbfbfb",
       },
       {
         lightness: -15,
@@ -225,38 +225,38 @@ export const minimal: IMapTypeStyle[] = [
     ],
   },
   {
-    featureType: 'road.local',
-    elementType: 'geometry.stroke',
+    featureType: "road.local",
+    elementType: "geometry.stroke",
     stylers: [
       {
-        visibility: 'off',
+        visibility: "off",
       },
     ],
   },
   {
-    featureType: 'transit',
-    elementType: 'all',
+    featureType: "transit",
+    elementType: "all",
     stylers: [
       {
-        visibility: 'off',
+        visibility: "off",
       },
     ],
   },
   {
-    featureType: 'transit.station',
-    elementType: 'labels.icon',
+    featureType: "transit.station",
+    elementType: "labels.icon",
     stylers: [
       {
-        visibility: 'off',
+        visibility: "off",
       },
     ],
   },
   {
-    featureType: 'water',
-    elementType: 'labels.text',
+    featureType: "water",
+    elementType: "labels.text",
     stylers: [
       {
-        visibility: 'off',
+        visibility: "off",
       },
     ],
   },

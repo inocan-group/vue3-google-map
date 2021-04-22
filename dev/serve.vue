@@ -1,16 +1,16 @@
 <script lang="ts">
-import { defineComponent, ref } from 'vue';
-import { GoogleMap, Marker, CustomControl } from '/@/components/index';
+import { defineComponent, ref } from "vue";
+import { GoogleMap, Marker, CustomControl } from "/@/components/index";
 
 export default defineComponent({
-  name: 'ServeDev',
+  name: "ServeDev",
   components: {
     GoogleMap,
     Marker,
     CustomControl,
   },
   setup() {
-    const greet = () => alert('hi');
+    const greet = () => alert("hi");
     const dist = ref(0);
 
     setInterval(() => {

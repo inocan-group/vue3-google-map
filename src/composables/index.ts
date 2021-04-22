@@ -7,7 +7,7 @@
 // files: useSetupMapComponent.
 
 // local file exports
-export * from './useSetupMapComponent';
+export * from "./useSetupMapComponent";
 
 // Note:
 // -----

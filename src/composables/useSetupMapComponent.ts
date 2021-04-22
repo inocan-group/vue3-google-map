@@ -1,4 +1,4 @@
-import { watch, ref, Ref, inject } from 'vue';
+import { watch, ref, Ref, inject } from "vue";
 import {
   IMarker,
   IPolyline,
@@ -10,17 +10,22 @@ import {
   IPolygonOptions,
   IRectangleOptions,
   ICircleOptions,
-} from '../@types/index';
-import { ApiSymbol, MapSymbol } from '../shared/index';
+} from "../@types/index";
+import { ApiSymbol, MapSymbol } from "../shared/index";
 
-type IComponent = IMarker | IPolyline | IPolygon | IRectangle | ICircle;
-type IComponentOptions = IMarkerOptions | IPolylineOptions | IPolygonOptions | IRectangleOptions | ICircleOptions;
+export type IComponent = IMarker | IPolyline | IPolygon | IRectangle | ICircle;
+export type IComponentOptions =
+  | IMarkerOptions
+  | IPolylineOptions
+  | IPolygonOptions
+  | IRectangleOptions
+  | ICircleOptions;
 
 export const useSetupMapComponent = (
-  componentName: 'Marker' | 'Polyline' | 'Polygon' | 'Rectangle' | 'Circle',
+  componentName: "Marker" | "Polyline" | "Polygon" | "Rectangle" | "Circle",
   events: string[],
   options: Ref<IComponentOptions>,
-  emit: (event: string, ...args: any[]) => void,
+  emit: (event: string, ...args: unknown[]) => void
 ): { component: Ref<IComponent | null> } => {
   let _component: IComponent | null = null;
   const component = ref<IComponent | null>(null);
@@ -37,7 +42,7 @@ export const useSetupMapComponent = (
           map: map.value,
         });
 
-        events.forEach(event => {
+        events.forEach((event) => {
           _component?.addListener(event, (e: unknown) => emit(event, e));
         });
       }
@@ -51,7 +56,7 @@ export const useSetupMapComponent = (
     },
     {
       immediate: true,
-    },
+    }
   );
 
   return { component };
