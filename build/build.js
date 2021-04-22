@@ -2,28 +2,28 @@
 // @ts-nocheck
 /* eslint-disable @typescript-eslint/ban-ts-comment */
 /* eslint-disable @typescript-eslint/no-var-requires */
-const rollup = require('rollup');
-const commonjs = require('@rollup/plugin-commonjs');
-const json = require('@rollup/plugin-json');
-const resolve = require('@rollup/plugin-node-resolve').default;
-const terser = require('rollup-plugin-terser').terser;
-const pkg = require('../package.json');
-const { builtinModules } = require('module');
-const analyze = require('rollup-plugin-analyzer');
-const typescript = require('rollup-plugin-typescript2');
-const ttypescript = require('ttypescript');
-const vue = require('rollup-plugin-vue');
-const closure = require('@ampproject/rollup-plugin-closure-compiler');
-const { existsSync, statSync } = require('fs');
-const { exit } = require('process');
-const { join } = require('path');
+const rollup = require("rollup");
+const commonjs = require("@rollup/plugin-commonjs");
+const json = require("@rollup/plugin-json");
+const resolve = require("@rollup/plugin-node-resolve").default;
+const terser = require("rollup-plugin-terser").terser;
+const pkg = require("../package.json");
+const { builtinModules } = require("module");
+const analyze = require("rollup-plugin-analyzer");
+const typescript = require("rollup-plugin-typescript2");
+const ttypescript = require("ttypescript");
+const vue = require("rollup-plugin-vue");
+const closure = require("@ampproject/rollup-plugin-closure-compiler");
+const { existsSync, statSync } = require("fs");
+const { exit } = require("process");
+const { join } = require("path");
 
-const moduleSystems = process.argv.slice(2).filter(i => !i.startsWith('-'));
+const moduleSystems = process.argv.slice(2).filter((i) => !i.startsWith("-"));
 const switches = new Set(
   process.argv
     .slice(2)
-    .filter(i => i.startsWith('-'))
-    .map(i => i.replace(/^-(-){0,1}/, '')),
+    .filter((i) => i.startsWith("-"))
+    .map((i) => i.replace(/^-(-){0,1}/, ""))
 );
 
 // makes all non-core deps external; allowing consuming app to gain better reuse
@@ -32,7 +32,7 @@ const external = [
   // @ts-ignore
   ...(pkg.optionalDependencies ? Object.keys(pkg.optionalDependencies) : []),
   ...builtinModules,
-].map(i => i.replace('@types/', ''));
+].map((i) => i.replace("@types/", ""));
 
 // required for IIFE and UMD modules
 const globals = {};
@@ -59,15 +59,15 @@ function getFilenameByModule(mod) {
  */
 function getModuleShortname(mod) {
   const lowered = mod.toLowerCase();
-  return lowered.startsWith('es') ? 'es' : lowered.startsWith('commonjs') ? 'cjs' : mod.toLowerCase();
+  return lowered.startsWith("es") ? "es" : lowered.startsWith("commonjs") ? "cjs" : mod.toLowerCase();
 }
 
 function inferDirectory(file) {
   if (!file) {
-    return '';
+    return "";
   }
-  const fileParts = file.split('/');
-  return fileParts.slice(0, fileParts.length - 1).join('/');
+  const fileParts = file.split("/");
+  return fileParts.slice(0, fileParts.length - 1).join("/");
 }
 
 /**
@@ -80,7 +80,7 @@ function inferDirectory(file) {
  */
 const moduleConfig = (moduleSystem, file, minimized, emitDeclaration) => {
   try {
-    const input = 'src/index.ts';
+    const input = "src/index.ts";
     if (!existsSync(input)) {
       console.log(`The source entry point was set as "${input}" but this was not found!`);
       console.log();
@@ -100,38 +100,38 @@ const moduleConfig = (moduleSystem, file, minimized, emitDeclaration) => {
       compilerOptions: {
         ...(emitDeclaration ? { declaration: emitDeclaration, declarationDir } : {}),
         outDir,
-        module: 'esnext',
+        module: "esnext",
       },
-      exclude: ['test', 'tests', 'node_modules'],
+      exclude: ["test", "tests", "node_modules"],
     };
 
     return {
       input,
       external,
       plugins: [
-        commonjs(),
-        json(),
-        resolve(),
         vue({
           css: true,
           template: {
             isProduction: true,
           },
         }),
+        commonjs(),
+        json(),
+        resolve(),
         typescript({
-          tsconfig: 'tsconfig.json',
+          tsconfig: "tsconfig.json",
           typescript: ttypescript,
           useTsconfigDeclarationDir: true,
           tsconfigOverride,
         }),
-        ...(getModuleShortname(moduleSystem) === 'es' &&
+        ...(getModuleShortname(moduleSystem) === "es" &&
         // @ts-ignore
         (process.env.ANALYZE || switches.analyze)
           ? // @ts-ignore
             [analyze()]
           : []),
         // @ts-ignore
-        ...(switches.has('closure') ? [closure()] : []),
+        ...(switches.has("closure") ? [closure()] : []),
         ...(minimized ? [terser()] : []),
       ],
     };
@@ -150,8 +150,8 @@ const moduleConfig = (moduleSystem, file, minimized, emitDeclaration) => {
  */
 function minimizeFilename(filename, isMin) {
   if (isMin) {
-    const parts = filename.split('.');
-    filename = join(parts.slice(0, parts.length - 1).join('.'), `.min.${parts.slice(-1)}`);
+    const parts = filename.split(".");
+    filename = join(parts.slice(0, parts.length - 1).join("."), `.min.${parts.slice(-1)}`);
   }
 
   return filename;
@@ -166,31 +166,31 @@ function minimizeFilename(filename, isMin) {
  */
 async function buildModule(m, min, emitDeclaration) {
   try {
-    console.log(`- 📦 starting bundling of ${m.toUpperCase()} module ${min ? '(minimized)' : ''}`);
-    if (switches.has('closure')) {
+    console.log(`- 📦 starting bundling of ${m.toUpperCase()} module ${min ? "(minimized)" : ""}`);
+    if (switches.has("closure")) {
       console.log(`- using closure compiler to minimize file size`);
     }
     // @ts-ignore
-    if (getModuleShortname(m) === 'es' && !pkg.module) {
+    if (getModuleShortname(m) === "es" && !pkg.module) {
       console.log(
-        `- 🤨 while you are building for the ES module system your package.json doesn't specify a "module" entrypoint.`,
+        `- 🤨 while you are building for the ES module system your package.json doesn't specify a "module" entrypoint.`
       );
     }
     const file = minimizeFilename(getFilenameByModule(m), min);
     console.log(`- transpiled source will be saved as: ${file}`);
     // build the configuration
     const config = moduleConfig(m, file, min, emitDeclaration);
-    if (switches.has('v') || switches.has('verbose')) {
-      console.log('- bundle config is:\n', JSON.stringify(config, null, 2));
+    if (switches.has("v") || switches.has("verbose")) {
+      console.log("- bundle config is:\n", JSON.stringify(config, null, 2));
     }
     const bundle = await rollup.rollup(config);
 
     await bundle.write({
-      ...(usesGlobalVars(m) ? { name: pkg.name.replace(/-/g, ''), globals } : {}),
+      ...(usesGlobalVars(m) ? { name: pkg.name.replace(/-/g, ""), globals } : {}),
       file,
       // @ts-ignore
-      format: getModuleShortname(m).startsWith('es') ? 'es' : m,
-      exports: 'auto',
+      format: getModuleShortname(m).startsWith("es") ? "es" : m,
+      exports: "auto",
       sourcemap: false,
     });
     const output = statSync(file);
@@ -202,53 +202,53 @@ async function buildModule(m, min, emitDeclaration) {
   }
 }
 
-const usesGlobalVars = mod => {
-  return ['umd', 'iife'].includes(mod);
+const usesGlobalVars = (mod) => {
+  return ["umd", "iife"].includes(mod);
 };
 
 (async () => {
-  const validModules = ['esnext', 'es2020', 'es2015', 'commonjs', 'iife', 'umd'];
-  const hasValidModules = moduleSystems.every(m => validModules.includes(m));
+  const validModules = ["esnext", "es2020", "es2015", "commonjs", "iife", "umd"];
+  const hasValidModules = moduleSystems.every((m) => validModules.includes(m));
   if (!hasValidModules) {
     console.log(
       `You specified an invalid module system. Valid module systems are: ${validModules.join(
-        ', ',
-      )}; and you specified: ${moduleSystems.join(', ')}!\n`,
+        ", "
+      )}; and you specified: ${moduleSystems.join(", ")}!\n`
     );
     process.exit(0);
   }
 
-  console.log(`- Building library to ${moduleSystems.map(m => m.toUpperCase()).join(', ')} modules.`);
-  const relevantModules = external.filter(i => !builtinModules.includes(i));
+  console.log(`- Building library to ${moduleSystems.map((m) => m.toUpperCase()).join(", ")} modules.`);
+  const relevantModules = external.filter((i) => !builtinModules.includes(i));
 
   if (Object.keys(relevantModules).length > 0) {
     console.log(
-      `- While bundling will configure the following to be "external modules": ${relevantModules.join(', ')}`,
+      `- While bundling will configure the following to be "external modules": ${relevantModules.join(", ")}`
     );
   }
-  if (moduleSystems.includes('iife') || moduleSystems.includes('umd')) {
+  if (moduleSystems.includes("iife") || moduleSystems.includes("umd")) {
     console.log(
       `- The IIFE and UMD modules will link to global scope:\n\t${Object.keys(globals)
-        .map(g => `- "${g}" module found in global scope as "${globals[g]}"\n\t`)
-        .join('')}`,
+        .map((g) => `- "${g}" module found in global scope as "${globals[g]}"\n\t`)
+        .join("")}`
     );
   }
   console.log();
 
   for (const m of moduleSystems) {
-    const emitDeclaration = moduleSystems.length === 1 || getModuleShortname(m) === 'es';
+    const emitDeclaration = moduleSystems.length === 1 || getModuleShortname(m) === "es";
     await buildModule(m, false, emitDeclaration);
   }
 
-  if (switches.has('min')) {
-    if (!moduleSystems.includes('commonjs')) {
+  if (switches.has("min")) {
+    if (!moduleSystems.includes("commonjs")) {
       throw new Error(
-        'Minimization was requested but no CJS module was built; either include CJS module build or remove minimization',
+        "Minimization was requested but no CJS module was built; either include CJS module build or remove minimization"
       );
     }
-    console.log('Building minimized version of CJS module system');
-    await buildModule('commonjs', true, true);
+    console.log("Building minimized version of CJS module system");
+    await buildModule("commonjs", true, true);
   }
 
-  console.log('\n- Build completed!\n');
+  console.log("\n- Build completed!\n");
 })();
