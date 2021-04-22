@@ -6,8 +6,8 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, PropType, ref, onBeforeUnmount, watch, toRef, provide } from 'vue';
-import { Loader } from '@googlemaps/js-api-loader';
+import { defineComponent, PropType, ref, onBeforeUnmount, watch, toRef, provide } from "vue";
+import { Loader } from "@googlemaps/js-api-loader";
 import {
   IGoogleMapsAPI,
   IMap,
@@ -20,13 +20,13 @@ import {
   IMapRestriction,
   IStreetViewPanorama,
   IMapTypeStyle,
-} from '../@types/index';
-import { MapSymbol, ApiSymbol, mapEvents } from '../shared/index';
+} from "../@types/index";
+import { MapSymbol, ApiSymbol, mapEvents } from "../shared/index";
 
 export default defineComponent({
   props: {
-    apiKey: { type: String, default: '' },
-    libraries: Array as PropType<('drawing' | 'geometry' | 'localContext' | 'places' | 'visualization')[]>,
+    apiKey: { type: String, default: "" },
+    libraries: Array as PropType<("drawing" | "geometry" | "localContext" | "places" | "visualization")[]>,
     region: String,
     language: String,
     backgroundColor: String,
@@ -40,7 +40,7 @@ export default defineComponent({
     draggingCursor: String,
     fullscreenControl: { type: Boolean, default: undefined },
     fullscreenControlPosition: String as PropType<IControlPosition>,
-    gestureHandling: String as PropType<'cooperative' | 'greedy' | 'none' | 'auto'>,
+    gestureHandling: String as PropType<"cooperative" | "greedy" | "none" | "auto">,
     heading: Number,
     keyboardShortcuts: { type: Boolean, default: undefined },
     mapTypeControl: { type: Boolean, default: undefined },
@@ -74,7 +74,7 @@ export default defineComponent({
     const ready = ref(false);
     const map = ref<IMap | null>(null);
     const api = ref<IGoogleMapsAPI | null>(null);
-    const isLoadingAPI = ref(false)
+    const isLoadingAPI = ref(false);
 
     provide(MapSymbol, map);
     provide(ApiSymbol, api);
@@ -144,7 +144,7 @@ export default defineComponent({
       };
 
       // Strip undefined keys. Without this Map.setOptions doesn't behave very well.
-      (Object.keys(opts) as (keyof IMapOptions)[]).forEach(key => opts[key] === undefined && delete opts[key]);
+      (Object.keys(opts) as (keyof IMapOptions)[]).forEach((key) => opts[key] === undefined && delete opts[key]);
 
       return opts;
     };
@@ -160,15 +160,16 @@ export default defineComponent({
       const { Map } = (api.value = google.maps);
       map.value = new Map(mapRef.value as HTMLElement, resolveOptions());
 
-      mapEvents.forEach(event => {
+      mapEvents.forEach((event) => {
+        //TODO: Address this deprecated method on Google API
         map.value?.addListener(event, (e: unknown) => emit(event, e));
       });
 
       ready.value = true;
 
       const otherPropsAsRefs = (Object.keys(props) as (keyof typeof props)[])
-        .filter(key => !['center', 'zoom'].includes(key))
-        .map(key => toRef(props, key));
+        .filter((key) => !["center", "zoom"].includes(key))
+        .map((key) => toRef(props, key));
 
       watch(
         [() => props.center, () => props.zoom, ...otherPropsAsRefs] as const,
@@ -187,33 +188,33 @@ export default defineComponent({
               map.value?.panTo(center);
             }
           }
-        },
+        }
       );
-    }
+    };
 
     // Only run this in a browser env since it needs to use the `document` object
     // and would error out in a node env (i.e. vitepress/vuepress SSR)
-    if (typeof window !== 'undefined') {
-      if (typeof window.google === 'undefined' && !isLoadingAPI.value) {
+    if (typeof window !== "undefined") {
+      if (typeof window.google === "undefined" && !isLoadingAPI.value) {
         const loader = new Loader({
           apiKey: props.apiKey,
-          version: 'weekly',
-          libraries: props.libraries || ['drawing','places'],
+          version: "weekly",
+          libraries: props.libraries || ["drawing", "places"],
           language: props.language,
           region: props.region,
         });
 
-        isLoadingAPI.value = true
+        isLoadingAPI.value = true;
 
         loader.load().then(() => {
-          onLoaded()
+          onLoaded();
         });
       } else {
         watch(mapRef, (newMapRef, oldMapRef) => {
           if (newMapRef && !oldMapRef) {
-            onLoaded()
+            onLoaded();
           }
-        })
+        });
       }
     }
 

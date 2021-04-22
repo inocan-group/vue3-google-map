@@ -1,4 +1,4 @@
-import * as themes from '../themes/index';
+import * as themes from "../themes/index";
 
 export type IGoogleMapsAPI = typeof google.maps;
 export type IMap = google.maps.Map;
