@@ -126,13 +126,13 @@ const moduleConfig = (moduleSystem, file, minimized, emitDeclaration) => {
         }),
         ...(getModuleShortname(moduleSystem) === "es" &&
         // @ts-ignore
-        (process.env.ANALYZE || switches.analyze)
+        (process.env.ANALYZE || switches.has(analyze))
           ? // @ts-ignore
             [analyze()]
           : []),
         // @ts-ignore
         ...(switches.has("closure") ? [closure()] : []),
-        ...(minimized ? [terser()] : []),
+        ...(switches.has("min") ? [terser()] : []),
       ],
     };
   } catch (e) {
