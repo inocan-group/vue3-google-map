@@ -158,7 +158,6 @@ export default defineComponent({
     const onLoaded = () => {
       // eslint-disable-next-line no-undef
       const { Map } = (api.value = google.maps);
-      console.log('MAPREF:::', mapRef, google)
       map.value = new Map(mapRef.value as HTMLElement, resolveOptions());
       mapEvents.forEach(event => {
         map.value?.addListener(event, (e: unknown) => emit(event, e));
@@ -206,20 +205,15 @@ export default defineComponent({
         isLoadingAPI.value = true
 
         loader.load().then(() => {
-          console.log('loader loaded')
           watch(mapRef, (newMapRef, oldMapRef) => {
-            console.log('loader loaded watch: ', newMapRef, oldMapRef)
             if (newMapRef && !oldMapRef) {
-              console.log('ready to run onLoaded')
               onLoaded()
             }
           })
         });
       } else {
         watch(mapRef, (newMapRef, oldMapRef) => {
-          console.log('no loader watch: ', newMapRef, oldMapRef)
           if (newMapRef && !oldMapRef) {
-            console.log('ready to run onLoaded')
             onLoaded()
           }
         })

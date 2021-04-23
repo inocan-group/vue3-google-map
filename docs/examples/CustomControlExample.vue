@@ -7,14 +7,14 @@
 </template>
 
 <script lang="ts">
-import { defineComponent } from 'vue';
-import { GoogleMap, CustomControl } from '/@/components/index';
+import { defineComponent } from "vue";
+import { GoogleMap, CustomControl } from "/@/components/index";
 
 export default defineComponent({
   components: { GoogleMap, CustomControl },
   setup() {
     const center = { lat: 35, lng: -95 };
-    const sayHi = () => alert('Hi!');
+    const sayHi = () => alert("Hi!");
 
     return { center, sayHi };
   },

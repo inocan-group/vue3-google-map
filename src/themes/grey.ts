@@ -1,15 +1,15 @@
-import { IMapTypeStyle } from '../@types/index';
+import { IMapTypeStyle } from "../@types/index";
 
 export const grey: IMapTypeStyle[] = [
   {
-    featureType: 'all',
-    elementType: 'labels.text.fill',
+    featureType: "all",
+    elementType: "labels.text.fill",
     stylers: [
       {
         saturation: 36,
       },
       {
-        color: '#000000',
+        color: "#000000",
       },
       {
         lightness: 40,
@@ -17,14 +17,14 @@ export const grey: IMapTypeStyle[] = [
     ],
   },
   {
-    featureType: 'all',
-    elementType: 'labels.text.stroke',
+    featureType: "all",
+    elementType: "labels.text.stroke",
     stylers: [
       {
-        visibility: 'on',
+        visibility: "on",
       },
       {
-        color: '#000000',
+        color: "#000000",
       },
       {
         lightness: 16,
@@ -32,20 +32,20 @@ export const grey: IMapTypeStyle[] = [
     ],
   },
   {
-    featureType: 'all',
-    elementType: 'labels.icon',
+    featureType: "all",
+    elementType: "labels.icon",
     stylers: [
       {
-        visibility: 'off',
+        visibility: "off",
       },
     ],
   },
   {
-    featureType: 'administrative',
-    elementType: 'geometry.fill',
+    featureType: "administrative",
+    elementType: "geometry.fill",
     stylers: [
       {
-        color: '#000000',
+        color: "#000000",
       },
       {
         lightness: 20,
@@ -53,11 +53,11 @@ export const grey: IMapTypeStyle[] = [
     ],
   },
   {
-    featureType: 'administrative',
-    elementType: 'geometry.stroke',
+    featureType: "administrative",
+    elementType: "geometry.stroke",
     stylers: [
       {
-        color: '#000000',
+        color: "#000000",
       },
       {
         lightness: 17,
@@ -68,11 +68,11 @@ export const grey: IMapTypeStyle[] = [
     ],
   },
   {
-    featureType: 'landscape',
-    elementType: 'geometry',
+    featureType: "landscape",
+    elementType: "geometry",
     stylers: [
       {
-        color: '#000000',
+        color: "#000000",
       },
       {
         lightness: 20,
@@ -80,11 +80,11 @@ export const grey: IMapTypeStyle[] = [
     ],
   },
   {
-    featureType: 'poi',
-    elementType: 'geometry',
+    featureType: "poi",
+    elementType: "geometry",
     stylers: [
       {
-        color: '#000000',
+        color: "#000000",
       },
       {
         lightness: 21,
@@ -92,11 +92,11 @@ export const grey: IMapTypeStyle[] = [
     ],
   },
   {
-    featureType: 'road.highway',
-    elementType: 'geometry.fill',
+    featureType: "road.highway",
+    elementType: "geometry.fill",
     stylers: [
       {
-        color: '#000000',
+        color: "#000000",
       },
       {
         lightness: 17,
@@ -104,11 +104,11 @@ export const grey: IMapTypeStyle[] = [
     ],
   },
   {
-    featureType: 'road.highway',
-    elementType: 'geometry.stroke',
+    featureType: "road.highway",
+    elementType: "geometry.stroke",
     stylers: [
       {
-        color: '#000000',
+        color: "#000000",
       },
       {
         lightness: 29,
@@ -119,11 +119,11 @@ export const grey: IMapTypeStyle[] = [
     ],
   },
   {
-    featureType: 'road.arterial',
-    elementType: 'geometry',
+    featureType: "road.arterial",
+    elementType: "geometry",
     stylers: [
       {
-        color: '#000000',
+        color: "#000000",
       },
       {
         lightness: 18,
@@ -131,11 +131,11 @@ export const grey: IMapTypeStyle[] = [
     ],
   },
   {
-    featureType: 'road.local',
-    elementType: 'geometry',
+    featureType: "road.local",
+    elementType: "geometry",
     stylers: [
       {
-        color: '#000000',
+        color: "#000000",
       },
       {
         lightness: 16,
@@ -143,11 +143,11 @@ export const grey: IMapTypeStyle[] = [
     ],
   },
   {
-    featureType: 'transit',
-    elementType: 'geometry',
+    featureType: "transit",
+    elementType: "geometry",
     stylers: [
       {
-        color: '#000000',
+        color: "#000000",
       },
       {
         lightness: 19,
@@ -155,11 +155,11 @@ export const grey: IMapTypeStyle[] = [
     ],
   },
   {
-    featureType: 'water',
-    elementType: 'geometry',
+    featureType: "water",
+    elementType: "geometry",
     stylers: [
       {
-        color: '#000000',
+        color: "#000000",
       },
       {
         lightness: 17,
