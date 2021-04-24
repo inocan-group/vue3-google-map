@@ -74,7 +74,6 @@ export default defineComponent({
     const ready = ref(false);
     const map = ref<IMap | null>(null);
     const api = ref<IGoogleMapsAPI | null>(null);
-    const isLoadingAPI = ref(false);
 
     provide(mapSymbol, map);
     provide(apiSymbol, api);
@@ -155,67 +154,52 @@ export default defineComponent({
       }
     });
 
-    const onLoaded = () => {
-      // eslint-disable-next-line no-undef
-      const { Map } = (api.value = google.maps);
-      map.value = new Map(mapRef.value as HTMLElement, resolveOptions());
-
-      mapEvents.forEach((event) => {
-        //TODO: Address this deprecated method on Google API
-        map.value?.addListener(event, (e: unknown) => emit(event, e));
-      });
-
-      ready.value = true;
-
-      const otherPropsAsRefs = (Object.keys(props) as (keyof typeof props)[])
-        .filter((key) => !["center", "zoom"].includes(key))
-        .map((key) => toRef(props, key));
-
-      watch(
-        [() => props.center, () => props.zoom, ...otherPropsAsRefs] as const,
-        ([center, zoom], [oldCenter, oldZoom]) => {
-          // eslint-disable-next-line @typescript-eslint/no-unused-vars
-          const { center: _, zoom: __, ...otherOptions } = resolveOptions();
-
-          map.value?.setOptions(otherOptions);
-
-          if (zoom !== undefined && zoom !== oldZoom) {
-            map.value?.setZoom(zoom);
-          }
-
-          if (center) {
-            if (!oldCenter || center.lng !== oldCenter.lng || center.lat !== oldCenter.lat) {
-              map.value?.panTo(center);
-            }
-          }
-        }
-      );
-    };
-
     // Only run this in a browser env since it needs to use the `document` object
     // and would error out in a node env (i.e. vitepress/vuepress SSR)
     if (typeof window !== "undefined") {
-      if (typeof window.google === "undefined" && !isLoadingAPI.value) {
-        const loader = new Loader({
-          apiKey: props.apiKey,
-          version: "weekly",
-          libraries: props.libraries || ["drawing", "places"],
-          language: props.language,
-          region: props.region,
+      const loader = new Loader({
+        apiKey: props.apiKey,
+        version: "weekly",
+        libraries: props.libraries || ["places"],
+        language: props.language,
+        region: props.region,
+      });
+
+      loader.load().then(() => {
+        // eslint-disable-next-line no-undef
+        const { Map } = (api.value = google.maps);
+        map.value = new Map(mapRef.value as HTMLElement, resolveOptions());
+
+        mapEvents.forEach((event) => {
+          map.value?.addListener(event, (e: unknown) => emit(event, e));
         });
 
-        isLoadingAPI.value = true;
+        ready.value = true;
 
-        loader.load().then(() => {
-          onLoaded();
-        });
-      } else {
-        watch(mapRef, (newMapRef, oldMapRef) => {
-          if (newMapRef && !oldMapRef) {
-            onLoaded();
+        const otherPropsAsRefs = (Object.keys(props) as (keyof typeof props)[])
+          .filter((key) => !["center", "zoom"].includes(key))
+          .map((key) => toRef(props, key));
+
+        watch(
+          [() => props.center, () => props.zoom, ...otherPropsAsRefs] as const,
+          ([center, zoom], [oldCenter, oldZoom]) => {
+            // eslint-disable-next-line @typescript-eslint/no-unused-vars
+            const { center: _, zoom: __, ...otherOptions } = resolveOptions();
+
+            map.value?.setOptions(otherOptions);
+
+            if (zoom !== undefined && zoom !== oldZoom) {
+              map.value?.setZoom(zoom);
+            }
+
+            if (center) {
+              if (!oldCenter || center.lng !== oldCenter.lng || center.lat !== oldCenter.lat) {
+                map.value?.panTo(center);
+              }
+            }
           }
-        });
-      }
+        );
+      });
     }
 
     return { mapRef, ready, map, api };
