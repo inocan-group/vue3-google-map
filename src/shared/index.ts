@@ -1,8 +1,8 @@
 import { InjectionKey, Ref } from "vue";
 import { IGoogleMapsAPI, IMap } from "../@types/index";
 
-export const ApiSymbol: InjectionKey<Ref<IGoogleMapsAPI | null>> = Symbol("api");
-export const MapSymbol: InjectionKey<Ref<IMap | null>> = Symbol("map");
+export const apiSymbol: InjectionKey<Ref<IGoogleMapsAPI | null>> = Symbol("api");
+export const mapSymbol: InjectionKey<Ref<IMap | null>> = Symbol("map");
 
 export const mapEvents = [
   "bounds_changed",

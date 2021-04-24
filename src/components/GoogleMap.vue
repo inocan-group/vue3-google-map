@@ -21,7 +21,7 @@ import {
   IStreetViewPanorama,
   IMapTypeStyle,
 } from "../@types/index";
-import { MapSymbol, ApiSymbol, mapEvents } from "../shared/index";
+import { mapSymbol, apiSymbol, mapEvents } from "../shared/index";
 
 export default defineComponent({
   props: {
@@ -76,8 +76,8 @@ export default defineComponent({
     const api = ref<IGoogleMapsAPI | null>(null);
     const isLoadingAPI = ref(false);
 
-    provide(MapSymbol, map);
-    provide(ApiSymbol, api);
+    provide(mapSymbol, map);
+    provide(apiSymbol, api);
 
     const resolveOptions = () => {
       const opts = {

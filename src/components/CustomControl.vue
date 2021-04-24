@@ -4,7 +4,7 @@
 
 <script lang="ts">
 import { defineComponent, PropType, watch, ref, inject } from "vue";
-import { ApiSymbol, MapSymbol } from "../shared/index";
+import { apiSymbol, mapSymbol } from "../shared/index";
 import { IControlPosition } from "../@types/index";
 
 export default defineComponent({
@@ -18,8 +18,8 @@ export default defineComponent({
   setup(props) {
     const controlRef = ref<HTMLElement | null>(null);
 
-    const map = inject(MapSymbol, ref(null));
-    const api = inject(ApiSymbol, ref(null));
+    const map = inject(mapSymbol, ref(null));
+    const api = inject(apiSymbol, ref(null));
 
     watch(
       [map, () => props.position, () => props.index] as const,
