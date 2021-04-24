@@ -6,7 +6,7 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, PropType, ref, onBeforeUnmount, watch, toRef, provide } from "vue";
+import { defineComponent, PropType, ref, onMounted, onBeforeUnmount, watch, toRef, provide } from "vue";
 import { Loader } from "@googlemaps/js-api-loader";
 import {
   IGoogleMapsAPI,
@@ -21,7 +21,7 @@ import {
   IStreetViewPanorama,
   IMapTypeStyle,
 } from "../@types/index";
-import { mapSymbol, apiSymbol, mapEvents } from "../shared/index";
+import { mapSymbol, apiSymbol, loaderInstance, mapEvents } from "../shared/index";
 
 export default defineComponent({
   props: {
@@ -154,53 +154,56 @@ export default defineComponent({
       }
     });
 
-    // Only run this in a browser env since it needs to use the `document` object
-    // and would error out in a node env (i.e. vitepress/vuepress SSR)
-    if (typeof window !== "undefined") {
-      const loader = new Loader({
-        apiKey: props.apiKey,
-        version: "weekly",
-        libraries: props.libraries || ["places"],
-        language: props.language,
-        region: props.region,
-      });
-
-      loader.load().then(() => {
-        // eslint-disable-next-line no-undef
-        const { Map } = (api.value = google.maps);
-        map.value = new Map(mapRef.value as HTMLElement, resolveOptions());
-
-        mapEvents.forEach((event) => {
-          map.value?.addListener(event, (e: unknown) => emit(event, e));
+    onMounted(() => {
+      try {
+        loaderInstance.value = new Loader({
+          apiKey: props.apiKey,
+          version: "weekly",
+          libraries: props.libraries || ["places"],
+          language: props.language,
+          region: props.region,
         });
+      } catch (err) {
+        // Loader instantiated again with different options, which isn't allowed by js-api-loader
+        console.error(err);
+      } finally {
+        (loaderInstance.value as Loader).load().then(() => {
+          // eslint-disable-next-line no-undef
+          const { Map } = (api.value = google.maps);
+          map.value = new Map(mapRef.value as HTMLElement, resolveOptions());
 
-        ready.value = true;
+          mapEvents.forEach((event) => {
+            map.value?.addListener(event, (e: unknown) => emit(event, e));
+          });
 
-        const otherPropsAsRefs = (Object.keys(props) as (keyof typeof props)[])
-          .filter((key) => !["center", "zoom"].includes(key))
-          .map((key) => toRef(props, key));
+          ready.value = true;
 
-        watch(
-          [() => props.center, () => props.zoom, ...otherPropsAsRefs] as const,
-          ([center, zoom], [oldCenter, oldZoom]) => {
-            // eslint-disable-next-line @typescript-eslint/no-unused-vars
-            const { center: _, zoom: __, ...otherOptions } = resolveOptions();
+          const otherPropsAsRefs = (Object.keys(props) as (keyof typeof props)[])
+            .filter((key) => !["center", "zoom"].includes(key))
+            .map((key) => toRef(props, key));
 
-            map.value?.setOptions(otherOptions);
+          watch(
+            [() => props.center, () => props.zoom, ...otherPropsAsRefs] as const,
+            ([center, zoom], [oldCenter, oldZoom]) => {
+              // eslint-disable-next-line @typescript-eslint/no-unused-vars
+              const { center: _, zoom: __, ...otherOptions } = resolveOptions();
 
-            if (zoom !== undefined && zoom !== oldZoom) {
-              map.value?.setZoom(zoom);
-            }
+              map.value?.setOptions(otherOptions);
 
-            if (center) {
-              if (!oldCenter || center.lng !== oldCenter.lng || center.lat !== oldCenter.lat) {
-                map.value?.panTo(center);
+              if (zoom !== undefined && zoom !== oldZoom) {
+                map.value?.setZoom(zoom);
+              }
+
+              if (center) {
+                if (!oldCenter || center.lng !== oldCenter.lng || center.lat !== oldCenter.lat) {
+                  map.value?.panTo(center);
+                }
               }
             }
-          }
-        );
-      });
-    }
+          );
+        });
+      }
+    });
 
     return { mapRef, ready, map, api };
   },
