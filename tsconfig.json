@@ -14,7 +14,7 @@
     "noEmit": true,
     "baseUrl": ".",
     "paths": {
-      "/@/*": ["src/*"]
+      "/@src/*": ["src/*"]
     },
     "lib": ["esnext", "dom", "dom.iterable", "scripthost"]
   },

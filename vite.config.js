@@ -1,8 +1,12 @@
-const path = require('path');
+const vue = require("@vitejs/plugin-vue").default;
+const path = require("path");
 
 module.exports = {
-  root: './dev',
-  alias: {
-    '/@/': path.resolve(__dirname, 'src'),
+  root: "./dev",
+  plugins: [vue()],
+  resolve: {
+    alias: {
+      "/@src": path.resolve(__dirname, "src"),
+    },
   },
 };

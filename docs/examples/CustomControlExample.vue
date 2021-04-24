@@ -8,7 +8,7 @@
 
 <script lang="ts">
 import { defineComponent } from "vue";
-import { GoogleMap, CustomControl } from "/@/components/index";
+import { GoogleMap, CustomControl } from "/@src/components/index";
 
 export default defineComponent({
   components: { GoogleMap, CustomControl },
