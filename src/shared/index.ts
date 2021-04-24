@@ -1,8 +1,10 @@
-import { InjectionKey, Ref } from "vue";
+import { InjectionKey, ref, Ref } from "vue";
 import { IGoogleMapsAPI, IMap } from "../@types/index";
+import type { Loader } from "@googlemaps/js-api-loader";
 
 export const apiSymbol: InjectionKey<Ref<IGoogleMapsAPI | null>> = Symbol("api");
 export const mapSymbol: InjectionKey<Ref<IMap | null>> = Symbol("map");
+export const loaderInstance = ref<Loader | null>(null);
 
 export const mapEvents = [
   "bounds_changed",
