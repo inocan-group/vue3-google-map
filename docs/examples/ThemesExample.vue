@@ -9,8 +9,8 @@
 
 <script lang="ts">
 import { defineComponent, ref } from "vue";
-import { GoogleMap } from "/@/components/index";
-import * as themes from "/@/themes/index";
+import { GoogleMap } from "/@src/components/index";
+import * as themes from "/@src/themes/index";
 
 export default defineComponent({
   components: { GoogleMap },
