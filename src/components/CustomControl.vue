@@ -1,5 +1,11 @@
 <template>
-  <div ref="controlRef"><slot /></div>
+  <!--
+    v-show must be used instead of v-if otherwise there
+    would be no rendered content pushed to the map controls
+  -->
+  <div ref="controlRef" v-show="showContent">
+    <slot />
+  </div>
 </template>
 
 <script lang="ts">
@@ -15,11 +21,27 @@ export default defineComponent({
     },
     index: Number,
   },
-  setup(props) {
+
+  emits: ["content:loaded"],
+
+  setup(props, { emit }) {
     const controlRef = ref<HTMLElement | null>(null);
 
     const map = inject(mapSymbol, ref(null));
     const api = inject(apiSymbol, ref(null));
+
+    const showContent = ref(false);
+
+    // To avoid rendering the content outside the map we need to wait for it to fully load
+    const apiWatcherStopHandler = watch(api, () => {
+      if (api.value && map.value) {
+        api.value.event.addListenerOnce(map.value, "tilesloaded", () => {
+          showContent.value = true;
+          emit("content:loaded");
+        });
+        apiWatcherStopHandler();
+      }
+    });
 
     watch(
       [map, () => props.position, () => props.index] as const,
@@ -57,7 +79,7 @@ export default defineComponent({
       }
     );
 
-    return { controlRef };
+    return { controlRef, showContent };
   },
 });
 </script>
