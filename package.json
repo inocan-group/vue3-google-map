@@ -1,6 +1,6 @@
 {
   "name": "vue3-google-map",
-  "version": "0.7.6",
+  "version": "0.7.7",
   "license": "MIT",
   "repository": {
     "type": "git",
@@ -20,28 +20,28 @@
     "dev": "vite",
     "autoindex": "yarn do autoindex --sfc",
     "clear": "rimraf dist/**/*",
-    "lint": "yarn eslint --ext .js,.ts,.vue src dev docs",
+    "lint:eslint": "yarn eslint --ext .js,.ts,.vue src dev docs",
+    "lint:tsc": "npx tsc --noEmit ",
     "lint:autofix": "yarn lint --fix",
-    "build": "run-s clear autoindex build:bundle ",
-    "build:bundle": "node ./build/build commonjs esnext --min",
+    "build": "run-s clear autoindex build:closure ",
+    "build:bundle": "node ./build/build commonjs esnext",
+    "build:min": "node ./build/build commonjs esnext --min",
     "build:analyze": "node ./build/build esnext --analyze",
     "build:closure": "node ./build/build commonjs esnext --closure",
     "docs:dev": "vitepress dev docs",
     "docs:build": "vitepress build docs",
     "docs:serve": "vitepress serve docs"
   },
-  "dependencies": {
-    "@googlemaps/js-api-loader": "^1.11.1"
-  },
   "devDependencies": {
     "@ampproject/rollup-plugin-closure-compiler": "^0.26.0",
+    "@googlemaps/js-api-loader": "^1.11.1",
     "@rollup/plugin-commonjs": "^18.0.0",
     "@rollup/plugin-json": "^4.1.0",
     "@rollup/plugin-node-resolve": "^11.2.1",
     "@types/google-maps": "^3.2.0",
     "@typescript-eslint/eslint-plugin": "^4.4.0",
     "@typescript-eslint/parser": "^4.4.0",
-    "@vitejs/plugin-vue": "^1.2.1",
+    "@vitejs/plugin-vue": "^1.2.2",
     "@vue/compiler-sfc": "^3.0.0",
     "@vue/eslint-config-prettier": "^6.0.0",
     "@vue/eslint-config-typescript": "^7.0.0",
@@ -69,7 +69,8 @@
     "vue": "3"
   },
   "peerDependencies": {
-    "vue": "3"
+    "vue": "3",
+    "@googlemaps/js-api-loader": "^1.11.1"
   },
   "engines": {
     "node": ">=12"
