@@ -1,6 +1,6 @@
 {
   "compilerOptions": {
-    "target": "esnext",
+    "target": "ES2019",
     "module": "commonjs",
     "strict": true,
     "noUnusedLocals": true,
@@ -16,7 +16,7 @@
     "paths": {
       "/@src/*": ["src/*"]
     },
-    "lib": ["esnext", "dom", "dom.iterable", "scripthost"]
+    "lib": ["dom", "dom.iterable", "scripthost"]
   },
   "include": ["src", "docs"]
 }
