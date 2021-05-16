@@ -21,7 +21,7 @@ import {
   IStreetViewPanorama,
   IMapTypeStyle,
 } from "../@types/index";
-import { mapSymbol, apiSymbol, loaderInstance, mapEvents } from "../shared/index";
+import { mapSymbol, apiSymbol, loaderInstance, mapEvents, mapWasLoadedSymbol } from "../shared/index";
 
 export default defineComponent({
   props: {
@@ -74,9 +74,11 @@ export default defineComponent({
     const ready = ref(false);
     const map = ref<IMap | null>(null);
     const api = ref<IGoogleMapsAPI | null>(null);
+    const mapWasLoaded = ref(false);
 
     provide(mapSymbol, map);
     provide(apiSymbol, api);
+    provide(mapWasLoadedSymbol, mapWasLoaded);
 
     const resolveOptions = () => {
       const opts = {
@@ -149,10 +151,31 @@ export default defineComponent({
     };
 
     onBeforeUnmount(() => {
+      mapWasLoaded.value = false;
       if (map.value) {
         api.value?.event.clearInstanceListeners(map.value);
       }
     });
+
+    const stopWatchingMapApiAndRef = watch(
+      [api, map],
+      ([newApi, newMap]) => {
+        const api = newApi as IGoogleMapsAPI | null;
+        const map = newMap as IMap | null;
+
+        if (api && map) {
+          api.event.addListenerOnce(map, "tilesloaded", () => {
+            mapWasLoaded.value = true;
+          });
+          // As the watcher is imediately invoked if the api and the map was already loaded
+          // the watchStopHandler wasnt created because this function has not fully executed
+          // therefore i propagate the watchStopHandler execution on the event loop to ensure
+          // it exists when its called.
+          setTimeout(stopWatchingMapApiAndRef, 0);
+        }
+      },
+      { immediate: true }
+    );
 
     onMounted(() => {
       try {
