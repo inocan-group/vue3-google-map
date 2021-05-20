@@ -1,6 +1,6 @@
 {
   "name": "vue3-google-map",
-  "version": "0.7.7",
+  "version": "0.7.8",
   "license": "MIT",
   "repository": {
     "type": "git",
@@ -28,6 +28,7 @@
     "build:min": "node ./build/build commonjs esnext --min",
     "build:analyze": "node ./build/build esnext --analyze",
     "build:closure": "node ./build/build commonjs esnext --closure",
+    "docs": "vitepress dev docs",
     "docs:dev": "vitepress dev docs",
     "docs:build": "vitepress build docs",
     "docs:serve": "vitepress serve docs"
