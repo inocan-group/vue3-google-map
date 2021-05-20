@@ -105,7 +105,7 @@ const moduleConfig = (moduleSystem, file, emitDeclaration) => {
         outDir,
         module: "esnext",
       },
-      exclude: ["test", "tests", "node_modules"],
+      exclude: ["test", "tests", "node_modules", "docs"],
     };
 
     return {
