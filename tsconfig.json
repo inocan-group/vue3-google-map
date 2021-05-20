@@ -16,7 +16,7 @@
     "paths": {
       "/@src/*": ["src/*"]
     },
-    "lib": ["dom", "dom.iterable", "scripthost"]
+    "lib": ["es2020", "dom", "dom.iterable", "scripthost"]
   },
   "include": ["src", "docs"]
 }

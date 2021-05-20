@@ -11,7 +11,6 @@ import { Loader } from "@googlemaps/js-api-loader";
 import {
   IGoogleMapsAPI,
   IMap,
-  IMapOptions,
   ILatLng,
   IControlPosition,
   IScaleControlStyle,
@@ -143,7 +142,9 @@ export default defineComponent({
       };
 
       // Strip undefined keys. Without this Map.setOptions doesn't behave very well.
-      (Object.keys(opts) as (keyof IMapOptions)[]).forEach((key) => opts[key] === undefined && delete opts[key]);
+      Object.keys(opts).forEach(
+        (key) => opts[key as keyof typeof opts] === undefined && delete opts[key as keyof typeof opts]
+      );
 
       return opts;
     };
