@@ -42,7 +42,7 @@ export default defineComponent({
     const stopWatchingOnMapLoad = watch(
       [mapWasLoaded, api, controlRef],
       ([newMapLoadedStatus, newApi, newControlRef]) => {
-        const contentRef = (newControlRef as unknown) as Ref<HTMLElement | null>;
+        const contentRef = newControlRef as unknown as Ref<HTMLElement | null>;
         const mapLoadedStatus = newMapLoadedStatus as boolean;
         const api = newApi as IGoogleMapsAPI | null;
 
