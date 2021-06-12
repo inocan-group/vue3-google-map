@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div v-bind="$attrs" ref="mapRef" />
+    <div ref="mapRef" class="mapdiv" />
     <slot />
   </div>
 </template>
@@ -233,3 +233,10 @@ export default defineComponent({
   },
 });
 </script>
+
+<style scoped>
+.mapdiv {
+  width: 100%;
+  height: 100%;
+}
+</style>
