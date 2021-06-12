@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div v-bind="$attrs" ref="mapRef" />
+    <div ref="mapRef" class="mapdiv" />
     <slot />
   </div>
 </template>
@@ -25,6 +25,7 @@ import { mapSymbol, apiSymbol, loaderInstance, mapEvents, mapWasLoadedSymbol } f
 export default defineComponent({
   props: {
     apiKey: { type: String, default: "" },
+    version: String,
     libraries: Array as PropType<("drawing" | "geometry" | "localContext" | "places" | "visualization")[]>,
     region: String,
     language: String,
@@ -182,7 +183,7 @@ export default defineComponent({
       try {
         loaderInstance.value = new Loader({
           apiKey: props.apiKey,
-          version: "weekly",
+          version: props.version || "weekly",
           libraries: props.libraries || ["places"],
           language: props.language,
           region: props.region,
@@ -233,3 +234,10 @@ export default defineComponent({
   },
 });
 </script>
+
+<style scoped>
+.mapdiv {
+  width: 100%;
+  height: 100%;
+}
+</style>
