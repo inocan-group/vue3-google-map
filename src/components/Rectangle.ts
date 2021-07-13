@@ -1,6 +1,8 @@
 import { useSetupMapComponent } from "../composables/index";
 import { defineComponent, PropType, toRef } from "vue";
-import { rectangleEvents } from "../shared/index";
+import { polylineEvents } from "../shared/index";
+
+const rectangleEvents = polylineEvents.concat(["bounds_changed"]);
 
 export default defineComponent({
   props: {

@@ -1,8 +1,30 @@
 <script lang="ts">
 import { defineComponent, PropType, ref, onMounted, onBeforeUnmount, watch, toRef, provide } from "vue";
-import { mapSymbol, apiSymbol, loaderInstance, mapEvents, mapWasLoadedSymbol } from "../shared/index";
+import { mapSymbol, apiSymbol, loaderInstance, mapWasLoadedSymbol } from "../shared/index";
 import { Loader } from "@googlemaps/js-api-loader";
 import { IControlPosition } from "../@types/index";
+
+const mapEvents = [
+  "bounds_changed",
+  "center_changed",
+  "click",
+  "dblclick",
+  "drag",
+  "dragend",
+  "dragstart",
+  "heading_changed",
+  "idle",
+  "maptypeid_changed",
+  "mousemove",
+  "mouseout",
+  "mouseover",
+  "projection_changed",
+  "resize",
+  "rightclick",
+  "tilesloaded",
+  "tilt_changed",
+  "zoom_changed",
+];
 
 export default defineComponent({
   props: {
