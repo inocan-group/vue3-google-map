@@ -1,6 +1,4 @@
-import { IMapTypeStyle } from "../@types/index";
-
-export const roadways: IMapTypeStyle[] = [
+export const roadways: google.maps.MapTypeStyle[] = [
   {
     featureType: "all",
     elementType: "labels",

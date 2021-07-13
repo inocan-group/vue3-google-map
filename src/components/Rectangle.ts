@@ -1,12 +1,11 @@
-import { defineComponent, PropType, toRef } from "vue";
 import { useSetupMapComponent } from "../composables/index";
-import { IRectangleOptions } from "../@types/index";
+import { defineComponent, PropType, toRef } from "vue";
 import { rectangleEvents } from "../shared/index";
 
 export default defineComponent({
   props: {
     options: {
-      type: Object as PropType<IRectangleOptions>,
+      type: Object as PropType<google.maps.RectangleOptions>,
       required: true,
     },
   },

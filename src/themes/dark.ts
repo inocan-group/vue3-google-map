@@ -1,10 +1,8 @@
-import { IMapTypeStyle } from "../@types/index";
-
 /**
  * Dark mode theme from:
  * [dark mode](https://developers-dot-devsite-v2-prod.appspot.com/maps/documentation/javascript/examples/style-array)
  */
-export const dark: IMapTypeStyle[] = [
+export const dark: google.maps.MapTypeStyle[] = [
   { elementType: "geometry", stylers: [{ color: "#242f3e" }] },
   { elementType: "labels.text.stroke", stylers: [{ color: "#242f3e" }] },
   { elementType: "labels.text.fill", stylers: [{ color: "#746855" }] },

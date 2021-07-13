@@ -2,19 +2,7 @@
 import { defineComponent, PropType, ref, onMounted, onBeforeUnmount, watch, toRef, provide } from "vue";
 import { mapSymbol, apiSymbol, loaderInstance, mapEvents, mapWasLoadedSymbol } from "../shared/index";
 import { Loader } from "@googlemaps/js-api-loader";
-import {
-  IMapTypeControlOptions,
-  IStreetViewPanorama,
-  IScaleControlStyle,
-  IControlPosition,
-  IMapRestriction,
-  IGoogleMapsAPI,
-  IMapTypeStyle,
-  IMapTypeId,
-  ILatLng,
-  IMap,
-  IMapOptions,
-} from "../@types/index";
+import { IControlPosition } from "../@types/index";
 
 export default defineComponent({
   props: {
@@ -43,7 +31,7 @@ export default defineComponent({
       required: false,
     },
     center: {
-      type: Object as PropType<ILatLng>,
+      type: Object as PropType<google.maps.LatLng>,
       default: () => ({ lat: 0, lng: 0 }),
     },
     clickableIcons: {
@@ -99,11 +87,11 @@ export default defineComponent({
       required: false,
     },
     mapTypeControlOptions: {
-      type: Object as PropType<IMapTypeControlOptions>,
+      type: Object as PropType<google.maps.MapTypeControlOptions>,
       required: false,
     },
     mapTypeId: {
-      type: [Number, String] as PropType<IMapTypeId | string>,
+      type: [Number, String] as PropType<google.maps.MapTypeId | string>,
       required: false,
     },
     maxZoom: {
@@ -127,7 +115,7 @@ export default defineComponent({
       required: false,
     },
     restriction: {
-      type: Object as PropType<IMapRestriction>,
+      type: Object as PropType<google.maps.MapRestriction>,
       required: false,
     },
     rotateControl: {
@@ -143,7 +131,7 @@ export default defineComponent({
       required: false,
     },
     scaleControlStyle: {
-      type: Number as PropType<IScaleControlStyle>,
+      type: Number as PropType<google.maps.ScaleControlStyle>,
       required: false,
     },
     scrollwheel: {
@@ -151,7 +139,7 @@ export default defineComponent({
       required: false,
     },
     streetView: {
-      type: Object as PropType<IStreetViewPanorama>,
+      type: Object as PropType<google.maps.StreetViewPanorama>,
       required: false,
     },
     streetViewControl: {
@@ -163,7 +151,7 @@ export default defineComponent({
       required: false,
     },
     styles: {
-      type: Array as PropType<IMapTypeStyle[]>,
+      type: Array as PropType<google.maps.MapTypeStyle[]>,
       required: false,
     },
     tilt: {
@@ -190,8 +178,8 @@ export default defineComponent({
     const mapRef = ref<HTMLElement | null>(null);
     const ready = ref(false);
 
-    const map = ref<IMap | null>(null);
-    const api = ref<IGoogleMapsAPI | null>(null);
+    const map = ref<google.maps.Map | null>(null);
+    const api = ref<typeof google.maps | null>(null);
 
     const mapWasLoaded = ref(false);
 
@@ -199,9 +187,9 @@ export default defineComponent({
     provide(apiSymbol, api);
     provide(mapWasLoadedSymbol, mapWasLoaded);
 
-    const resolveOptions = (): IMapOptions => {
-      const options: IMapOptions = { ...props };
-      const keys = Object.keys(options) as (keyof IMapOptions)[];
+    const resolveOptions = (): google.maps.MapOptions => {
+      const options: google.maps.MapOptions = { ...props };
+      const keys = Object.keys(options) as (keyof google.maps.MapOptions)[];
 
       // Strip undefined keys. Without this Map.setOptions doesn't behave very well.
       keys.forEach((key) => {
@@ -227,8 +215,8 @@ export default defineComponent({
     const stopWatchingMapApiAndRef = watch(
       [api, map],
       ([newApi, newMap]) => {
-        const api = newApi as IGoogleMapsAPI | null;
-        const map = newMap as IMap | null;
+        const api = newApi as typeof google.maps | null;
+        const map = newMap as google.maps.Map | null;
 
         if (api && map) {
           api.event.addListenerOnce(map, "tilesloaded", () => {
