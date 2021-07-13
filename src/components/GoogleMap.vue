@@ -258,9 +258,7 @@ export default defineComponent({
       loadMapsAPI();
 
       (loaderInstance.value as Loader).load().then(() => {
-        // eslint-disable-next-line no-undef
         api.value = google.maps;
-        // eslint-disable-next-line no-undef
         map.value = new google.maps.Map(mapRef.value as HTMLElement, resolveOptions());
 
         mapEvents.forEach((event) => {
