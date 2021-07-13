@@ -13,6 +13,7 @@ import {
   IMapTypeId,
   ILatLng,
   IMap,
+  IMapOptions,
 } from "../@types/index";
 
 export default defineComponent({
@@ -198,62 +199,29 @@ export default defineComponent({
     provide(apiSymbol, api);
     provide(mapWasLoadedSymbol, mapWasLoaded);
 
-    const resolveOptions = () => {
-      const opts = {
-        backgroundColor: props.backgroundColor,
-        center: props.center,
-        clickableIcons: props.clickableIcons,
-        controlSize: props.controlSize,
-        disableDefaultUI: props.disableDefaultUi,
-        disableDoubleClickZoom: props.disableDoubleClickZoom,
-        draggable: props.draggable,
-        draggableCursor: props.draggableCursor,
-        draggingCursor: props.draggingCursor,
-        fullscreenControl: props.fullscreenControl,
-        gestureHandling: props.gestureHandling,
-        heading: props.heading,
-        keyboardShortcuts: props.keyboardShortcuts,
-        mapTypeControl: props.mapTypeControl,
-        mapTypeControlOptions: props.mapTypeControlOptions,
-        mapTypeId: props.mapTypeId,
-        maxZoom: props.maxZoom,
-        minZoom: props.minZoom,
-        noClear: props.noClear,
-        panControl: props.panControl,
-        restriction: props.restriction,
-        rotateControl: props.rotateControl,
-        scaleControl: props.scaleControl,
-        scrollwheel: props.scrollwheel,
-        streetView: props.streetView,
-        streetViewControl: props.streetViewControl,
-        styles: props.styles,
-        tilt: props.tilt,
-        zoom: props.zoom,
-        zoomControl: props.zoomControl,
-        scaleControlOptions: props.scaleControlStyle ? { style: props.scaleControlStyle } : {},
-        zoomControlOptions: props.zoomControlPosition
-          ? { position: api.value?.ControlPosition[props.zoomControlPosition] }
-          : {},
-        streetViewControlOptions: props.streetViewControlPosition
-          ? { position: api.value?.ControlPosition[props.streetViewControlPosition] }
-          : {},
-        rotateControlOptions: props.rotateControlPosition
-          ? { position: api.value?.ControlPosition[props.rotateControlPosition] }
-          : {},
-        fullscreenControlOptions: props.fullscreenControlPosition
-          ? { position: api.value?.ControlPosition[props.fullscreenControlPosition] }
-          : {},
-        panControlOptions: props.panControlPosition
-          ? { position: api.value?.ControlPosition[props.panControlPosition] }
-          : {},
-      };
+    const resolveOptions = (): IMapOptions => {
+      const options: IMapOptions = { ...props };
+      const keys = Object.keys(options) as (keyof IMapOptions)[];
 
       // Strip undefined keys. Without this Map.setOptions doesn't behave very well.
-      Object.keys(opts).forEach((key) => {
-        if (opts[key as keyof typeof opts] === undefined) delete opts[key as keyof typeof opts];
+      keys.forEach((key) => {
+        if (options[key] === undefined) delete options[key];
       });
 
-      return opts;
+      const createControlOptionsWithPosition = (position?: IControlPosition) =>
+        position ? { position: api.value?.ControlPosition[position] } : {};
+
+      // Options where the prop value should not be directly assigned to the map instance
+      const otherOptions = {
+        scaleControlOptions: props.scaleControlStyle ? { style: props.scaleControlStyle } : {},
+        panControlOptions: createControlOptionsWithPosition(props.panControlPosition),
+        zoomControlOptions: createControlOptionsWithPosition(props.zoomControlPosition),
+        rotateControlOptions: createControlOptionsWithPosition(props.rotateControlPosition),
+        streetViewControlOptions: createControlOptionsWithPosition(props.streetViewControlPosition),
+        fullscreenControlOptions: createControlOptionsWithPosition(props.fullscreenControlPosition),
+      };
+
+      return { ...options, ...otherOptions };
     };
 
     const stopWatchingMapApiAndRef = watch(
