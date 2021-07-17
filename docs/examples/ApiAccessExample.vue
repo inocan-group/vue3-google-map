@@ -7,9 +7,8 @@
 <script lang="ts">
 import { defineComponent, ref, computed, watch } from "vue";
 import { GoogleMap } from "/@src/components/index";
-import { IMap } from "/@src/@types/index";
 
-type IGoogleMap = ReturnType<typeof defineComponent> & { ready: boolean; map: IMap };
+type IGoogleMap = ReturnType<typeof defineComponent> & { ready: boolean; map: google.maps.Map };
 
 export default defineComponent({
   components: { GoogleMap },

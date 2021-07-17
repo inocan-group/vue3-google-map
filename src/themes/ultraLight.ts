@@ -1,6 +1,4 @@
-import { IMapTypeStyle } from "../@types/index";
-
-export const ultraLight: IMapTypeStyle[] = [
+export const ultraLight: google.maps.MapTypeStyle[] = [
   {
     featureType: "water",
     elementType: "geometry",

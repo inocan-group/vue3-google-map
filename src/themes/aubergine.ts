@@ -1,6 +1,4 @@
-import { IMapTypeStyle } from "../@types/index";
-
-export const aubergine: IMapTypeStyle[] = [
+export const aubergine: google.maps.MapTypeStyle[] = [
   {
     elementType: "geometry",
     stylers: [

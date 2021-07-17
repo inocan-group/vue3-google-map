@@ -1,6 +1,4 @@
-import { IMapTypeStyle } from "../@types/index";
-
-export const minimal: IMapTypeStyle[] = [
+export const minimal: google.maps.MapTypeStyle[] = [
   {
     featureType: "administrative.land_parcel",
     elementType: "all",

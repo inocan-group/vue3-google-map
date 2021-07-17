@@ -1,12 +1,11 @@
-import { defineComponent, PropType, toRef } from "vue";
 import { useSetupMapComponent } from "../composables/index";
-import { IPolylineOptions } from "../@types/index";
+import { defineComponent, PropType, toRef } from "vue";
 import { polylineEvents } from "../shared/index";
 
 export default defineComponent({
   props: {
     options: {
-      type: Object as PropType<IPolylineOptions>,
+      type: Object as PropType<google.maps.PolylineOptions>,
       required: true,
     },
   },
