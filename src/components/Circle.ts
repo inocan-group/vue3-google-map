@@ -1,12 +1,13 @@
 import { defineComponent, PropType, toRef } from "vue";
 import { useSetupMapComponent } from "../composables/index";
-import { ICircleOptions } from "../@types/index";
-import { circleEvents } from "../shared/index";
+import { polylineEvents } from "../shared/index";
+
+const circleEvents = polylineEvents.concat(["center_changed", "radius_changed"]);
 
 export default defineComponent({
   props: {
     options: {
-      type: Object as PropType<ICircleOptions>,
+      type: Object as PropType<google.maps.CircleOptions>,
       required: true,
     },
   },

@@ -1,25 +1,19 @@
 import { watch, ref, Ref, inject, onBeforeUnmount } from "vue";
-import {
-  IMarker,
-  IPolyline,
-  IPolygon,
-  IRectangle,
-  ICircle,
-  IMarkerOptions,
-  IPolylineOptions,
-  IPolygonOptions,
-  IRectangleOptions,
-  ICircleOptions,
-} from "../@types/index";
 import { apiSymbol, mapSymbol } from "../shared/index";
 
-export type IComponent = IMarker | IPolyline | IPolygon | IRectangle | ICircle;
+export type IComponent =
+  | google.maps.Marker
+  | google.maps.Polyline
+  | google.maps.Polygon
+  | google.maps.Rectangle
+  | google.maps.Circle;
+
 export type IComponentOptions =
-  | IMarkerOptions
-  | IPolylineOptions
-  | IPolygonOptions
-  | IRectangleOptions
-  | ICircleOptions;
+  | google.maps.MarkerOptions
+  | google.maps.PolylineOptions
+  | google.maps.PolygonOptions
+  | google.maps.RectangleOptions
+  | google.maps.CircleOptions;
 
 export const useSetupMapComponent = (
   componentName: "Marker" | "Polyline" | "Polygon" | "Rectangle" | "Circle",

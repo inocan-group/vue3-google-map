@@ -1,6 +1,4 @@
-import { IMapTypeStyle } from "../@types/index";
-
-export const retro: IMapTypeStyle[] = [
+export const retro: google.maps.MapTypeStyle[] = [
   { elementType: "geometry", stylers: [{ color: "#ebe3cd" }] },
   { elementType: "labels.text.fill", stylers: [{ color: "#523735" }] },
   { elementType: "labels.text.stroke", stylers: [{ color: "#f5f1e6" }] },
