@@ -1,4 +1,4 @@
-import { watch, ref, Ref, inject } from "vue";
+import { watch, ref, Ref, inject, onBeforeUnmount } from "vue";
 import {
   IMarker,
   IPolyline,
@@ -35,29 +35,35 @@ export const useSetupMapComponent = (
 
   watch(
     [map, options],
-    (_, __, onInvalidate) => {
-      if (map.value && api.value) {
-        component.value = _component = new api.value[componentName]({
-          ...options.value,
-          map: map.value,
-        });
-
-        events.forEach((event) => {
-          _component?.addListener(event, (e: unknown) => emit(event, e));
-        });
-      }
-
-      onInvalidate(() => {
+    (_, [oldMap, oldOptions]) => {
+      const checkIfChanged = JSON.stringify(options.value) !== JSON.stringify(oldOptions) || map.value !== oldMap;
+      if (map.value && api.value && checkIfChanged) {
         if (_component) {
-          api.value?.event.clearInstanceListeners(_component);
-          _component.setMap(null);
+          // eslint-disable-next-line @typescript-eslint/no-explicit-any
+          _component.setOptions(options.value as any);
+          _component.setMap(map.value);
+        } else {
+          component.value = _component = new api.value[componentName]({
+            ...options.value,
+            map: map.value,
+          });
+          events.forEach((event) => {
+            _component?.addListener(event, (e: unknown) => emit(event, e));
+          });
         }
-      });
+      }
     },
     {
       immediate: true,
     }
   );
+
+  onBeforeUnmount(() => {
+    if (_component) {
+      api.value?.event.clearInstanceListeners(_component);
+      _component.setMap(null);
+    }
+  });
 
   return { component };
 };
