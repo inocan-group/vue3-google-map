@@ -1,169 +1,244 @@
-<template>
-  <div>
-    <div ref="mapRef" class="mapdiv" />
-    <slot />
-  </div>
-</template>
-
 <script lang="ts">
 import { defineComponent, PropType, ref, onMounted, onBeforeUnmount, watch, toRef, provide } from "vue";
+import { mapSymbol, apiSymbol, loaderInstance, mapWasLoadedSymbol } from "../shared/index";
 import { Loader } from "@googlemaps/js-api-loader";
-import {
-  IGoogleMapsAPI,
-  IMap,
-  ILatLng,
-  IControlPosition,
-  IScaleControlStyle,
-  IMapTypeControlOptions,
-  IMapTypeId,
-  IMapRestriction,
-  IStreetViewPanorama,
-  IMapTypeStyle,
-} from "../@types/index";
-import { mapSymbol, apiSymbol, loaderInstance, mapEvents, mapWasLoadedSymbol } from "../shared/index";
+import { IControlPosition } from "../@types/index";
+
+const mapEvents = [
+  "bounds_changed",
+  "center_changed",
+  "click",
+  "dblclick",
+  "drag",
+  "dragend",
+  "dragstart",
+  "heading_changed",
+  "idle",
+  "maptypeid_changed",
+  "mousemove",
+  "mouseout",
+  "mouseover",
+  "projection_changed",
+  "resize",
+  "rightclick",
+  "tilesloaded",
+  "tilt_changed",
+  "zoom_changed",
+];
 
 export default defineComponent({
   props: {
-    apiKey: { type: String, default: "" },
-    version: String,
-    libraries: Array as PropType<("drawing" | "geometry" | "localContext" | "places" | "visualization")[]>,
-    region: String,
-    language: String,
-    backgroundColor: String,
-    center: Object as PropType<ILatLng>,
-    clickableIcons: { type: Boolean, default: undefined },
-    controlSize: Number,
-    disableDefaultUi: { type: Boolean, default: undefined },
-    disableDoubleClickZoom: { type: Boolean, default: undefined },
-    draggable: { type: Boolean, default: undefined },
-    draggableCursor: String,
-    draggingCursor: String,
-    fullscreenControl: { type: Boolean, default: undefined },
-    fullscreenControlPosition: String as PropType<IControlPosition>,
-    gestureHandling: String as PropType<"cooperative" | "greedy" | "none" | "auto">,
-    heading: Number,
-    keyboardShortcuts: { type: Boolean, default: undefined },
-    mapTypeControl: { type: Boolean, default: undefined },
-    mapTypeControlOptions: Object as PropType<IMapTypeControlOptions>,
-    mapTypeId: {
-      type: [Number, String] as PropType<IMapTypeId | string>,
+    apiKey: {
+      type: String,
+      default: "",
     },
-    maxZoom: Number,
-    minZoom: Number,
-    noClear: { type: Boolean, default: undefined },
-    panControl: { type: Boolean, default: undefined },
-    panControlPosition: String as PropType<IControlPosition>,
-    restriction: Object as PropType<IMapRestriction>,
-    rotateControl: { type: Boolean, default: undefined },
-    rotateControlPosition: String as PropType<IControlPosition>,
-    scaleControl: { type: Boolean, default: undefined },
-    scaleControlStyle: Number as PropType<IScaleControlStyle>,
-    scrollwheel: { type: Boolean, default: undefined },
-    streetView: Object as PropType<IStreetViewPanorama>,
-    streetViewControl: { type: Boolean, default: undefined },
-    streetViewControlPosition: String as PropType<IControlPosition>,
-    styles: Array as PropType<IMapTypeStyle[]>,
-    tilt: Number,
-    zoom: Number,
-    zoomControl: { type: Boolean, default: undefined },
-    zoomControlPosition: String as PropType<IControlPosition>,
+    version: {
+      type: String,
+      default: "weekly",
+    },
+    libraries: {
+      type: Array as PropType<("drawing" | "geometry" | "localContext" | "places" | "visualization")[]>,
+      default: () => ["places"],
+    },
+    region: {
+      type: String,
+      required: false,
+    },
+    language: {
+      type: String,
+      required: false,
+    },
+    backgroundColor: {
+      type: String,
+      required: false,
+    },
+    center: {
+      type: Object as PropType<google.maps.LatLng>,
+      default: () => ({ lat: 0, lng: 0 }),
+    },
+    clickableIcons: {
+      type: Boolean,
+      required: false,
+    },
+    controlSize: {
+      type: Number,
+      required: false,
+    },
+    disableDefaultUi: {
+      type: Boolean,
+      required: false,
+    },
+    disableDoubleClickZoom: {
+      type: Boolean,
+      required: false,
+    },
+    draggable: {
+      type: Boolean,
+      required: false,
+    },
+    draggableCursor: {
+      type: String,
+      required: false,
+    },
+    draggingCursor: {
+      type: String,
+      required: false,
+    },
+    fullscreenControl: {
+      type: Boolean,
+      required: false,
+    },
+    fullscreenControlPosition: {
+      type: String as PropType<IControlPosition>,
+      required: false,
+    },
+    gestureHandling: {
+      type: String as PropType<"cooperative" | "greedy" | "none" | "auto">,
+      required: false,
+    },
+    heading: {
+      type: Number,
+      required: false,
+    },
+    keyboardShortcuts: {
+      type: Boolean,
+      required: false,
+    },
+    mapTypeControl: {
+      type: Boolean,
+      required: false,
+    },
+    mapTypeControlOptions: {
+      type: Object as PropType<google.maps.MapTypeControlOptions>,
+      required: false,
+    },
+    mapTypeId: {
+      type: [Number, String] as PropType<google.maps.MapTypeId | string>,
+      required: false,
+    },
+    maxZoom: {
+      type: Number,
+      required: false,
+    },
+    minZoom: {
+      type: Number,
+      required: false,
+    },
+    noClear: {
+      type: Boolean,
+      required: false,
+    },
+    panControl: {
+      type: Boolean,
+      required: false,
+    },
+    panControlPosition: {
+      type: String as PropType<IControlPosition>,
+      required: false,
+    },
+    restriction: {
+      type: Object as PropType<google.maps.MapRestriction>,
+      required: false,
+    },
+    rotateControl: {
+      type: Boolean,
+      required: false,
+    },
+    rotateControlPosition: {
+      type: String as PropType<IControlPosition>,
+      required: false,
+    },
+    scaleControl: {
+      type: Boolean,
+      required: false,
+    },
+    scaleControlStyle: {
+      type: Number as PropType<google.maps.ScaleControlStyle>,
+      required: false,
+    },
+    scrollwheel: {
+      type: Boolean,
+      required: false,
+    },
+    streetView: {
+      type: Object as PropType<google.maps.StreetViewPanorama>,
+      required: false,
+    },
+    streetViewControl: {
+      type: Boolean,
+      required: false,
+    },
+    streetViewControlPosition: {
+      type: String as PropType<IControlPosition>,
+      required: false,
+    },
+    styles: {
+      type: Array as PropType<google.maps.MapTypeStyle[]>,
+      required: false,
+    },
+    tilt: {
+      type: Number,
+      required: false,
+    },
+    zoom: {
+      type: Number,
+      required: false,
+    },
+    zoomControl: {
+      type: Boolean,
+      required: false,
+    },
+    zoomControlPosition: {
+      type: String as PropType<IControlPosition>,
+      required: false,
+    },
   },
+
   emits: mapEvents,
+
   setup(props, { emit }) {
     const mapRef = ref<HTMLElement | null>(null);
     const ready = ref(false);
-    const map = ref<IMap | null>(null);
-    const api = ref<IGoogleMapsAPI | null>(null);
+
+    const map = ref<google.maps.Map | null>(null);
+    const api = ref<typeof google.maps | null>(null);
+
     const mapWasLoaded = ref(false);
 
     provide(mapSymbol, map);
     provide(apiSymbol, api);
     provide(mapWasLoadedSymbol, mapWasLoaded);
 
-    const resolveOptions = () => {
-      const opts = {
-        backgroundColor: props.backgroundColor,
-        center: props.center,
-        clickableIcons: props.clickableIcons,
-        controlSize: props.controlSize,
-        disableDefaultUI: props.disableDefaultUi,
-        disableDoubleClickZoom: props.disableDoubleClickZoom,
-        draggable: props.draggable,
-        draggableCursor: props.draggableCursor,
-        draggingCursor: props.draggingCursor,
-        fullscreenControl: props.fullscreenControl,
-        fullscreenControlOptions: props.fullscreenControlPosition
-          ? {
-              position: api.value?.ControlPosition[props.fullscreenControlPosition],
-            }
-          : {},
-        gestureHandling: props.gestureHandling,
-        heading: props.heading,
-        keyboardShortcuts: props.keyboardShortcuts,
-        mapTypeControl: props.mapTypeControl,
-        mapTypeControlOptions: props.mapTypeControlOptions,
-        mapTypeId: props.mapTypeId,
-        maxZoom: props.maxZoom,
-        minZoom: props.minZoom,
-        noClear: props.noClear,
-        panControl: props.panControl,
-        panControlOptions: props.panControlPosition
-          ? {
-              position: api.value?.ControlPosition[props.panControlPosition],
-            }
-          : {},
-        restriction: props.restriction,
-        rotateControl: props.rotateControl,
-        rotateControlOptions: props.rotateControlPosition
-          ? {
-              position: api.value?.ControlPosition[props.rotateControlPosition],
-            }
-          : {},
-        scaleControl: props.scaleControl,
-        scaleControlOptions: props.scaleControlStyle
-          ? {
-              style: props.scaleControlStyle,
-            }
-          : {},
-        scrollwheel: props.scrollwheel,
-        streetView: props.streetView,
-        streetViewControl: props.streetViewControl,
-        streetViewControlOptions: props.streetViewControlPosition
-          ? {
-              position: api.value?.ControlPosition[props.streetViewControlPosition],
-            }
-          : {},
-        styles: props.styles,
-        tilt: props.tilt,
-        zoom: props.zoom,
-        zoomControl: props.zoomControl,
-        zoomControlOptions: props.zoomControlPosition
-          ? {
-              position: api.value?.ControlPosition[props.zoomControlPosition],
-            }
-          : {},
-      };
+    const resolveOptions = (): google.maps.MapOptions => {
+      const options: google.maps.MapOptions = { ...props };
+      const keys = Object.keys(options) as (keyof google.maps.MapOptions)[];
 
       // Strip undefined keys. Without this Map.setOptions doesn't behave very well.
-      Object.keys(opts).forEach(
-        (key) => opts[key as keyof typeof opts] === undefined && delete opts[key as keyof typeof opts]
-      );
+      keys.forEach((key) => {
+        if (options[key] === undefined) delete options[key];
+      });
 
-      return opts;
+      const createControlOptionsWithPosition = (position?: IControlPosition) =>
+        position ? { position: api.value?.ControlPosition[position] } : {};
+
+      // Options where the prop value should not be directly assigned to the map instance
+      const otherOptions = {
+        scaleControlOptions: props.scaleControlStyle ? { style: props.scaleControlStyle } : {},
+        panControlOptions: createControlOptionsWithPosition(props.panControlPosition),
+        zoomControlOptions: createControlOptionsWithPosition(props.zoomControlPosition),
+        rotateControlOptions: createControlOptionsWithPosition(props.rotateControlPosition),
+        streetViewControlOptions: createControlOptionsWithPosition(props.streetViewControlPosition),
+        fullscreenControlOptions: createControlOptionsWithPosition(props.fullscreenControlPosition),
+      };
+
+      return { ...options, ...otherOptions };
     };
-
-    onBeforeUnmount(() => {
-      mapWasLoaded.value = false;
-      if (map.value) {
-        api.value?.event.clearInstanceListeners(map.value);
-      }
-    });
 
     const stopWatchingMapApiAndRef = watch(
       [api, map],
       ([newApi, newMap]) => {
-        const api = newApi as IGoogleMapsAPI | null;
-        const map = newMap as IMap | null;
+        const api = newApi as typeof google.maps | null;
+        const map = newMap as google.maps.Map | null;
 
         if (api && map) {
           api.event.addListenerOnce(map, "tilesloaded", () => {
@@ -179,61 +254,66 @@ export default defineComponent({
       { immediate: true }
     );
 
-    onMounted(() => {
+    const loadMapsAPI = () => {
       try {
-        loaderInstance.value = new Loader({
-          apiKey: props.apiKey,
-          version: props.version || "weekly",
-          libraries: props.libraries || ["places"],
-          language: props.language,
-          region: props.region,
-        });
+        const { apiKey, region, version, language, libraries } = props;
+        loaderInstance.value = new Loader({ apiKey, region, version, language, libraries });
       } catch (err) {
         // Loader instantiated again with different options, which isn't allowed by js-api-loader
         console.error(err);
-      } finally {
-        (loaderInstance.value as Loader).load().then(() => {
-          // eslint-disable-next-line no-undef
-          const { Map } = (api.value = google.maps);
-          map.value = new Map(mapRef.value as HTMLElement, resolveOptions());
-
-          mapEvents.forEach((event) => {
-            map.value?.addListener(event, (e: unknown) => emit(event, e));
-          });
-
-          ready.value = true;
-
-          const otherPropsAsRefs = (Object.keys(props) as (keyof typeof props)[])
-            .filter((key) => !["center", "zoom"].includes(key))
-            .map((key) => toRef(props, key));
-
-          watch(
-            [() => props.center, () => props.zoom, ...otherPropsAsRefs] as const,
-            ([center, zoom], [oldCenter, oldZoom]) => {
-              // eslint-disable-next-line @typescript-eslint/no-unused-vars
-              const { center: _, zoom: __, ...otherOptions } = resolveOptions();
-
-              map.value?.setOptions(otherOptions);
-
-              if (zoom !== undefined && zoom !== oldZoom) {
-                map.value?.setZoom(zoom);
-              }
-
-              if (center) {
-                if (!oldCenter || center.lng !== oldCenter.lng || center.lat !== oldCenter.lat) {
-                  map.value?.panTo(center);
-                }
-              }
-            }
-          );
-        });
       }
+    };
+
+    onMounted(() => {
+      loadMapsAPI();
+
+      (loaderInstance.value as Loader).load().then(() => {
+        api.value = google.maps;
+        map.value = new google.maps.Map(mapRef.value as HTMLElement, resolveOptions());
+
+        mapEvents.forEach((event) => {
+          map.value?.addListener(event, (e: unknown) => emit(event, e));
+        });
+
+        ready.value = true;
+
+        const otherPropsAsRefs = (Object.keys(props) as (keyof typeof props)[])
+          .filter((key) => !["center", "zoom"].includes(key))
+          .map((key) => toRef(props, key));
+
+        watch(
+          [() => props.center, () => props.zoom, ...otherPropsAsRefs] as const,
+          ([center, zoom], [oldCenter, oldZoom]) => {
+            // eslint-disable-next-line @typescript-eslint/no-unused-vars
+            const { center: _, zoom: __, ...otherOptions } = resolveOptions();
+
+            map.value?.setOptions(otherOptions);
+
+            if (zoom !== undefined && zoom !== oldZoom) map.value?.setZoom(zoom);
+
+            const centerHasChanged = !oldCenter || center.lng !== oldCenter.lng || center.lat !== oldCenter.lat;
+            if (center && centerHasChanged) map.value?.panTo(center);
+          }
+        );
+      });
+    });
+
+    onBeforeUnmount(() => {
+      mapWasLoaded.value = false;
+      if (map.value) api.value?.event.clearInstanceListeners(map.value);
     });
 
     return { mapRef, ready, map, api };
   },
 });
 </script>
+
+<template>
+  <div>
+    <div ref="mapRef" class="mapdiv" />
+    <slot />
+  </div>
+</template>
 
 <style scoped>
 .mapdiv {

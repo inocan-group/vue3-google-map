@@ -1,6 +1,4 @@
-import { IMapTypeStyle } from "../@types/index";
-
-export const grey: IMapTypeStyle[] = [
+export const grey: google.maps.MapTypeStyle[] = [
   {
     featureType: "all",
     elementType: "labels.text.fill",

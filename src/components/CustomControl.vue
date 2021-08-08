@@ -11,7 +11,7 @@
 <script lang="ts">
 import { defineComponent, PropType, watch, ref, inject, Ref, onBeforeUnmount } from "vue";
 import { apiSymbol, mapSymbol, mapWasLoadedSymbol } from "../shared/index";
-import { IControlPosition, IGoogleMapsAPI } from "../@types/index";
+import { IControlPosition } from "../@types/index";
 
 type ControlRef = HTMLElement & { index: number };
 
@@ -44,7 +44,7 @@ export default defineComponent({
       ([newMapLoadedStatus, newApi, newControlRef]) => {
         const contentRef = newControlRef as unknown as Ref<HTMLElement | null>;
         const mapLoadedStatus = newMapLoadedStatus as boolean;
-        const api = newApi as IGoogleMapsAPI | null;
+        const api = newApi as typeof google.maps | null;
 
         if (api && mapLoadedStatus && contentRef) {
           addControl(props.position);

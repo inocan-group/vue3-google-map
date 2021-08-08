@@ -1,25 +1,19 @@
-import { watch, ref, Ref, inject } from "vue";
-import {
-  IMarker,
-  IPolyline,
-  IPolygon,
-  IRectangle,
-  ICircle,
-  IMarkerOptions,
-  IPolylineOptions,
-  IPolygonOptions,
-  IRectangleOptions,
-  ICircleOptions,
-} from "../@types/index";
+import { watch, ref, Ref, inject, onBeforeUnmount } from "vue";
 import { apiSymbol, mapSymbol } from "../shared/index";
 
-export type IComponent = IMarker | IPolyline | IPolygon | IRectangle | ICircle;
+export type IComponent =
+  | google.maps.Marker
+  | google.maps.Polyline
+  | google.maps.Polygon
+  | google.maps.Rectangle
+  | google.maps.Circle;
+
 export type IComponentOptions =
-  | IMarkerOptions
-  | IPolylineOptions
-  | IPolygonOptions
-  | IRectangleOptions
-  | ICircleOptions;
+  | google.maps.MarkerOptions
+  | google.maps.PolylineOptions
+  | google.maps.PolygonOptions
+  | google.maps.RectangleOptions
+  | google.maps.CircleOptions;
 
 export const useSetupMapComponent = (
   componentName: "Marker" | "Polyline" | "Polygon" | "Rectangle" | "Circle",
@@ -35,29 +29,35 @@ export const useSetupMapComponent = (
 
   watch(
     [map, options],
-    (_, __, onInvalidate) => {
-      if (map.value && api.value) {
-        component.value = _component = new api.value[componentName]({
-          ...options.value,
-          map: map.value,
-        });
-
-        events.forEach((event) => {
-          _component?.addListener(event, (e: unknown) => emit(event, e));
-        });
-      }
-
-      onInvalidate(() => {
+    (_, [oldMap, oldOptions]) => {
+      const checkIfChanged = JSON.stringify(options.value) !== JSON.stringify(oldOptions) || map.value !== oldMap;
+      if (map.value && api.value && checkIfChanged) {
         if (_component) {
-          api.value?.event.clearInstanceListeners(_component);
-          _component.setMap(null);
+          // eslint-disable-next-line @typescript-eslint/no-explicit-any
+          _component.setOptions(options.value as any);
+          _component.setMap(map.value);
+        } else {
+          component.value = _component = new api.value[componentName]({
+            ...options.value,
+            map: map.value,
+          });
+          events.forEach((event) => {
+            _component?.addListener(event, (e: unknown) => emit(event, e));
+          });
         }
-      });
+      }
     },
     {
       immediate: true,
     }
   );
+
+  onBeforeUnmount(() => {
+    if (_component) {
+      api.value?.event.clearInstanceListeners(_component);
+      _component.setMap(null);
+    }
+  });
 
   return { component };
 };

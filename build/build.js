@@ -17,6 +17,7 @@ const typescript = require("rollup-plugin-typescript2");
 const ttypescript = require("typescript");
 const closure = require("@ampproject/rollup-plugin-closure-compiler");
 const vue = require("@vitejs/plugin-vue");
+const postcss = require("rollup-plugin-postcss");
 const { existsSync, statSync } = require("fs");
 const { exit } = require("process");
 const { join } = require("path");
@@ -116,11 +117,12 @@ const moduleConfig = (moduleSystem, file, emitDeclaration) => {
         json(),
         resolve(),
         vue({
-          css: true,
+          preprocessStyles: true,
           template: {
             isProduction: true,
           },
         }),
+        postcss(),
         typescript({
           tsconfig: "tsconfig.json",
           typescript: ttypescript,

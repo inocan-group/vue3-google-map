@@ -1,12 +1,13 @@
-import { defineComponent, PropType, toRef } from "vue";
 import { useSetupMapComponent } from "../composables/index";
-import { IRectangleOptions } from "../@types/index";
-import { rectangleEvents } from "../shared/index";
+import { defineComponent, PropType, toRef } from "vue";
+import { polylineEvents } from "../shared/index";
+
+const rectangleEvents = polylineEvents.concat(["bounds_changed"]);
 
 export default defineComponent({
   props: {
     options: {
-      type: Object as PropType<IRectangleOptions>,
+      type: Object as PropType<google.maps.RectangleOptions>,
       required: true,
     },
   },
