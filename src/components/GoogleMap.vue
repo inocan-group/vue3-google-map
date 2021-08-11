@@ -65,7 +65,7 @@ export default defineComponent({
       type: Number,
       required: false,
     },
-    disableDefaultUI: {
+    disableDefaultUi: {
       type: Boolean,
       required: false,
       default: undefined,
@@ -243,6 +243,7 @@ export default defineComponent({
         rotateControlOptions: createControlOptionsWithPosition(props.rotateControlPosition),
         streetViewControlOptions: createControlOptionsWithPosition(props.streetViewControlPosition),
         fullscreenControlOptions: createControlOptionsWithPosition(props.fullscreenControlPosition),
+        disableDefaultUI: props.disableDefaultUi
       };
 
       return { ...options, ...otherOptions };
