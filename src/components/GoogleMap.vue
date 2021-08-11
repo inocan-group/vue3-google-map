@@ -65,7 +65,7 @@ export default defineComponent({
       type: Number,
       required: false,
     },
-    disableDefaultUi: {
+    disableDefaultUI: {
       type: Boolean,
       required: false,
       default: undefined,
