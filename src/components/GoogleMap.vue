@@ -59,6 +59,7 @@ export default defineComponent({
     clickableIcons: {
       type: Boolean,
       required: false,
+      default: undefined,
     },
     controlSize: {
       type: Number,
@@ -67,14 +68,17 @@ export default defineComponent({
     disableDefaultUi: {
       type: Boolean,
       required: false,
+      default: undefined,
     },
     disableDoubleClickZoom: {
       type: Boolean,
       required: false,
+      default: undefined,
     },
     draggable: {
       type: Boolean,
       required: false,
+      default: undefined,
     },
     draggableCursor: {
       type: String,
@@ -87,6 +91,7 @@ export default defineComponent({
     fullscreenControl: {
       type: Boolean,
       required: false,
+      default: undefined,
     },
     fullscreenControlPosition: {
       type: String as PropType<IControlPosition>,
@@ -103,10 +108,12 @@ export default defineComponent({
     keyboardShortcuts: {
       type: Boolean,
       required: false,
+      default: undefined,
     },
     mapTypeControl: {
       type: Boolean,
       required: false,
+      default: undefined,
     },
     mapTypeControlOptions: {
       type: Object as PropType<google.maps.MapTypeControlOptions>,
@@ -127,10 +134,12 @@ export default defineComponent({
     noClear: {
       type: Boolean,
       required: false,
+      default: undefined,
     },
     panControl: {
       type: Boolean,
       required: false,
+      default: undefined,
     },
     panControlPosition: {
       type: String as PropType<IControlPosition>,
@@ -143,6 +152,7 @@ export default defineComponent({
     rotateControl: {
       type: Boolean,
       required: false,
+      default: undefined,
     },
     rotateControlPosition: {
       type: String as PropType<IControlPosition>,
@@ -151,6 +161,7 @@ export default defineComponent({
     scaleControl: {
       type: Boolean,
       required: false,
+      default: undefined,
     },
     scaleControlStyle: {
       type: Number as PropType<google.maps.ScaleControlStyle>,
@@ -159,6 +170,7 @@ export default defineComponent({
     scrollwheel: {
       type: Boolean,
       required: false,
+      default: undefined,
     },
     streetView: {
       type: Object as PropType<google.maps.StreetViewPanorama>,
@@ -167,6 +179,7 @@ export default defineComponent({
     streetViewControl: {
       type: Boolean,
       required: false,
+      default: undefined,
     },
     streetViewControlPosition: {
       type: String as PropType<IControlPosition>,
@@ -187,6 +200,7 @@ export default defineComponent({
     zoomControl: {
       type: Boolean,
       required: false,
+      default: undefined,
     },
     zoomControlPosition: {
       type: String as PropType<IControlPosition>,
@@ -229,6 +243,7 @@ export default defineComponent({
         rotateControlOptions: createControlOptionsWithPosition(props.rotateControlPosition),
         streetViewControlOptions: createControlOptionsWithPosition(props.streetViewControlPosition),
         fullscreenControlOptions: createControlOptionsWithPosition(props.fullscreenControlPosition),
+        disableDefaultUI: props.disableDefaultUi
       };
 
       return { ...options, ...otherOptions };
