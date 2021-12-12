@@ -33,9 +33,11 @@
     "docs:build": "vitepress build docs",
     "docs:serve": "vitepress serve docs"
   },
+  "dependencies": {
+    "@googlemaps/js-api-loader": "^1.12.11"
+  },
   "devDependencies": {
     "@ampproject/rollup-plugin-closure-compiler": "^0.26.0",
-    "@googlemaps/js-api-loader": "^1.11.1",
     "@rollup/plugin-commonjs": "^19.0.0",
     "@rollup/plugin-json": "^4.1.0",
     "@rollup/plugin-node-resolve": "^13.0.0",
@@ -72,7 +74,6 @@
     "vue": "3"
   },
   "peerDependencies": {
-    "@googlemaps/js-api-loader": "^1.11.1",
     "vue": "3"
   },
   "engines": {

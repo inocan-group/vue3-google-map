@@ -249,10 +249,10 @@
   resolved "https://registry.yarnpkg.com/@francoischalifour/autocomplete-preset-algolia/-/autocomplete-preset-algolia-1.0.0-alpha.28.tgz#a5ad7996f42e43e4acbb4e0010d663746d0e9997"
   integrity sha512-bprfNmYt1opFUFEtD2XfY/kEsm13bzHQgU80uMjhuK0DJ914IjolT1GytpkdM6tJ4MBvyiJPP+bTtWO+BZ7c7w==
 
-"@googlemaps/js-api-loader@^1.11.1":
-  version "1.11.4"
-  resolved "https://registry.yarnpkg.com/@googlemaps/js-api-loader/-/js-api-loader-1.11.4.tgz#f687a88e270234e3a29c64b42b76129e75467ca7"
-  integrity sha512-atFTSgEXXsE7mOsOIInUKG4JApu/NdyZR79Ed6jF92MjVQTcD6dz/Xo8djf4cIetnq4WYQmetem0d8/uS4o8oQ==
+"@googlemaps/js-api-loader@^1.12.11":
+  version "1.12.11"
+  resolved "https://registry.yarnpkg.com/@googlemaps/js-api-loader/-/js-api-loader-1.12.11.tgz#9baf77087ba17249f0a326cae0a54304945b255c"
+  integrity sha512-YdxC1uQhz8bgNlX7LgaDnF4VIaL/Q+72KzHKtDK/xlXkRmwpFuVCXLn22q/Lb5h4d4+NkFYD3cvtqxW6VpFp/w==
   dependencies:
     fast-deep-equal "^3.1.3"
 
@@ -370,18 +370,6 @@
   dependencies:
     "@types/minimatch" "*"
     "@types/node" "*"
-
-"@types/google-maps@^3.2.0":
-  version "3.2.3"
-  resolved "https://registry.yarnpkg.com/@types/google-maps/-/google-maps-3.2.3.tgz#ea99526e40d3b58a2c07f0b3d5f3b8e0750119c3"
-  integrity sha512-+GR/7sMvo2bENS26H4t2QqoCqE4FE5qhsG8aaDM9mJAlsorkLyaFdTQra8VkmS1RNE09fx9c1kac+GKG0RtA2A==
-  dependencies:
-    "@types/google.maps" "*"
-
-"@types/google.maps@*":
-  version "3.44.6"
-  resolved "https://registry.yarnpkg.com/@types/google.maps/-/google.maps-3.44.6.tgz#a776a8928c0121afec1031e394ed406f214c8b28"
-  integrity sha512-tYOUspQbwa1ndYSTgK5EVmM6DaqVbpeizBJH7a8Yp9B/7tnrBRhADMkQgW+yb75tPb4DQ/vnVAX4lK+Ob3ME+w==
 
 "@types/google.maps@^3.45.6":
   version "3.45.6"
