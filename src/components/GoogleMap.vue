@@ -1,6 +1,6 @@
 <script lang="ts">
 import { defineComponent, PropType, ref, onMounted, onBeforeUnmount, watch, toRef, provide } from "vue";
-import { mapSymbol, apiSymbol, loaderInstance, mapWasLoadedSymbol } from "../shared/index";
+import { mapSymbol, apiSymbol, loaderInstance, mapTilesLoadedSymbol } from "../shared/index";
 import { Loader } from "@googlemaps/js-api-loader";
 import { IControlPosition } from "../@types/index";
 
@@ -217,11 +217,11 @@ export default defineComponent({
     const map = ref<google.maps.Map | null>(null);
     const api = ref<typeof google.maps | null>(null);
 
-    const mapWasLoaded = ref(false);
+    const mapTilesLoaded = ref(false);
 
     provide(mapSymbol, map);
     provide(apiSymbol, api);
-    provide(mapWasLoadedSymbol, mapWasLoaded);
+    provide(mapTilesLoadedSymbol, mapTilesLoaded);
 
     const resolveOptions = (): google.maps.MapOptions => {
       const options: google.maps.MapOptions = { ...props };
@@ -243,7 +243,7 @@ export default defineComponent({
         rotateControlOptions: createControlOptionsWithPosition(props.rotateControlPosition),
         streetViewControlOptions: createControlOptionsWithPosition(props.streetViewControlPosition),
         fullscreenControlOptions: createControlOptionsWithPosition(props.fullscreenControlPosition),
-        disableDefaultUI: props.disableDefaultUi
+        disableDefaultUI: props.disableDefaultUi,
       };
 
       return { ...options, ...otherOptions };
@@ -257,7 +257,7 @@ export default defineComponent({
 
         if (api && map) {
           api.event.addListenerOnce(map, "tilesloaded", () => {
-            mapWasLoaded.value = true;
+            mapTilesLoaded.value = true;
           });
           // As the watcher is imediately invoked if the api and the map was already loaded
           // the watchStopHandler wasnt created because this function has not fully executed
@@ -314,11 +314,11 @@ export default defineComponent({
     });
 
     onBeforeUnmount(() => {
-      mapWasLoaded.value = false;
+      mapTilesLoaded.value = false;
       if (map.value) api.value?.event.clearInstanceListeners(map.value);
     });
 
-    return { mapRef, ready, map, api };
+    return { mapRef, ready, map, api, mapTilesLoaded };
   },
 });
 </script>
@@ -326,7 +326,7 @@ export default defineComponent({
 <template>
   <div>
     <div ref="mapRef" class="mapdiv" />
-    <slot />
+    <slot v-bind="{ ready, map, api, mapTilesLoaded }" />
   </div>
 </template>
 
