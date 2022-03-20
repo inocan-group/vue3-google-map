@@ -7,7 +7,7 @@ export const apiSymbol: InjectionKey<Ref<typeof google.maps | null>> = Symbol("a
  * Utilitary flag for components that need to know the map
  * was fully loaded (including its tiles) to decide their behavior
  */
-export const mapWasLoadedSymbol: InjectionKey<Ref<boolean>> = Symbol("mapwasloaded");
+export const mapTilesLoadedSymbol: InjectionKey<Ref<boolean>> = Symbol("mapTilesLoaded");
 export const loaderInstance = ref<Loader | null>(null);
 
 export const polylineEvents = [

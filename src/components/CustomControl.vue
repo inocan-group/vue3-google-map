@@ -10,7 +10,7 @@
 
 <script lang="ts">
 import { defineComponent, PropType, watch, ref, inject, Ref, onBeforeUnmount } from "vue";
-import { apiSymbol, mapSymbol, mapWasLoadedSymbol } from "../shared/index";
+import { apiSymbol, mapSymbol, mapTilesLoadedSymbol } from "../shared/index";
 import { IControlPosition } from "../@types/index";
 
 type ControlRef = HTMLElement & { index: number };
@@ -34,13 +34,13 @@ export default defineComponent({
 
     const map = inject(mapSymbol, ref(null));
     const api = inject(apiSymbol, ref(null));
-    const mapWasLoaded = inject(mapWasLoadedSymbol, ref(false));
+    const mapTilesLoaded = inject(mapTilesLoadedSymbol, ref(false));
 
     const showContent = ref(false);
 
     // To avoid rendering the content outside the map we need to wait for the map AND the api to fully load
     const stopWatchingOnMapLoad = watch(
-      [mapWasLoaded, api, controlRef],
+      [mapTilesLoaded, api, controlRef],
       ([newMapLoadedStatus, newApi, newControlRef]) => {
         const contentRef = newControlRef as unknown as Ref<HTMLElement | null>;
         const mapLoadedStatus = newMapLoadedStatus as boolean;
