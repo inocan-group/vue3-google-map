@@ -20,7 +20,7 @@ export const useSetupMapComponent = (
   events: string[],
   options: Ref<IComponentOptions>,
   emit: (event: string, ...args: unknown[]) => void
-): { component: Ref<IComponent | null> } => {
+): Ref<IComponent | null> => {
   let _component: IComponent | null = null;
   const component = ref<IComponent | null>(null);
 
@@ -59,5 +59,5 @@ export const useSetupMapComponent = (
     }
   });
 
-  return { component };
+  return component;
 };
