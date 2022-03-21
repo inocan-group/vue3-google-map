@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.8.5](https://github.com/inocan-group/vue3-google-maps/compare/v0.8.4...v0.8.5) (2022-03-21)
+
+
+### Bug Fixes
+
+* unwrap component refs ([8d0443b](https://github.com/inocan-group/vue3-google-maps/commit/8d0443befd842dd40169a0bda70fe5a8380ebeca))
+
 ### [0.8.4](https://github.com/inocan-group/vue3-google-maps/compare/v0.8.3...v0.8.4) (2022-03-20)
 
 
