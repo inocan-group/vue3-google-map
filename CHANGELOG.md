@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [0.9.0](https://github.com/inocan-group/vue3-google-maps/compare/v0.8.5...v0.9.0) (2022-03-22)
+
+
+### Features
+
+* ability to nest info windows inside markers ([c239cc7](https://github.com/inocan-group/vue3-google-maps/commit/c239cc7ad0851ec0238e178e10835a9dfb0169a9))
+
 ### [0.8.5](https://github.com/inocan-group/vue3-google-maps/compare/v0.8.4...v0.8.5) (2022-03-21)
 
 
