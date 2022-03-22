@@ -1,12 +1,12 @@
 <template>
-  <div ref="infoWindowRef" v-if="hasSlotContent" v-show="mapTilesLoaded">
+  <div ref="infoWindowRef" v-if="hasSlotContent" class="info-window-content">
     <slot />
   </div>
 </template>
 
 <script lang="ts">
-import { defineComponent, PropType, watch, ref, computed, inject, onBeforeUnmount, Comment } from "vue";
-import { apiSymbol, mapSymbol, mapTilesLoadedSymbol } from "../shared/index";
+import { defineComponent, PropType, watch, ref, computed, inject, onBeforeUnmount, Comment, onMounted } from "vue";
+import { apiSymbol, mapSymbol, markerSymbol } from "../shared/index";
 
 const infoWindowEvents = ["closeclick", "content_changed", "domready", "position_changed", "visible", "zindex_changed"];
 
@@ -14,7 +14,7 @@ export default defineComponent({
   props: {
     options: {
       type: Object as PropType<google.maps.InfoWindowOptions>,
-      required: true,
+      default: () => ({}),
     },
   },
 
@@ -27,50 +27,74 @@ export default defineComponent({
 
     const map = inject(mapSymbol, ref(null));
     const api = inject(apiSymbol, ref(null));
-    const mapTilesLoaded = inject(mapTilesLoadedSymbol, ref(false));
+    const anchor = inject(markerSymbol, ref(null));
+    let anchorClickListener: google.maps.MapsEventListener;
 
     const hasSlotContent = computed(() => slots.default?.().some((vnode) => vnode.type !== Comment));
 
-    watch(
-      [map, () => props.options, mapTilesLoaded],
-      ([_, options, newMapTilesLoaded], [oldMap, oldOptions, oldMapTilesLoaded]) => {
-        const checkIfChanged = JSON.stringify(options) !== JSON.stringify(oldOptions) || map.value !== oldMap;
+    onMounted(() => {
+      watch(
+        [map, () => props.options],
+        ([_, options], [oldMap, oldOptions]) => {
+          const checkIfChanged = JSON.stringify(options) !== JSON.stringify(oldOptions) || map.value !== oldMap;
 
-        if (map.value && api.value && (checkIfChanged || (newMapTilesLoaded && !oldMapTilesLoaded))) {
-          if (_infoWindow) {
-            _infoWindow.setOptions({
-              ...options,
-              content: hasSlotContent.value ? infoWindowRef.value : options.content,
-            });
+          if (map.value && api.value && checkIfChanged) {
+            if (_infoWindow) {
+              _infoWindow.setOptions({
+                ...options,
+                content: hasSlotContent.value ? infoWindowRef.value : options.content,
+              });
 
-            if (!hasSlotContent.value || mapTilesLoaded.value) _infoWindow.open({ map: map.value });
-          } else {
-            infoWindow.value = _infoWindow = new api.value.InfoWindow({
-              ...options,
-              content: hasSlotContent.value ? infoWindowRef.value : options.content,
-            });
+              if (!anchor.value) _infoWindow.open({ map: map.value });
+            } else {
+              infoWindow.value = _infoWindow = new api.value.InfoWindow({
+                ...options,
+                content: hasSlotContent.value ? infoWindowRef.value : options.content,
+              });
 
-            if (!hasSlotContent.value || mapTilesLoaded.value) _infoWindow.open({ map: map.value });
+              if (anchor.value) {
+                anchorClickListener = anchor.value.addListener("click", () => {
+                  _infoWindow.open({
+                    map: map.value,
+                    anchor: anchor.value,
+                  });
+                });
+              } else {
+                _infoWindow.open({ map: map.value });
+              }
 
-            infoWindowEvents.forEach((event) => {
-              _infoWindow?.addListener(event, (e: unknown) => emit(event, e));
-            });
+              infoWindowEvents.forEach((event) => {
+                _infoWindow?.addListener(event, (e: unknown) => emit(event, e));
+              });
+            }
           }
+        },
+        {
+          immediate: true,
         }
-      },
-      {
-        immediate: true,
-      }
-    );
+      );
+    });
 
     onBeforeUnmount(() => {
+      if (anchorClickListener) anchorClickListener.remove();
+
       if (_infoWindow) {
         api.value?.event.clearInstanceListeners(_infoWindow);
         _infoWindow.close();
       }
     });
 
-    return { infoWindow, infoWindowRef, hasSlotContent, mapTilesLoaded };
+    return { infoWindow, infoWindowRef, hasSlotContent, anchor };
   },
 });
 </script>
+
+<style scoped>
+.info-window-content {
+  display: none;
+}
+
+.mapdiv .info-window-content {
+  display: block;
+}
+</style>

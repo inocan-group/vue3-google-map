@@ -1,5 +1,6 @@
-import { defineComponent, PropType, Ref, toRef } from "vue";
+import { defineComponent, PropType, Ref, toRef, provide } from "vue";
 import { IComponentOptions, useSetupMapComponent } from "../composables/index";
+import { markerSymbol } from "../shared/index";
 
 const markerEvents = [
   "animation_changed",
@@ -35,11 +36,13 @@ export default defineComponent({
     },
   },
   emits: markerEvents,
-  setup(props, { emit }) {
+  setup(props, { emit, expose, slots }) {
     const options = toRef(props, "options") as Ref<IComponentOptions>;
-    const marker = useSetupMapComponent("Marker", markerEvents, options, emit);
+    const marker = useSetupMapComponent("Marker", markerEvents, options, emit) as Ref<google.maps.Marker | null>;
+    provide(markerSymbol, marker);
 
-    return { marker };
+    expose({ marker });
+
+    return () => slots.default?.();
   },
-  render: () => null,
 });

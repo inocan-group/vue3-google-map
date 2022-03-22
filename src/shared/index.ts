@@ -3,6 +3,7 @@ import { InjectionKey, ref, Ref } from "vue";
 
 export const mapSymbol: InjectionKey<Ref<google.maps.Map | null>> = Symbol("map");
 export const apiSymbol: InjectionKey<Ref<typeof google.maps | null>> = Symbol("api");
+export const markerSymbol: InjectionKey<Ref<google.maps.Marker | null>> = Symbol("marker");
 /**
  * Utilitary flag for components that need to know the map
  * was fully loaded (including its tiles) to decide their behavior
