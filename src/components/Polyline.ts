@@ -3,6 +3,7 @@ import { defineComponent, PropType, toRef } from "vue";
 import { polylineEvents } from "../shared/index";
 
 export default defineComponent({
+  name: "Polyline",
   props: {
     options: {
       type: Object as PropType<google.maps.PolylineOptions>,

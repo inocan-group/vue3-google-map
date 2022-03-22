@@ -29,6 +29,7 @@ const markerEvents = [
 ];
 
 export default defineComponent({
+  name: "Marker",
   props: {
     options: {
       type: Object as PropType<google.maps.MarkerOptions>,

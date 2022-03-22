@@ -5,6 +5,7 @@ import { polylineEvents } from "../shared/index";
 const circleEvents = polylineEvents.concat(["center_changed", "radius_changed"]);
 
 export default defineComponent({
+  name: "Circle",
   props: {
     options: {
       type: Object as PropType<google.maps.CircleOptions>,
