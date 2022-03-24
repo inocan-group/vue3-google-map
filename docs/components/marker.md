@@ -42,4 +42,4 @@ export default defineComponent({
 
 ## Events
 
-You can listen for [the following events](https://developers.google.com/maps/documentation/javascript/reference/marker#Marker.animation_changed) on the `Marker` component.
+You can listen for [the following events](https://developers.google.com/maps/documentation/javascript/reference/marker#Marker-Events) on the `Marker` component.

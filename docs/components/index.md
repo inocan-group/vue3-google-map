@@ -9,4 +9,5 @@ The main mapping component is `GoogleMap`, however the following components are 
 - [Polygon](./polygon.md)
 - [Rectangle](./rectangle.md)
 - [Circle](./circle.md)
+- [InfoWindow](./info-window.md)
 - [CustomControl](./custom-control.md)

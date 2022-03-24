@@ -1,9 +1,9 @@
 ---
 rectangle:
-  strokeColor: '#FF0000'
+  strokeColor: "#FF0000"
   strokeOpacity: 0.8
   strokeWeight: 2
-  fillColor: '#FF0000'
+  fillColor: "#FF0000"
   fillOpacity: 0.35
   bounds:
     north: 33.685
@@ -69,4 +69,4 @@ export default defineComponent({
 
 ## Events
 
-You can listen for [the following events](https://developers.google.com/maps/documentation/javascript/reference/polygon#Rectangle.bounds_changed) on the `Rectangle` component.
+You can listen for [the following events](https://developers.google.com/maps/documentation/javascript/reference/polygon#Rectangle-Events) on the `Rectangle` component.

@@ -22,10 +22,10 @@ cities:
     population: 603502
 
 circleStyles:
-  strokeColor: '#FF0000'
+  strokeColor: "#FF0000"
   strokeOpacity: 0.8
   strokeWeight: 2
-  fillColor: '#FF0000'
+  fillColor: "#FF0000"
   fillOpacity: 0.35
 ---
 
@@ -108,4 +108,4 @@ v-for="{ center, population } in $page.frontmatter.cities"
 
 ## Events
 
-You can listen for [the following events](https://developers.google.com/maps/documentation/javascript/reference/polygon#Circle.center_changed) on the `Circle` component.
+You can listen for [the following events](https://developers.google.com/maps/documentation/javascript/reference/polygon#Circle-Events) on the `Circle` component.

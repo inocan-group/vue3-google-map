@@ -11,7 +11,7 @@ flightPlanCoordinates: &coords
 flightPath:
   path: *coords
   geodesic: true
-  strokeColor: '#FF0000'
+  strokeColor: "#FF0000"
   strokeOpacity: 1.0
   strokeWeight: 2
 ---
@@ -72,4 +72,4 @@ export default defineComponent({
 
 ## Events
 
-You can listen for [the following events](https://developers.google.com/maps/documentation/javascript/reference/polygon#Polyline.click) on the `Polyline` component.
+You can listen for [the following events](https://developers.google.com/maps/documentation/javascript/reference/polygon#Polyline-Events) on the `Polyline` component.
