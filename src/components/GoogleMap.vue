@@ -53,7 +53,7 @@ export default defineComponent({
       required: false,
     },
     center: {
-      type: Object as PropType<google.maps.LatLng>,
+      type: Object as PropType<google.maps.LatLng | google.maps.LatLngLiteral>,
       default: () => ({ lat: 0, lng: 0 }),
     },
     clickableIcons: {
