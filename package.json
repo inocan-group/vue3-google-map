@@ -6,7 +6,7 @@
     "type": "git",
     "url": "https://github.com/inocan-group/vue3-google-maps.git"
   },
-  "homepage": "https://github.com/inocan-group/vue3-google-maps#readme",
+  "homepage": "https://vue3-google-map.netlify.app/",
   "description": "A set of composable components for easy use of Google Maps in your Vue 3 projects.",
   "unpkg": "dist/cjs/index.js",
   "jsdelivr": "dist/cjs/index.js",
