@@ -95,7 +95,7 @@ const moduleConfig = (moduleSystem, file, emitDeclaration) => {
     const declarationDir = pkg.typings
       ? // @ts-ignore
         inferDirectory(pkg.typings)
-      : `dist/types`;
+      : "dist/types";
     console.log(`- the source's entrypoint is "${input}" and output will be put in "${outDir}" folder`);
     if (emitDeclaration) {
       console.log(`- the typings will also be generated and placed in the "${declarationDir}" directory`);
@@ -106,7 +106,7 @@ const moduleConfig = (moduleSystem, file, emitDeclaration) => {
         outDir,
         module: "esnext",
       },
-      exclude: ["test", "tests", "node_modules", "docs"],
+      exclude: ["test", "tests", "node_modules", "docs", "src/themes"],
     };
 
     return {
@@ -157,12 +157,12 @@ async function buildModule(m, emitDeclaration) {
   try {
     console.log(`- 📦 starting bundling of ${m.toUpperCase()} module ${switches.has("min") ? "(minimized)" : ""}`);
     if (switches.has("closure")) {
-      console.log(`- using closure compiler to minimize file size`);
+      console.log("- using closure compiler to minimize file size");
     }
     // @ts-ignore
     if (getModuleShortname(m) === "es" && !pkg.module) {
       console.log(
-        `- 🤨 while you are building for the ES module system your package.json doesn't specify a "module" entrypoint.`
+        "- 🤨 while you are building for the ES module system your package.json doesn't specify a \"module\" entrypoint."
       );
     }
     const file = getFilenameByModule(m);
@@ -185,7 +185,7 @@ async function buildModule(m, emitDeclaration) {
     const output = statSync(file);
     console.log(`- 🚀 bundling saved to the "${file}" file [ ${Math.floor(output.size / 100) / 10} kb ].\n`);
   } catch (error) {
-    console.warn(`- 👎 the build failed during Rollup bundling`);
+    console.warn("- 👎 the build failed during Rollup bundling");
     console.log(`\n${error.stack}\n`);
     process.exit(1);
   }
@@ -225,9 +225,42 @@ const usesGlobalVars = (mod) => {
   console.log();
 
   for (const m of moduleSystems) {
-    const emitDeclaration = moduleSystems.length === 1 || getModuleShortname(m) === "es";
+    const moduleShortname = getModuleShortname(m);
+    const emitDeclaration = moduleSystems.length === 1 || moduleShortname === "es";
     await buildModule(m, emitDeclaration);
   }
+
+  // Bundle themes
+  const bundle = await rollup.rollup({
+    input: "src/themes/index.ts",
+    plugins: [
+      typescript({
+        tsconfig: "tsconfig.json",
+        typescript: ttypescript,
+        useTsconfigDeclarationDir: true,
+        tsconfigOverride: {
+          compilerOptions: {
+            declaration: true,
+            declarationDir: "dist/themes/types",
+            outDir: "dist/themes",
+            module: "esnext",
+          },
+          include: ["src/themes"],
+          exclude: ["test", "tests", "node_modules", "docs"],
+        },
+      }),
+      ...(process.env.ANALYZE || switches.analyze ? [analyze()] : []),
+      ...(switches.has("closure") ? [closure()] : []),
+      ...(switches.has("min") ? [terser()] : []),
+    ],
+  });
+
+  await bundle.write({
+    file: "dist/themes/es/index.js",
+    format: "es",
+    exports: "auto",
+    sourcemap: false,
+  });
 
   console.log("\n- Build completed!\n");
 })();

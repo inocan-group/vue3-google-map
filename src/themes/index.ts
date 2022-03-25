@@ -2,7 +2,7 @@
 
 // #region autoindexed files
 
-// index last changed at: 10th Oct, 2020, 02:23 AM ( GMT+2 )
+// index last changed at: 25th Mar, 2022, 04:04 AM ( GMT+2 )
 // export: named; exclusions: index, private.
 // files: aubergine, dark, grey, minimal, retro, roadways, roadwaysMinimal, ultraLight.
 
@@ -18,7 +18,7 @@ export * from "./ultraLight";
 
 // Note:
 // -----
-// This file was created by running: "do devops autoindex"; it assumes you have
+// This file was created by running: "dd devops autoindex"; it assumes you have
 // the 'do-devops' pkg installed as a dev dep.
 //
 // By default it assumes that exports are named exports but this can be changed by
