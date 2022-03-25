@@ -1,6 +1,6 @@
 {
   "name": "vue3-google-map",
-  "version": "0.9.0",
+  "version": "0.10.0",
   "license": "MIT",
   "repository": {
     "type": "git",
@@ -25,8 +25,12 @@
   },
   "typesVersions": {
     "*": {
-      "*": ["dist/types/index.d.ts"],
-      "themes": [ "dist/themes/types/index.d.ts"]
+      "*": [
+        "dist/types/index.d.ts"
+      ],
+      "themes": [
+        "dist/themes/types/index.d.ts"
+      ]
     }
   },
   "scripts": {

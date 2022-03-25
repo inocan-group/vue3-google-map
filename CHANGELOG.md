@@ -2,6 +2,17 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [0.10.0](https://github.com/inocan-group/vue3-google-maps/compare/v0.9.0...v0.10.0) (2022-03-25)
+
+
+### ⚠ BREAKING CHANGES
+
+* separate entry point for bundled themes
+
+### build
+
+* separate entry point for bundled themes ([27ff148](https://github.com/inocan-group/vue3-google-maps/commit/27ff148714656d04415d84b2c11663e4b0c84e16))
+
 ## [0.9.0](https://github.com/inocan-group/vue3-google-maps/compare/v0.8.5...v0.9.0) (2022-03-22)
 
 
