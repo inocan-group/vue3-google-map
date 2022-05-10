@@ -1,5 +1,5 @@
-import { watch, ref, Ref, inject, onBeforeUnmount } from "vue";
-import { apiSymbol, mapSymbol } from "../shared/index";
+import { watch, ref, Ref, inject, onBeforeUnmount, computed } from "vue";
+import { apiSymbol, mapSymbol, markerClusterSymbol } from "../shared/index";
 
 export type IComponent =
   | google.maps.Marker
@@ -24,8 +24,13 @@ export const useSetupMapComponent = (
   let _component: IComponent | null = null;
   const component = ref<IComponent | null>(null);
 
-  const map = inject(mapSymbol, ref(null));
-  const api = inject(apiSymbol, ref(null));
+  const map = inject(mapSymbol, ref());
+  const api = inject(apiSymbol, ref());
+  const markerCluster = inject(markerClusterSymbol, ref());
+
+  const isMarkerInCluster = computed(
+    () => !!(markerCluster.value && api.value && _component instanceof api.value.Marker)
+  );
 
   watch(
     [map, options],
@@ -35,12 +40,27 @@ export const useSetupMapComponent = (
         if (_component) {
           // eslint-disable-next-line @typescript-eslint/no-explicit-any
           _component.setOptions(options.value as any);
-          _component.setMap(map.value);
+
+          if (isMarkerInCluster.value) {
+            markerCluster.value?.removeMarker(_component as google.maps.Marker);
+            markerCluster.value?.addMarker(_component as google.maps.Marker);
+          }
         } else {
-          component.value = _component = new api.value[componentName]({
-            ...options.value,
-            map: map.value,
-          });
+          if (componentName === "Marker") {
+            component.value = _component = new api.value[componentName](options.value);
+          } else {
+            component.value = _component = new api.value[componentName]({
+              ...options.value,
+              map: map.value,
+            });
+          }
+
+          if (isMarkerInCluster.value) {
+            markerCluster.value?.addMarker(_component as google.maps.Marker);
+          } else {
+            _component.setMap(map.value);
+          }
+
           events.forEach((event) => {
             _component?.addListener(event, (e: unknown) => emit(event, e));
           });
@@ -55,7 +75,12 @@ export const useSetupMapComponent = (
   onBeforeUnmount(() => {
     if (_component) {
       api.value?.event.clearInstanceListeners(_component);
-      _component.setMap(null);
+
+      if (isMarkerInCluster.value) {
+        markerCluster.value?.removeMarker(_component as google.maps.Marker);
+      } else {
+        _component.setMap(null);
+      }
     }
   });
 

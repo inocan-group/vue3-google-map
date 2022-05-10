@@ -6,3 +6,4 @@ export { default as Rectangle } from "./Rectangle";
 export { default as Circle } from "./Circle";
 export { default as CustomControl } from "./CustomControl.vue";
 export { default as InfoWindow } from "./InfoWindow.vue";
+export { default as MarkerCluster } from "./MarkerCluster";
