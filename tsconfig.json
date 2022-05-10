@@ -12,6 +12,7 @@
     "allowSyntheticDefaultImports": true,
     "sourceMap": false,
     "noEmit": true,
+    "jsx": "preserve",
     "baseUrl": ".",
     "paths": {
       "/@src/*": ["src/*"]
