@@ -32,8 +32,8 @@ export default defineComponent({
   setup(props, { emit }) {
     const controlRef = ref<HTMLElement | null>(null);
 
-    const map = inject(mapSymbol, ref(null));
-    const api = inject(apiSymbol, ref(null));
+    const map = inject(mapSymbol, ref());
+    const api = inject(apiSymbol, ref());
     const mapTilesLoaded = inject(mapTilesLoadedSymbol, ref(false));
 
     const showContent = ref(false);

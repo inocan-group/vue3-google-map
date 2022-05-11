@@ -25,9 +25,9 @@ export default defineComponent({
     const infoWindow = ref<google.maps.InfoWindow>();
     const infoWindowRef = ref<HTMLElement>();
 
-    const map = inject(mapSymbol, ref(null));
-    const api = inject(apiSymbol, ref(null));
-    const anchor = inject(markerSymbol, ref(null));
+    const map = inject(mapSymbol, ref());
+    const api = inject(apiSymbol, ref());
+    const anchor = inject(markerSymbol, ref());
     let anchorClickListener: google.maps.MapsEventListener;
 
     const hasSlotContent = computed(() => slots.default?.().some((vnode) => vnode.type !== Comment));

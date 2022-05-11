@@ -52,7 +52,8 @@
     "release": "standard-version"
   },
   "dependencies": {
-    "@googlemaps/js-api-loader": "^1.12.11"
+    "@googlemaps/js-api-loader": "^1.12.11",
+    "@googlemaps/markerclusterer": "^2.0.6"
   },
   "devDependencies": {
     "@ampproject/rollup-plugin-closure-compiler": "^0.26.0",
