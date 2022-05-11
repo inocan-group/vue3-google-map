@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [0.11.0](https://github.com/inocan-group/vue3-google-maps/compare/v0.10.0...v0.11.0) (2022-05-11)
+
+
+### Features
+
+* marker clusters ([5d58e2e](https://github.com/inocan-group/vue3-google-maps/commit/5d58e2e9ead8356c972d7700b9218ba77889ad15))
+
 ## [0.10.0](https://github.com/inocan-group/vue3-google-maps/compare/v0.9.0...v0.10.0) (2022-03-25)
 
 
