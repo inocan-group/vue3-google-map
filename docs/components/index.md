@@ -11,3 +11,4 @@ The main mapping component is `GoogleMap`, however the following components are 
 - [Circle](./circle.md)
 - [InfoWindow](./info-window.md)
 - [CustomControl](./custom-control.md)
+- [MarkerCluster](./marker-cluster.md)

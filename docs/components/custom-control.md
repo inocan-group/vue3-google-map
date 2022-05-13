@@ -1,4 +1,4 @@
-# Custom Controls
+# Custom Control
 
 Use the `CustomControl` component to add custom buttons/controls to your map.
 

@@ -145,3 +145,4 @@ In addition, most of the subcomponents expose their instance should you need it:
 - `Rectangle` exposes `rectangle` (a [Rectangle](https://developers.google.com/maps/documentation/javascript/reference/polygon#Rectangle) class instance).
 - `Circle` exposes `circle` (a [Circle](https://developers.google.com/maps/documentation/javascript/reference/polygon#Circle) class instance).
 - `InfoWindow` exposes `infoWindow` (an [InfoWindow](https://developers.google.com/maps/documentation/javascript/reference/info-window#InfoWindow) class instance).
+- `MarkerCluster` exposes `markerCluster` (a [MarkerClusterer](https://googlemaps.github.io/js-markerclusterer/classes/MarkerClusterer.html) class instance).

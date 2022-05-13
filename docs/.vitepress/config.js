@@ -54,6 +54,10 @@ module.exports = {
             text: "Custom Control",
             link: "/components/custom-control",
           },
+          {
+            text: "Marker Cluster",
+            link: "/components/marker-cluster",
+          },
         ],
       },
     ],
