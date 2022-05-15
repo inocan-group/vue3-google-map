@@ -13,10 +13,10 @@ module.exports = {
         text: "Components",
         link: "/components/",
       },
-      {
-        text: "Themes",
-        link: "/themes/",
-      },
+      // {
+      //   text: "Themes",
+      //   link: "/themes/",
+      // },
       {
         text: "Advanced Usage",
         link: "/advanced-usage/",
