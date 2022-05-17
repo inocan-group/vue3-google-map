@@ -123,6 +123,10 @@ export default defineComponent({
       type: [Number, String] as PropType<google.maps.MapTypeId | string>,
       required: false,
     },
+    mapId: {
+      type: String,
+      required: false,
+    },
     maxZoom: {
       type: Number,
       required: false,
