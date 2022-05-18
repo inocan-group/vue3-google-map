@@ -1,7 +1,8 @@
 <script lang="ts">
-import { defineComponent, PropType, ref, onMounted, onBeforeUnmount, watch, toRef, provide } from "vue";
-import { mapSymbol, apiSymbol, loaderInstance, mapTilesLoadedSymbol } from "../shared/index";
+import { defineComponent, PropType, ref, onMounted, onBeforeUnmount, watch, toRef, provide, markRaw } from "vue";
+import { mapSymbol, apiSymbol, loaderInstance, mapTilesLoadedSymbol, customMarkerClassSymbol } from "../shared/index";
 import { Loader } from "@googlemaps/js-api-loader";
+import { createCustomMarkerClass } from "../utils";
 import { IControlPosition } from "../@types/index";
 
 const mapEvents = [
@@ -215,11 +216,11 @@ export default defineComponent({
   emits: mapEvents,
 
   setup(props, { emit }) {
-    const mapRef = ref<HTMLElement | null>(null);
+    const mapRef = ref<HTMLElement>();
     const ready = ref(false);
 
-    const map = ref<google.maps.Map | null>(null);
-    const api = ref<typeof google.maps | null>(null);
+    const map = ref<google.maps.Map>();
+    const api = ref<typeof google.maps>();
 
     const mapTilesLoaded = ref(false);
 
@@ -287,8 +288,10 @@ export default defineComponent({
       loadMapsAPI();
 
       (loaderInstance.value as Loader).load().then(() => {
-        api.value = google.maps;
-        map.value = new google.maps.Map(mapRef.value as HTMLElement, resolveOptions());
+        api.value = markRaw(google.maps);
+        map.value = markRaw(new google.maps.Map(mapRef.value as HTMLElement, resolveOptions()));
+        const CustomMarker = createCustomMarkerClass(api.value);
+        api.value[customMarkerClassSymbol] = CustomMarker;
 
         mapEvents.forEach((event) => {
           map.value?.addListener(event, (e: unknown) => emit(event, e));
