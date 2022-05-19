@@ -1,19 +1,19 @@
 # Marker Cluster
 
-Use the `MarkerCluster` component to display a large number of markers on a map. It will combine markers of close proximity into clusters, and simplify the display of markers on the map.
+Use the `MarkerCluster` component to display a large number of markers on a map. It will combine markers of close proximity into clusters, and simplify the display of markers on the map. Can be used with the `Marker` or `CustomMarker` components.
 
 ## Usage
 
-Simply pass your `Marker`s in the `default` slot of the `MarkerCluster` component.
+Simply pass your `Marker`/`CustomMarker`(s) in the `default` slot of the `MarkerCluster` component.
 
 <!-- prettier-ignore -->
 ```vue
 <template>
   <GoogleMap
-  api-key="YOUR_GOOGLE_MAPS_API_KEY"
-  style="width: 100%; height: 500px"
-  :center="center"
-  :zoom="3"
+    api-key="YOUR_GOOGLE_MAPS_API_KEY"
+    style="width: 100%; height: 500px"
+    :center="center"
+    :zoom="3"
   >
     <MarkerCluster>
       <Marker v-for="(location, i) in locations" :options="{ position: location }" :key="i" />

@@ -51,6 +51,10 @@ module.exports = {
             link: "/components/info-window",
           },
           {
+            text: "Custom Marker",
+            link: "/components/custom-marker",
+          },
+          {
             text: "Custom Control",
             link: "/components/custom-control",
           },

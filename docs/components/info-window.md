@@ -10,10 +10,10 @@ You can pass an [InfoWindowOptions](https://developers.google.com/maps/documenta
 ```vue
 <template>
   <GoogleMap
-  api-key="YOUR_GOOGLE_MAPS_API_KEY"
-  style="width: 100%; height: 500px"
-  :center="center"
-  :zoom="10"
+    api-key="YOUR_GOOGLE_MAPS_API_KEY"
+    style="width: 100%; height: 500px"
+    :center="center"
+    :zoom="10"
   >
     <InfoWindow :options="{ position: center, content: 'Hello World!' }" />
     <InfoWindow :options="{ position: { lat: center.lat, lng: 150.8 } }">
@@ -53,10 +53,10 @@ You can nest the `InfoWindow` component inside the `Marker` component to display
 ```vue
 <template>
   <GoogleMap
-  api-key="YOUR_GOOGLE_MAPS_API_KEY"
-  style="width: 100%; height: 500px"
-  :center="center"
-  :zoom="4"
+    api-key="YOUR_GOOGLE_MAPS_API_KEY"
+    style="width: 100%; height: 500px"
+    :center="center"
+    :zoom="4"
   >
     <Marker :options="{ position: center }">
       <InfoWindow>

@@ -18,6 +18,7 @@ Note: Please refer to the [documentation site](https://vue3-google-map.netlify.a
   - [Rectangle](#rectangle)
   - [Circle](#circle)
   - [Info Window](#info-window)
+  - [Custom Marker](#custom-marker)
   - [Custom Control](#custom-control)
   - [Marker Cluster](#marker-cluster)
 - [Advanced Usage](#advanced-usage)
@@ -47,7 +48,7 @@ Include the following script tag in your `index.html` (make sure to include it a
 ### Your First Map
 
 To construct a map using `vue3-google-map` you'll need to use the base `GoogleMap` component which receives your [Google Maps API key](https://developers.google.com/maps/documentation/javascript/get-api-key), styles (e.g. setting width and height), and any [MapOptions](https://developers.google.com/maps/documentation/javascript/reference/map#MapOptions) to configure your map ([see this](https://github.com/inocan-group/vue3-google-map/blob/develop/src/components/GoogleMap.vue#L30-L209) for all the supported `MapOptions`).
-Other map features can be added to your map by passing map subcomponents ([Marker](#marker), [Polyline](#polyline), [Polygon](#polygon), [Rectangle](#rectangle), [Circle](#circle), [InfoWindow](#info-window), or [CustomControl](#custom-controls)) to the default slot of the `GoogleMap` component.
+Other map features can be added to your map by passing map subcomponents ([Marker](#marker), [Polyline](#polyline), [Polygon](#polygon), [Rectangle](#rectangle), [Circle](#circle), [InfoWindow](#info-window), [CustomMarker](#custom-marker), [CustomControl](#custom-control), or [MarkerCluster](#marker-cluster)) to the default slot of the `GoogleMap` component.
 
 ```vue
 <template>
@@ -83,8 +84,9 @@ The main mapping component is `GoogleMap`, however the following components are 
 - [Rectangle](#rectangle)
 - [Circle](#circle)
 - [InfoWindow](#info-window)
-- [CustomControl](#custom-controls)
-- [Marker Cluster](#marker-cluster)
+- [CustomMarker](#custom-marker)
+- [CustomControl](#custom-control)
+- [MarkerCluster](#marker-cluster)
 
 ### Marker
 
@@ -426,6 +428,53 @@ export default defineComponent({
 
 You can listen for [the following events](https://developers.google.com/maps/documentation/javascript/reference/info-window#InfoWindow-Events) on the `InfoWindow` component.
 
+### Custom Marker
+
+Regular markers can be customized a great deal but if you need to you can use the `CustomMarker` component and provide your own custom markup through it's `default` slot.
+
+#### Options
+
+| Parameter | Type     | Description                |
+| :-------- | :------- | :------------------------- |
+| `position` | `{ lat: number, lng: number}` | Sets the marker position. |
+| `anchorPoint` | `'CENTER' \| 'TOP_CENTER' \|'BOTTOM_CENTER' \| 'LEFT_CENTER' \| 'RIGHT_CENTER' \| 'TOP_LEFT' \| 'TOP_RIGHT' \| 'BOTTOM_LEFT' \| 'BOTTOM_RIGHT'` | Sets how the marker is anchored relative to it's `position` point. Default is `CENTER`. |
+| `offsetX` | `number` | Horizontal offset from the `position` point. |
+| `offsetY` | `number` | Vertical offset from the `position` point. |
+| `zIndex` | `number` | `z-index` value of the marker. |
+
+
+```vue
+<template>
+  <GoogleMap
+    api-key="YOUR_GOOGLE_MAPS_API_KEY"
+    style="width: 100%; height: 500px"
+    :center="center"
+    :zoom="15"
+  >
+    <CustomMarker :options="{ position: center, anchorPoint: 'BOTTOM_CENTER' }">
+      <div style="text-align: center">
+        <div style="font-size: 1.125rem">Vuejs Amsterdam</div>
+        <img src="https://vuejs.org/images/logo.png" width="50" height="50" style="margin-top: 8px" />
+      </div>
+    </CustomMarker>
+  </GoogleMap>
+</template>
+
+<script>
+import { defineComponent } from 'vue'
+import { GoogleMap, CustomMarker } from 'vue3-google-map'
+
+export default defineComponent({
+  components: { GoogleMap, CustomMarker },
+  setup() {
+    const center = { lat: 52.36834, lng: 4.88635 }
+
+    return { center }
+  },
+})
+</script>
+```
+
 ### Custom Control
 
 Use the `CustomControl` component to add custom buttons/controls to your map.
@@ -486,20 +535,19 @@ export default defineComponent({
 
 ### Marker Cluster
 
-Use the `MarkerCluster` component to display a large number of markers on a map. It will combine markers of close proximity into clusters, and simplify the display of markers on the map.
+Use the `MarkerCluster` component to display a large number of markers on a map. It will combine markers of close proximity into clusters, and simplify the display of markers on the map. Can be used with the `Marker` or `CustomMarker` components.
 
-#### Usage
+## Usage
 
-Simply pass your `Marker`s in the `default` slot of the `MarkerCluster` component.
+Simply pass your `Marker`/`CustomMarker`(s) in the `default` slot of the `MarkerCluster` component.
 
-<!-- prettier-ignore -->
 ```vue
 <template>
   <GoogleMap
-  api-key="YOUR_GOOGLE_MAPS_API_KEY"
-  style="width: 100%; height: 500px"
-  :center="center"
-  :zoom="3"
+    api-key="YOUR_GOOGLE_MAPS_API_KEY"
+    style="width: 100%; height: 500px"
+    :center="center"
+    :zoom="3"
   >
     <MarkerCluster>
       <Marker v-for="(location, i) in locations" :options="{ position: location }" :key="i" />
