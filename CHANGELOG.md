@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [0.12.0](https://github.com/inocan-group/vue3-google-maps/compare/v0.10.0...v0.12.0) (2022-05-19)
+
+
+### Features
+
+* custom markers ([ecc28b0](https://github.com/inocan-group/vue3-google-maps/commit/ecc28b0455a54502734ae1ae9b1d69cde9e0652e))
+* add mapId in GoogleMap Component ([b72105c](https://github.com/inocan-group/vue3-google-maps/commit/b72105ca33bcf115ce83fe5a09ad4ccc5530d8bc))
 ## [0.11.0](https://github.com/inocan-group/vue3-google-maps/compare/v0.10.0...v0.11.0) (2022-05-11)
 
 
