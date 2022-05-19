@@ -15,10 +15,10 @@ Refer to the [Google Maps documentation](https://developers.google.com/maps/docu
 ```vue
 <template>
   <GoogleMap
-  api-key="YOUR_GOOGLE_MAPS_API_KEY"
-  style="width: 100%; height: 500px"
-  :center="center"
-  :zoom="13"
+    api-key="YOUR_GOOGLE_MAPS_API_KEY"
+    style="width: 100%; height: 500px"
+    :center="center"
+    :zoom="13"
   >
     <CustomControl position="BOTTOM_CENTER">
       <button class="custom-btn" @click="sayHi">👋</button>

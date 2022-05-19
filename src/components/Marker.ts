@@ -1,5 +1,5 @@
-import { defineComponent, PropType, Ref, toRef, provide } from "vue";
-import { IComponentOptions, useSetupMapComponent } from "../composables/index";
+import { defineComponent, PropType, toRef, provide } from "vue";
+import { useSetupMapComponent } from "../composables/index";
 import { markerSymbol } from "../shared/index";
 
 const markerEvents = [
@@ -38,8 +38,8 @@ export default defineComponent({
   },
   emits: markerEvents,
   setup(props, { emit, expose, slots }) {
-    const options = toRef(props, "options") as Ref<IComponentOptions>;
-    const marker = useSetupMapComponent("Marker", markerEvents, options, emit) as Ref<google.maps.Marker | null>;
+    const options = toRef(props, "options");
+    const marker = useSetupMapComponent("Marker", markerEvents, options, emit);
     provide(markerSymbol, marker);
 
     expose({ marker });

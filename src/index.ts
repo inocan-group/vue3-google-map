@@ -1,10 +1,14 @@
-//#autoindex, exclude: shims-vue.d, composables, shared, themes
+//#autoindex, exclude: shims-vue.d, composables, shared, themes, utils
 
 // #region autoindexed files
 
-// index last changed at: 3rd Mar, 2022, 02:52 AM ( GMT+2 )
-// export: named; exclusions: shims-vue.d, composables, shared, themes, index, private.
+// index last changed at: 5th May, 2022, 10:31 AM ( GMT+2 )
+// export: named; exclusions: shims-vue.d, composables, shared, themes, utils, index, private.
+// files: shims-google-maps-d.
 // directories: @types, components.
+
+// local file exports
+export * from "./shims-google-maps-d";
 
 // directory exports
 export * from "./@types/index";

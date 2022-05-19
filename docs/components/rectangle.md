@@ -24,11 +24,11 @@ You can pass a [RectangleOptions](https://developers.google.com/maps/documentati
 ```vue
 <template>
   <GoogleMap
-  api-key="YOUR_GOOGLE_MAPS_API_KEY"
-  style="width: 100%; height: 500px"
-  mapTypeId="terrain"
-  :center="center"
-  :zoom="11"
+    api-key="YOUR_GOOGLE_MAPS_API_KEY"
+    style="width: 100%; height: 500px"
+    mapTypeId="terrain"
+    :center="center"
+    :zoom="11"
   >
     <Rectangle :options="rectangle" />
   </GoogleMap>

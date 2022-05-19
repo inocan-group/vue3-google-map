@@ -5,7 +5,18 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, PropType, watch, ref, computed, inject, onBeforeUnmount, Comment, onMounted } from "vue";
+import {
+  defineComponent,
+  PropType,
+  watch,
+  ref,
+  computed,
+  inject,
+  onBeforeUnmount,
+  Comment,
+  onMounted,
+  markRaw,
+} from "vue";
 import { apiSymbol, mapSymbol, markerSymbol } from "../shared/index";
 
 const infoWindowEvents = ["closeclick", "content_changed", "domready", "position_changed", "visible", "zindex_changed"];
@@ -21,7 +32,6 @@ export default defineComponent({
   emits: infoWindowEvents,
 
   setup(props, { slots, emit }) {
-    let _infoWindow: google.maps.InfoWindow;
     const infoWindow = ref<google.maps.InfoWindow>();
     const infoWindowRef = ref<HTMLElement>();
 
@@ -39,32 +49,36 @@ export default defineComponent({
           const checkIfChanged = JSON.stringify(options) !== JSON.stringify(oldOptions) || map.value !== oldMap;
 
           if (map.value && api.value && checkIfChanged) {
-            if (_infoWindow) {
-              _infoWindow.setOptions({
+            if (infoWindow.value) {
+              infoWindow.value.setOptions({
                 ...options,
                 content: hasSlotContent.value ? infoWindowRef.value : options.content,
               });
 
-              if (!anchor.value) _infoWindow.open({ map: map.value });
+              if (!anchor.value) infoWindow.value.open({ map: map.value });
             } else {
-              infoWindow.value = _infoWindow = new api.value.InfoWindow({
-                ...options,
-                content: hasSlotContent.value ? infoWindowRef.value : options.content,
-              });
+              infoWindow.value = infoWindow.value = markRaw(
+                new api.value.InfoWindow({
+                  ...options,
+                  content: hasSlotContent.value ? infoWindowRef.value : options.content,
+                })
+              );
 
               if (anchor.value) {
                 anchorClickListener = anchor.value.addListener("click", () => {
-                  _infoWindow.open({
+                  if (!infoWindow.value) return;
+
+                  infoWindow.value.open({
                     map: map.value,
                     anchor: anchor.value,
                   });
                 });
               } else {
-                _infoWindow.open({ map: map.value });
+                infoWindow.value.open({ map: map.value });
               }
 
               infoWindowEvents.forEach((event) => {
-                _infoWindow?.addListener(event, (e: unknown) => emit(event, e));
+                infoWindow.value?.addListener(event, (e: unknown) => emit(event, e));
               });
             }
           }
@@ -78,13 +92,13 @@ export default defineComponent({
     onBeforeUnmount(() => {
       if (anchorClickListener) anchorClickListener.remove();
 
-      if (_infoWindow) {
-        api.value?.event.clearInstanceListeners(_infoWindow);
-        _infoWindow.close();
+      if (infoWindow.value) {
+        api.value?.event.clearInstanceListeners(infoWindow.value);
+        infoWindow.value.close();
       }
     });
 
-    return { infoWindow, infoWindowRef, hasSlotContent, anchor };
+    return { infoWindow, infoWindowRef, hasSlotContent };
   },
 });
 </script>
@@ -95,6 +109,6 @@ export default defineComponent({
 }
 
 .mapdiv .info-window-content {
-  display: block;
+  display: inline-block;
 }
 </style>

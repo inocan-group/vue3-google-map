@@ -1,35 +1,62 @@
-import { watch, ref, Ref, inject, onBeforeUnmount, computed } from "vue";
-import { apiSymbol, mapSymbol, markerClusterSymbol } from "../shared/index";
+import { watch, ref, Ref, inject, onBeforeUnmount, computed, markRaw } from "vue";
+import { apiSymbol, mapSymbol, markerClusterSymbol, customMarkerClassSymbol } from "../shared/index";
 
-export type IComponent =
-  | google.maps.Marker
-  | google.maps.Polyline
-  | google.maps.Polygon
-  | google.maps.Rectangle
-  | google.maps.Circle;
+type ICtorKey = "Marker" | "Polyline" | "Polygon" | "Rectangle" | "Circle" | typeof customMarkerClassSymbol;
 
-export type IComponentOptions =
-  | google.maps.MarkerOptions
-  | google.maps.PolylineOptions
-  | google.maps.PolygonOptions
-  | google.maps.RectangleOptions
-  | google.maps.CircleOptions;
+type IComponent<T> = T extends "Marker"
+  ? google.maps.Marker
+  : T extends "Polyline"
+  ? google.maps.Polyline
+  : T extends "Polygon"
+  ? google.maps.Polygon
+  : T extends "Rectangle"
+  ? google.maps.Rectangle
+  : T extends "Circle"
+  ? google.maps.Circle
+  : T extends typeof customMarkerClassSymbol
+  ? InstanceType<typeof google.maps.CustomMarker>
+  : never;
 
-export const useSetupMapComponent = (
-  componentName: "Marker" | "Polyline" | "Polygon" | "Rectangle" | "Circle",
+type IShape<T = unknown> = Exclude<IComponent<T>, google.maps.Marker | typeof google.maps.CustomMarker>;
+
+type IComponentOptions<T> = T extends "Marker"
+  ? google.maps.MarkerOptions
+  : T extends "Polyline"
+  ? google.maps.PolylineOptions
+  : T extends "Polygon"
+  ? google.maps.PolygonOptions
+  : T extends "Rectangle"
+  ? google.maps.RectangleOptions
+  : T extends "Circle"
+  ? google.maps.CircleOptions
+  : T extends typeof customMarkerClassSymbol
+  ? google.maps.CustomMarkerOptions & { element?: HTMLElement }
+  : never;
+
+type IShapeOptions<T = unknown> = Exclude<IComponent<T>, google.maps.MarkerOptions | google.maps.CustomMarkerOptions>;
+
+const isMarkerCtorKey = (key: ICtorKey): key is "Marker" => key === "Marker";
+const isCustomMarkerCtorKey = (key: ICtorKey): key is typeof customMarkerClassSymbol => key === customMarkerClassSymbol;
+
+export const useSetupMapComponent = <T extends ICtorKey>(
+  ctorKey: T,
   events: string[],
-  options: Ref<IComponentOptions>,
+  options: Ref<IComponentOptions<T>>,
   emit: (event: string, ...args: unknown[]) => void
-): Ref<IComponent | null> => {
-  let _component: IComponent | null = null;
-  const component = ref<IComponent | null>(null);
+): Ref<IComponent<T> | undefined> => {
+  const component = ref<IComponent<T>>();
 
   const map = inject(mapSymbol, ref());
   const api = inject(apiSymbol, ref());
   const markerCluster = inject(markerClusterSymbol, ref());
 
   const isMarkerInCluster = computed(
-    () => !!(markerCluster.value && api.value && _component instanceof api.value.Marker)
+    () =>
+      !!(
+        markerCluster.value &&
+        api.value &&
+        (component.value instanceof api.value.Marker || component.value instanceof api.value[customMarkerClassSymbol])
+      )
   );
 
   watch(
@@ -37,32 +64,40 @@ export const useSetupMapComponent = (
     (_, [oldMap, oldOptions]) => {
       const checkIfChanged = JSON.stringify(options.value) !== JSON.stringify(oldOptions) || map.value !== oldMap;
       if (map.value && api.value && checkIfChanged) {
-        if (_component) {
+        if (component.value) {
           // eslint-disable-next-line @typescript-eslint/no-explicit-any
-          _component.setOptions(options.value as any);
+          component.value.setOptions(options.value as any);
 
           if (isMarkerInCluster.value) {
-            markerCluster.value?.removeMarker(_component as google.maps.Marker);
-            markerCluster.value?.addMarker(_component as google.maps.Marker);
+            markerCluster.value?.removeMarker(component.value as google.maps.Marker);
+            markerCluster.value?.addMarker(component.value as google.maps.Marker);
           }
         } else {
-          if (componentName === "Marker") {
-            component.value = _component = new api.value[componentName](options.value);
+          if (isMarkerCtorKey(ctorKey)) {
+            component.value = markRaw(
+              new api.value[ctorKey](options.value as IComponentOptions<typeof ctorKey>)
+            ) as IComponent<typeof ctorKey>;
+          } else if (isCustomMarkerCtorKey(ctorKey)) {
+            component.value = markRaw(
+              new api.value[ctorKey](options.value as IComponentOptions<typeof ctorKey>)
+            ) as IComponent<typeof ctorKey>;
           } else {
-            component.value = _component = new api.value[componentName]({
-              ...options.value,
-              map: map.value,
-            });
+            component.value = markRaw(
+              new api.value[ctorKey]({
+                ...options.value,
+                map: map.value,
+              } as IShapeOptions)
+            ) as IShape;
           }
 
           if (isMarkerInCluster.value) {
-            markerCluster.value?.addMarker(_component as google.maps.Marker);
+            markerCluster.value?.addMarker(component.value as google.maps.Marker);
           } else {
-            _component.setMap(map.value);
+            component.value.setMap(map.value);
           }
 
           events.forEach((event) => {
-            _component?.addListener(event, (e: unknown) => emit(event, e));
+            component.value?.addListener(event, (e: unknown) => emit(event, e));
           });
         }
       }
@@ -73,13 +108,13 @@ export const useSetupMapComponent = (
   );
 
   onBeforeUnmount(() => {
-    if (_component) {
-      api.value?.event.clearInstanceListeners(_component);
+    if (component.value) {
+      api.value?.event.clearInstanceListeners(component.value);
 
       if (isMarkerInCluster.value) {
-        markerCluster.value?.removeMarker(_component as google.maps.Marker);
+        markerCluster.value?.removeMarker(component.value as google.maps.Marker);
       } else {
-        _component.setMap(null);
+        component.value.setMap(null);
       }
     }
   });

@@ -41,11 +41,11 @@ You can pass a [CircleOptions](https://developers.google.com/maps/documentation/
 ```vue
 <template>
   <GoogleMap
-  api-key="YOUR_GOOGLE_MAPS_API_KEY"
-  style="width: 100%; height: 500px"
-  mapTypeId="terrain"
-  :center="center"
-  :zoom="4"
+    api-key="YOUR_GOOGLE_MAPS_API_KEY"
+    style="width: 100%; height: 500px"
+    mapTypeId="terrain"
+    :center="center"
+    :zoom="4"
   >
     <Circle v-for="circle in circles" :options="circle" />
   </GoogleMap>
