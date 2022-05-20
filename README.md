@@ -537,7 +537,7 @@ export default defineComponent({
 
 Use the `MarkerCluster` component to display a large number of markers on a map. It will combine markers of close proximity into clusters, and simplify the display of markers on the map. Can be used with the `Marker` or `CustomMarker` components.
 
-## Usage
+#### Usage
 
 Simply pass your `Marker`/`CustomMarker`(s) in the `default` slot of the `MarkerCluster` component.
 
