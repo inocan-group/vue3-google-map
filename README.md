@@ -614,7 +614,7 @@ The basic components that `vue3-google-map` provides are fully reactive and will
 - `api`: The [Google Maps API](https://developers.google.com/maps/documentation/javascript/reference).
 - `mapTilesLoaded`: A boolean indicating when the map tiles have been fully loaded.
 
-Some useage patterns:
+Some usage patterns:
 
 ```vue
 <template>
