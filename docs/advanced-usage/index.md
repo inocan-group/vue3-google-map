@@ -32,10 +32,10 @@ import { GoogleMap } from 'vue3-google-map'
 export default defineComponent({
   components: { GoogleMap },
   setup() {
-   const mapRef = ref(null)
+    const mapRef = ref(null)
 
-   // Second pattern: compute some value using the API or map instance when "ready"
-   const markerIcon = computed(() => mapRef.value?.ready
+    // Second pattern: compute some value using the API or map instance when "ready"
+    const markerIcon = computed(() => mapRef.value?.ready
       ? {
         url: /* icon image url */,
         scaledSize: new mapRef.value.api.Size(20, 20)
