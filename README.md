@@ -614,7 +614,7 @@ The basic components that `vue3-google-map` provides are fully reactive and will
 - `api`: The [Google Maps API](https://developers.google.com/maps/documentation/javascript/reference).
 - `mapTilesLoaded`: A boolean indicating when the map tiles have been fully loaded.
 
-Some useage patterns:
+Some usage patterns:
 
 ```vue
 <template>
@@ -636,8 +636,8 @@ export default defineComponent({
   setup() {
     const mapRef = ref(null)
 
-   // Second pattern: compute some value using the API or map instance when "ready"
-   markerIcon = computed(() => mapRef.value.ready
+    // Second pattern: compute some value using the API or map instance when "ready"
+    const markerIcon = computed(() => mapRef.value?.ready
       ? {
         url: /* icon image url */,
         scaledSize: new mapRef.value.api.Size(20, 20)
@@ -645,7 +645,7 @@ export default defineComponent({
       : null)
 
     // Third pattern: watch for "ready" then do something with the API or map instance
-    watch(() => mapRef.value.ready, (ready) => {
+    watch(() => mapRef.value?.ready, (ready) => {
       if (!ready) return
 
       // do something with the api using `mapRef.value.api`
