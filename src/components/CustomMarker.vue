@@ -6,7 +6,6 @@
     :style="{ cursor: !!$attrs.onClick ? 'pointer' : undefined }"
   >
     <slot />
-    <slot name="info-windows" />
   </div>
 </template>
 
