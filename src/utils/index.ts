@@ -11,7 +11,7 @@ interface ICustomMarkerCtor {
 export function createCustomMarkerClass(api: typeof google.maps): ICustomMarkerCtor {
   return class CustomMarker extends api.OverlayView {
     private element?: HTMLElement;
-    private opts: Omit<google.maps.CustomMarkerOptions, "element">;
+    private opts: google.maps.CustomMarkerOptions;
 
     constructor(opts: google.maps.CustomMarkerOptions & { element?: HTMLElement }) {
       super();
