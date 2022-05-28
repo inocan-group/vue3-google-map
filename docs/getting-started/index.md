@@ -26,7 +26,7 @@ Include the following script tag in your `index.html` (make sure to include it a
 
 ## Your first map
 
-To construct a map using `vue3-google-map` you'll need to use the base `GoogleMap` component which receives your [Google Maps API key](https://developers.google.com/maps/documentation/javascript/get-api-key), styles (e.g. setting width and height), and any [MapOptions](https://developers.google.com/maps/documentation/javascript/reference/map#MapOptions) to configure your map ([see this](https://github.com/inocan-group/vue3-google-map/blob/develop/src/components/GoogleMap.vue#L30-L209) for a all the supported `MapOptions`).
+To construct a map using `vue3-google-map` you'll need to use the base `GoogleMap` component which receives your [Google Maps API key](https://developers.google.com/maps/documentation/javascript/get-api-key), styles (e.g. setting width and height), and any [MapOptions](https://developers.google.com/maps/documentation/javascript/reference/map#MapOptions) to configure your map ([see this](https://github.com/inocan-group/vue3-google-map/blob/develop/src/components/GoogleMap.vue#L57-L218) for a all the supported `MapOptions`).
 Other map features can be added to your map by passing map subcomponents ([Marker](/components/marker), [Polyline](/components/polyline), [Polygon](/components/polygon), [Rectangle](/components/rectangle), [Circle](/components/circle), or [CustomControl](/components/custom-control)) to the default slot of the `GoogleMap` component.
 
 <!-- prettier-ignore -->
