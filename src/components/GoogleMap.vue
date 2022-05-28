@@ -1,9 +1,11 @@
 <script lang="ts">
 import { defineComponent, PropType, ref, onMounted, onBeforeUnmount, watch, toRef, provide, markRaw } from "vue";
-import { mapSymbol, apiSymbol, loaderInstance, mapTilesLoadedSymbol, customMarkerClassSymbol } from "../shared/index";
+import { mapSymbol, apiSymbol, mapTilesLoadedSymbol, customMarkerClassSymbol } from "../shared/index";
 import { Loader } from "@googlemaps/js-api-loader";
 import { createCustomMarkerClass } from "../utils";
 import { IControlPosition } from "../@types/index";
+
+let loaderInstance: Loader | undefined;
 
 const mapEvents = [
   "bounds_changed",
@@ -29,6 +31,9 @@ const mapEvents = [
 
 export default defineComponent({
   props: {
+    apiPromise: {
+      type: Promise as PropType<Promise<typeof google>>,
+    },
     apiKey: {
       type: String,
       default: "",
@@ -277,47 +282,56 @@ export default defineComponent({
     const loadMapsAPI = () => {
       try {
         const { apiKey, region, version, language, libraries } = props;
-        loaderInstance.value = new Loader({ apiKey, region, version, language, libraries });
+        loaderInstance = new Loader({ apiKey, region, version, language, libraries });
       } catch (err) {
         // Loader instantiated again with different options, which isn't allowed by js-api-loader
         console.error(err);
       }
     };
 
-    onMounted(() => {
-      loadMapsAPI();
+    const setupMap = (_google: typeof google) => {
+      api.value = markRaw(_google.maps);
+      map.value = markRaw(new _google.maps.Map(mapRef.value as HTMLElement, resolveOptions()));
+      const CustomMarker = createCustomMarkerClass(api.value);
+      api.value[customMarkerClassSymbol] = CustomMarker;
 
-      (loaderInstance.value as Loader).load().then(() => {
-        api.value = markRaw(google.maps);
-        map.value = markRaw(new google.maps.Map(mapRef.value as HTMLElement, resolveOptions()));
-        const CustomMarker = createCustomMarkerClass(api.value);
-        api.value[customMarkerClassSymbol] = CustomMarker;
-
-        mapEvents.forEach((event) => {
-          map.value?.addListener(event, (e: unknown) => emit(event, e));
-        });
-
-        ready.value = true;
-
-        const otherPropsAsRefs = (Object.keys(props) as (keyof typeof props)[])
-          .filter((key) => !["center", "zoom"].includes(key))
-          .map((key) => toRef(props, key));
-
-        watch(
-          [() => props.center, () => props.zoom, ...otherPropsAsRefs] as const,
-          ([center, zoom], [oldCenter, oldZoom]) => {
-            // eslint-disable-next-line @typescript-eslint/no-unused-vars
-            const { center: _, zoom: __, ...otherOptions } = resolveOptions();
-
-            map.value?.setOptions(otherOptions);
-
-            if (zoom !== undefined && zoom !== oldZoom) map.value?.setZoom(zoom);
-
-            const centerHasChanged = !oldCenter || center.lng !== oldCenter.lng || center.lat !== oldCenter.lat;
-            if (center && centerHasChanged) map.value?.panTo(center);
-          }
-        );
+      mapEvents.forEach((event) => {
+        map.value?.addListener(event, (e: unknown) => emit(event, e));
       });
+
+      ready.value = true;
+
+      const otherPropsAsRefs = (Object.keys(props) as (keyof typeof props)[])
+        .filter(
+          (key) =>
+            !["apiPromise", "apiKey", "version", "libraries", "region", "language", "center", "zoom"].includes(key)
+        )
+        .map((key) => toRef(props, key));
+
+      watch(
+        [() => props.center, () => props.zoom, ...otherPropsAsRefs] as const,
+        ([center, zoom], [oldCenter, oldZoom]) => {
+          // eslint-disable-next-line @typescript-eslint/no-unused-vars
+          const { center: _, zoom: __, ...otherOptions } = resolveOptions();
+
+          map.value?.setOptions(otherOptions);
+
+          if (zoom !== undefined && zoom !== oldZoom) map.value?.setZoom(zoom);
+
+          const centerHasChanged = !oldCenter || center.lng !== oldCenter.lng || center.lat !== oldCenter.lat;
+          if (center && centerHasChanged) map.value?.panTo(center);
+        }
+      );
+    };
+
+    onMounted(() => {
+      if (props.apiPromise && props.apiPromise instanceof Promise) {
+        props.apiPromise.then(setupMap);
+      } else {
+        loadMapsAPI();
+
+        (loaderInstance as Loader).load().then(setupMap);
+      }
     });
 
     onBeforeUnmount(() => {
