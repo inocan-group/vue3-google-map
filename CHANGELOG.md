@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [0.13.0](https://github.com/inocan-group/vue3-google-maps/compare/v0.12.0...v0.13.0) (2022-05-28)
+
+
+### Features
+
+* allow loading api script externally ([2a55b60](https://github.com/inocan-group/vue3-google-maps/commit/2a55b60ae57fedf0e5315cb696bbbf9f70a1c2ae))
+
 ## [0.12.0](https://github.com/inocan-group/vue3-google-maps/compare/v0.10.0...v0.12.0) (2022-05-19)
 
 
