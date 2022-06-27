@@ -2,6 +2,14 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.13.1](https://github.com/inocan-group/vue3-google-maps/compare/v0.13.0...v0.13.1) (2022-06-27)
+
+
+### Bug Fixes
+
+* dom management conflicts in custom markers ([f8f6bef](https://github.com/inocan-group/vue3-google-maps/commit/f8f6beff78a37499e981354dd51f81b1db1eaa6a))
+* dom management conflicts in info windows ([1d6e269](https://github.com/inocan-group/vue3-google-maps/commit/1d6e26938012b09e7f17a0276085a8935902dcc9))
+
 ## [0.13.0](https://github.com/inocan-group/vue3-google-maps/compare/v0.12.0...v0.13.0) (2022-05-28)
 
 
