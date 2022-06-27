@@ -1,6 +1,8 @@
 <template>
-  <div ref="infoWindowRef" v-if="hasSlotContent" class="info-window-content">
-    <slot />
+  <div v-if="hasSlotContent" class="info-window-wrapper">
+    <div ref="infoWindowRef">
+      <slot />
+    </div>
   </div>
 </template>
 
@@ -104,11 +106,11 @@ export default defineComponent({
 </script>
 
 <style scoped>
-.info-window-content {
+.info-window-wrapper {
   display: none;
 }
 
-.mapdiv .info-window-content {
+.mapdiv .info-window-wrapper {
   display: inline-block;
 }
 </style>
