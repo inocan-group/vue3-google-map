@@ -1,11 +1,8 @@
 <template>
-  <div
-    ref="customMarkerRef"
-    v-if="hasSlotContent"
-    class="custom-marker-content"
-    :style="{ cursor: !!$attrs.onClick ? 'pointer' : undefined }"
-  >
-    <slot />
+  <div v-if="hasSlotContent" class="custom-marker-wrapper">
+    <div ref="customMarkerRef" :style="{ cursor: !!$attrs.onClick ? 'pointer' : undefined }">
+      <slot />
+    </div>
   </div>
 </template>
 
@@ -41,11 +38,11 @@ export default defineComponent({
 </script>
 
 <style scoped>
-.custom-marker-content {
+.custom-marker-wrapper {
   display: none;
 }
 
-.mapdiv .custom-marker-content {
+.mapdiv .custom-marker-wrapper {
   display: inline-block;
 }
 </style>
