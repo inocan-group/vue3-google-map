@@ -1,6 +1,6 @@
 <template>
   <div v-if="hasSlotContent" class="custom-marker-wrapper">
-    <div ref="customMarkerRef" :style="{ cursor: !!$attrs.onClick ? 'pointer' : undefined }">
+    <div ref="customMarkerRef" :style="{ cursor: !!$attrs.onClick ? 'pointer' : undefined }" v-bind="$attrs">
       <slot />
     </div>
   </div>
@@ -12,6 +12,8 @@ import { customMarkerClassSymbol } from "../shared/index";
 import { useSetupMapComponent } from "../composables/index";
 
 export default defineComponent({
+  inheritAttrs: false,
+
   props: {
     options: {
       type: Object as PropType<google.maps.CustomMarkerOptions>,

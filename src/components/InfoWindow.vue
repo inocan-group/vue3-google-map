@@ -1,6 +1,6 @@
 <template>
   <div v-if="hasSlotContent" class="info-window-wrapper">
-    <div ref="infoWindowRef">
+    <div ref="infoWindowRef" v-bind="$attrs">
       <slot />
     </div>
   </div>
@@ -24,6 +24,8 @@ import { apiSymbol, mapSymbol, markerSymbol } from "../shared/index";
 const infoWindowEvents = ["closeclick", "content_changed", "domready", "position_changed", "visible", "zindex_changed"];
 
 export default defineComponent({
+  inheritAttrs: false,
+
   props: {
     options: {
       type: Object as PropType<google.maps.InfoWindowOptions>,
