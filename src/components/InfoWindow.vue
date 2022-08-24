@@ -61,7 +61,7 @@ export default defineComponent({
 
               if (!anchor.value) infoWindow.value.open({ map: map.value });
             } else {
-              infoWindow.value = infoWindow.value = markRaw(
+              infoWindow.value = markRaw(
                 new api.value.InfoWindow({
                   ...options,
                   content: hasSlotContent.value ? infoWindowRef.value : options.content,
