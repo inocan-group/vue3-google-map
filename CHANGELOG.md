@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.14.0](https://github.com/inocan-group/vue3-google-maps/compare/v0.13.2...v0.14.0) (2022-08-24)
+
+
+### Features
+
+* heatmap layer ([d961636](https://github.com/inocan-group/vue3-google-maps/commit/d9616368e3aa263b45ad805058d73ae7e5c25ed2))
+
 ### [0.13.2](https://github.com/inocan-group/vue3-google-maps/compare/v0.13.1...v0.13.2) (2022-06-28)
 
 
