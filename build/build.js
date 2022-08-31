@@ -1,9 +1,3 @@
-/* eslint-disable unicorn/no-process-exit */
-/* eslint-disable unicorn/import-style */
-/* eslint-disable unicorn/prefer-module */
-
-// @ts-nocheck
-/* eslint-disable import/order */
 /* eslint-disable @typescript-eslint/no-var-requires */
 const rollup = require("rollup");
 const commonjs = require("@rollup/plugin-commonjs");
@@ -20,7 +14,6 @@ const vue = require("@vitejs/plugin-vue");
 const postcss = require("rollup-plugin-postcss");
 const { existsSync, statSync } = require("fs");
 const { exit } = require("process");
-const { join } = require("path");
 
 const moduleSystems = process.argv.slice(2).filter((i) => !i.startsWith("-"));
 const switches = new Set(
@@ -33,7 +26,6 @@ const switches = new Set(
 // makes all non-core deps external; allowing consuming app to gain better reuse
 const external = [
   ...(pkg.peerDependencies ? Object.keys(pkg.peerDependencies) : []),
-  // @ts-ignore
   ...(pkg.optionalDependencies ? Object.keys(pkg.optionalDependencies) : []),
   ...builtinModules,
 ].map((i) => i.replace("@types/", ""));
@@ -44,10 +36,8 @@ const globals = {};
 function getFilenameByModule(mod) {
   const shortname = getModuleShortname(mod);
   const outputFile = {
-    // @ts-ignore
     es: pkg.module,
     cjs: pkg.main,
-    // @ts-ignore
     typings: pkg.typings || pkg.types,
   };
 
@@ -91,11 +81,7 @@ const moduleConfig = (moduleSystem, file, emitDeclaration) => {
       exit(1);
     }
     const outDir = inferDirectory(file);
-    // @ts-ignore
-    const declarationDir = pkg.typings
-      ? // @ts-ignore
-        inferDirectory(pkg.typings)
-      : "dist/types";
+    const declarationDir = pkg.typings ? inferDirectory(pkg.typings) : "dist/types";
     console.log(`- the source's entrypoint is "${input}" and output will be put in "${outDir}" folder`);
     if (emitDeclaration) {
       console.log(`- the typings will also be generated and placed in the "${declarationDir}" directory`);
@@ -129,13 +115,7 @@ const moduleConfig = (moduleSystem, file, emitDeclaration) => {
           useTsconfigDeclarationDir: true,
           tsconfigOverride,
         }),
-        ...(getModuleShortname(moduleSystem) === "es" &&
-        // @ts-ignore
-        (process.env.ANALYZE || switches.analyze)
-          ? // @ts-ignore
-            [analyze()]
-          : []),
-        // @ts-ignore
+        ...(getModuleShortname(moduleSystem) === "es" && (process.env.ANALYZE || switches.analyze) ? [analyze()] : []),
         ...(switches.has("closure") ? [closure()] : []),
         ...(switches.has("min") ? [terser()] : []),
       ],
@@ -159,7 +139,6 @@ async function buildModule(m, emitDeclaration) {
     if (switches.has("closure")) {
       console.log("- using closure compiler to minimize file size");
     }
-    // @ts-ignore
     if (getModuleShortname(m) === "es" && !pkg.module) {
       console.log(
         "- 🤨 while you are building for the ES module system your package.json doesn't specify a \"module\" entrypoint."
@@ -177,7 +156,6 @@ async function buildModule(m, emitDeclaration) {
     await bundle.write({
       ...(usesGlobalVars(m) ? { name: pkg.name.replace(/-/g, ""), globals } : {}),
       file,
-      // @ts-ignore
       format: getModuleShortname(m).startsWith("es") ? "es" : m,
       exports: "auto",
       sourcemap: false,
