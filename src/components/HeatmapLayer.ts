@@ -25,10 +25,12 @@ export default defineComponent({
       ([_, options], [oldMap, oldOptions]) => {
         const checkIfChanged = JSON.stringify(options) !== JSON.stringify(oldOptions) || map.value !== oldMap;
         if (map.value && api.value && checkIfChanged) {
-          if (options.data && !(options.data instanceof api.value.MVCArray)) {
+          const opts: ExtendedHeatmapLayerOptions = structuredClone(options);
+
+          if (opts.data && !(opts.data instanceof api.value.MVCArray)) {
             const LatLng = api.value.LatLng;
 
-            options.data = options.data?.map((point) => {
+            opts.data = opts.data?.map((point) => {
               if (
                 point instanceof LatLng ||
                 ("location" in point && (point.location instanceof LatLng || point.location === null))
@@ -45,11 +47,11 @@ export default defineComponent({
           }
 
           if (heatmapLayer.value) {
-            heatmapLayer.value.setOptions(options as HeatmapLayerOptions);
+            heatmapLayer.value.setOptions(opts as HeatmapLayerOptions);
           } else {
             heatmapLayer.value = markRaw(
               new api.value.visualization.HeatmapLayer({
-                ...options,
+                ...opts,
                 map: map.value,
               } as HeatmapLayerOptions)
             );
@@ -65,6 +67,7 @@ export default defineComponent({
       }
     });
 
-    return heatmapLayer;
+    return { heatmapLayer };
   },
+  render: () => null,
 });
