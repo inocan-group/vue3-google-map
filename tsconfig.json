@@ -18,7 +18,7 @@
       "/@src/*": ["src/*"]
     },
     "types": ["google.maps"],
-    "lib": ["es2020", "dom", "dom.iterable", "scripthost"]
+    "lib": ["es2021", "dom", "dom.iterable", "scripthost"]
   },
   "include": ["src", "docs"]
 }
