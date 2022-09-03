@@ -19,6 +19,7 @@ import {
   onMounted,
   markRaw,
 } from "vue";
+import equal from "fast-deep-equal";
 import { apiSymbol, mapSymbol, markerSymbol } from "../shared/index";
 
 const infoWindowEvents = ["closeclick", "content_changed", "domready", "position_changed", "visible", "zindex_changed"];
@@ -50,9 +51,9 @@ export default defineComponent({
       watch(
         [map, () => props.options],
         ([_, options], [oldMap, oldOptions]) => {
-          const checkIfChanged = JSON.stringify(options) !== JSON.stringify(oldOptions) || map.value !== oldMap;
+          const hasChanged = !equal(options, oldOptions) || map.value !== oldMap;
 
-          if (map.value && api.value && checkIfChanged) {
+          if (map.value && api.value && hasChanged) {
             if (infoWindow.value) {
               infoWindow.value.setOptions({
                 ...options,

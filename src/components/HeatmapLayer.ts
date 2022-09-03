@@ -1,4 +1,5 @@
 import { defineComponent, PropType, ref, inject, watch, markRaw, onBeforeUnmount } from "vue";
+import equal from "fast-deep-equal";
 import { mapSymbol, apiSymbol } from "../shared/index";
 
 type HeatmapLayerOptions = google.maps.visualization.HeatmapLayerOptions;
@@ -23,8 +24,9 @@ export default defineComponent({
     watch(
       [map, () => props.options],
       ([_, options], [oldMap, oldOptions]) => {
-        const checkIfChanged = JSON.stringify(options) !== JSON.stringify(oldOptions) || map.value !== oldMap;
-        if (map.value && api.value && checkIfChanged) {
+        const hasChanged = !equal(options, oldOptions) || map.value !== oldMap;
+
+        if (map.value && api.value && hasChanged) {
           const opts: ExtendedHeatmapLayerOptions = structuredClone(options);
 
           if (opts.data && !(opts.data instanceof api.value.MVCArray)) {

@@ -1,4 +1,5 @@
 import { watch, ref, Ref, inject, onBeforeUnmount, computed, markRaw } from "vue";
+import equal from "fast-deep-equal";
 import { apiSymbol, mapSymbol, markerClusterSymbol, customMarkerClassSymbol } from "../shared/index";
 
 type ICtorKey = "Marker" | "Polyline" | "Polygon" | "Rectangle" | "Circle" | typeof customMarkerClassSymbol;
@@ -62,8 +63,9 @@ export const useSetupMapComponent = <T extends ICtorKey>(
   watch(
     [map, options],
     (_, [oldMap, oldOptions]) => {
-      const checkIfChanged = JSON.stringify(options.value) !== JSON.stringify(oldOptions) || map.value !== oldMap;
-      if (map.value && api.value && checkIfChanged) {
+      const hasChanged = !equal(options.value, oldOptions) || map.value !== oldMap;
+
+      if (map.value && api.value && hasChanged) {
         if (component.value) {
           // eslint-disable-next-line @typescript-eslint/no-explicit-any
           component.value.setOptions(options.value as any);
