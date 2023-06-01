@@ -47,6 +47,9 @@ export default defineComponent({
 
     const hasSlotContent = computed(() => slots.default?.().some((vnode) => vnode.type !== Comment));
 
+    const open = (...opts) => infoWindow.value?.open({map: map.value, anchor: anchor.value, ...opts});
+    const close = () => infoWindow.value?.close();
+
     onMounted(() => {
       watch(
         [map, () => props.options],
@@ -60,7 +63,7 @@ export default defineComponent({
                 content: hasSlotContent.value ? infoWindowRef.value : options.content,
               });
 
-              if (!anchor.value) infoWindow.value.open({ map: map.value });
+              if (!anchor.value) open();
             } else {
               infoWindow.value = markRaw(
                 new api.value.InfoWindow({
@@ -71,15 +74,10 @@ export default defineComponent({
 
               if (anchor.value) {
                 anchorClickListener = anchor.value.addListener("click", () => {
-                  if (!infoWindow.value) return;
-
-                  infoWindow.value.open({
-                    map: map.value,
-                    anchor: anchor.value,
-                  });
+                  open();
                 });
               } else {
-                infoWindow.value.open({ map: map.value });
+                open();
               }
 
               infoWindowEvents.forEach((event) => {
@@ -93,17 +91,17 @@ export default defineComponent({
         }
       );
     });
-
+    
     onBeforeUnmount(() => {
       if (anchorClickListener) anchorClickListener.remove();
 
       if (infoWindow.value) {
         api.value?.event.clearInstanceListeners(infoWindow.value);
-        infoWindow.value.close();
+        close();
       }
     });
 
-    return { infoWindow, infoWindowRef, hasSlotContent };
+    return { infoWindow, infoWindowRef, hasSlotContent, open, close };
   },
 });
 </script>
