@@ -36,7 +36,7 @@ export default defineComponent({
 
   emits: infoWindowEvents,
 
-  setup(props, { slots, emit }) {
+  setup(props, { slots, emit, expose }) {
     const infoWindow = ref<google.maps.InfoWindow>();
     const infoWindowRef = ref<HTMLElement>();
 
@@ -47,7 +47,8 @@ export default defineComponent({
 
     const hasSlotContent = computed(() => slots.default?.().some((vnode) => vnode.type !== Comment));
 
-    const open = (...opts) => infoWindow.value?.open({map: map.value, anchor: anchor.value, ...opts});
+    const open = (opts?: google.maps.InfoWindowOpenOptions) =>
+      infoWindow.value?.open({ map: map.value, anchor: anchor.value, ...opts });
     const close = () => infoWindow.value?.close();
 
     onMounted(() => {
@@ -91,7 +92,7 @@ export default defineComponent({
         }
       );
     });
-    
+
     onBeforeUnmount(() => {
       if (anchorClickListener) anchorClickListener.remove();
 
@@ -100,6 +101,8 @@ export default defineComponent({
         close();
       }
     });
+
+    expose({ infoWindow, open, close });
 
     return { infoWindow, infoWindowRef, hasSlotContent, open, close };
   },
