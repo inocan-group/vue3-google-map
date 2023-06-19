@@ -65,43 +65,43 @@ export const useSetupMapComponent = <T extends ICtorKey>(
     (_, [oldMap, oldOptions]) => {
       const hasChanged = !equal(options.value, oldOptions) || map.value !== oldMap;
 
-      if (map.value && api.value && hasChanged) {
-        if (component.value) {
-          // eslint-disable-next-line @typescript-eslint/no-explicit-any
-          component.value.setOptions(options.value as any);
+      if (!map.value || !api.value || !hasChanged) return;
 
-          if (isMarkerInCluster.value) {
-            markerCluster.value?.removeMarker(component.value as google.maps.Marker);
-            markerCluster.value?.addMarker(component.value as google.maps.Marker);
-          }
-        } else {
-          if (isMarkerCtorKey(ctorKey)) {
-            component.value = markRaw(
-              new api.value[ctorKey](options.value as IComponentOptions<typeof ctorKey>)
-            ) as IComponent<typeof ctorKey>;
-          } else if (isCustomMarkerCtorKey(ctorKey)) {
-            component.value = markRaw(
-              new api.value[ctorKey](options.value as IComponentOptions<typeof ctorKey>)
-            ) as IComponent<typeof ctorKey>;
-          } else {
-            component.value = markRaw(
-              new api.value[ctorKey]({
-                ...options.value,
-                map: map.value,
-              } as IShapeOptions)
-            ) as IShape;
-          }
+      if (component.value) {
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        component.value.setOptions(options.value as any);
 
-          if (isMarkerInCluster.value) {
-            markerCluster.value?.addMarker(component.value as google.maps.Marker);
-          } else {
-            component.value.setMap(map.value);
-          }
-
-          events.forEach((event) => {
-            component.value?.addListener(event, (e: unknown) => emit(event, e));
-          });
+        if (isMarkerInCluster.value) {
+          markerCluster.value?.removeMarker(component.value as google.maps.Marker);
+          markerCluster.value?.addMarker(component.value as google.maps.Marker);
         }
+      } else {
+        if (isMarkerCtorKey(ctorKey)) {
+          component.value = markRaw(
+            new api.value[ctorKey](options.value as IComponentOptions<typeof ctorKey>)
+          ) as IComponent<typeof ctorKey>;
+        } else if (isCustomMarkerCtorKey(ctorKey)) {
+          component.value = markRaw(
+            new api.value[ctorKey](options.value as IComponentOptions<typeof ctorKey>)
+          ) as IComponent<typeof ctorKey>;
+        } else {
+          component.value = markRaw(
+            new api.value[ctorKey]({
+              ...options.value,
+              map: map.value,
+            } as IShapeOptions)
+          ) as IShape;
+        }
+
+        if (isMarkerInCluster.value) {
+          markerCluster.value?.addMarker(component.value as google.maps.Marker);
+        } else {
+          component.value.setMap(map.value);
+        }
+
+        events.forEach((event) => {
+          component.value?.addListener(event, (e: unknown) => emit(event, e));
+        });
       }
     },
     {
