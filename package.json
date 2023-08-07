@@ -18,11 +18,13 @@
   "exports": {
     ".": {
       "import": "./dist/index.es.js",
-      "require": "./dist/index.cjs.js"
+      "require": "./dist/index.cjs.js",
+      "types": "./dist/types/index.d.ts"
     },
     "./themes": {
       "import": "./dist/themes/index.es.js",
-      "require": "./dist/themes/index.cjs.js"
+      "require": "./dist/themes/index.cjs.js",
+      "types": "./dist/types/themes/index.d.ts"
     },
     "./package.json": "./package.json"
   },
