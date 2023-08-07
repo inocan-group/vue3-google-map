@@ -1,11 +1,11 @@
 import type { MarkerClusterer } from "@googlemaps/markerclusterer";
 import { InjectionKey, Ref } from "vue";
 
-export const mapSymbol: InjectionKey<Ref<google.maps.Map>> = Symbol("map");
-export const apiSymbol: InjectionKey<Ref<typeof google.maps>> = Symbol("api");
-export const markerSymbol: InjectionKey<Ref<google.maps.Marker>> = Symbol("marker");
-export const markerClusterSymbol: InjectionKey<Ref<MarkerClusterer>> = Symbol("markerCluster");
-export const customMarkerClassSymbol = Symbol("CustomMarker") as unknown as "CustomMarker";
+export const mapSymbol: InjectionKey<Ref<google.maps.Map | undefined>> = Symbol("map");
+export const apiSymbol: InjectionKey<Ref<typeof google.maps | undefined>> = Symbol("api");
+export const markerSymbol: InjectionKey<Ref<google.maps.Marker | undefined>> = Symbol("marker");
+export const markerClusterSymbol: InjectionKey<Ref<MarkerClusterer | undefined>> = Symbol("markerCluster");
+export const customMarkerClassSymbol = (Symbol("CustomMarker") as unknown) as "CustomMarker";
 /**
  * Utilitary flag for components that need to know the map
  * was fully loaded (including its tiles) to decide their behavior
