@@ -1,9 +1,7 @@
 import { createCustomMarkerClass } from "./utils";
 
 declare global {
-  // eslint-disable-next-line @typescript-eslint/no-namespace
   namespace google.maps {
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     interface CustomMarkerOptions {
       position?: google.maps.MarkerOptions["position"];
       map?: google.maps.Map | google.maps.StreetViewPanorama | null;
