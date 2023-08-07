@@ -2,6 +2,19 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.16.0](https://github.com/inocan-group/vue3-google-maps/compare/v0.15.0...v0.16.0) (2023-08-07)
+
+
+### Features
+
+* expose open and close methods on InfoWindow ([d21dfba](https://github.com/inocan-group/vue3-google-maps/commit/d21dfbaea309c94d9c9ce8a8a58676cd1760b768))
+* info window enhancements ([57c895d](https://github.com/inocan-group/vue3-google-maps/commit/57c895d14104dfa48467fd5e46797db9f3723363))
+
+
+### Bug Fixes
+
+* expose custom marker ([68f5a3e](https://github.com/inocan-group/vue3-google-maps/commit/68f5a3e2244e9a51abb3a7ccc3ebc394e3050b4b))
+
 ### [0.15.0](https://github.com/inocan-group/vue3-google-maps/compare/v0.14.1...v0.15.0) (2022-09-03)
 
 ### [0.14.1](https://github.com/inocan-group/vue3-google-maps/compare/v0.14.0...v0.14.1) (2022-08-31)
