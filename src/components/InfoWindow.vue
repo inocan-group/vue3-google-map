@@ -32,9 +32,12 @@ export default defineComponent({
       type: Object as PropType<google.maps.InfoWindowOptions>,
       default: () => ({}),
     },
+    modelValue: {
+      type: Boolean,
+    },
   },
 
-  emits: infoWindowEvents,
+  emits: [...infoWindowEvents, "update:modelValue"],
 
   setup(props, { slots, emit, expose }) {
     const infoWindow = ref<google.maps.InfoWindow>();
@@ -44,12 +47,26 @@ export default defineComponent({
     const api = inject(apiSymbol, ref());
     const anchor = inject(markerSymbol, ref());
     let anchorClickListener: google.maps.MapsEventListener;
+    let internalVal = false; // Doesn't need to be reactive
 
     const hasSlotContent = computed(() => slots.default?.().some((vnode) => vnode.type !== Comment));
 
-    const open = (opts?: google.maps.InfoWindowOpenOptions) =>
-      infoWindow.value?.open({ map: map.value, anchor: anchor.value, ...opts });
-    const close = () => infoWindow.value?.close();
+    const updateVModel = (val) => {
+      internalVal = val;
+      emit('update:modelValue', val);
+    }
+    const open = (opts?: google.maps.InfoWindowOpenOptions) => {
+      if (infoWindow.value) {
+        infoWindow.value.open({ map: map.value, anchor: anchor.value, ...opts });
+        updateVModel(true);
+      }
+    });
+    const close = () => {
+      if (infoWindow.value) {
+        infoWindow.value.close();
+        updateVModel(false);
+      }
+    });
 
     onMounted(() => {
       watch(
@@ -57,7 +74,7 @@ export default defineComponent({
         ([_, options], [oldMap, oldOptions]) => {
           const hasChanged = !equal(options, oldOptions) || map.value !== oldMap;
 
-          if (map.value && api.value && hasChanged) {
+          if (map.value && api.value && (hasChanged || internalVal)) {
             if (infoWindow.value) {
               infoWindow.value.setOptions({
                 ...options,
@@ -84,6 +101,7 @@ export default defineComponent({
               infoWindowEvents.forEach((event) => {
                 infoWindow.value?.addListener(event, (e: unknown) => emit(event, e));
               });
+              infoWindow.value?.addListener('closeclick', () => updateVModel(false));
             }
           }
         },
@@ -91,6 +109,12 @@ export default defineComponent({
           immediate: true,
         }
       );
+
+      watch(() => props.modelValue, (val) => {
+        if (val !== internalVal) {
+          val ? open() : close();
+        }
+      });
     });
 
     onBeforeUnmount(() => {
