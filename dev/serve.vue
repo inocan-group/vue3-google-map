@@ -1,5 +1,5 @@
 <script lang="ts">
-import { GoogleMap, Marker, CustomControl } from "/@src/components/index";
+import { GoogleMap, Marker, CustomControl } from "@/components/index";
 import { defineComponent, ref } from "vue";
 
 export default defineComponent({
@@ -12,7 +12,7 @@ export default defineComponent({
   setup() {
     const greet = () => alert("hi");
     const dist = ref(0);
-    const testControlPosition = ref("LEFT_CENTER");
+    const testControlPosition = ref<keyof typeof google.maps.ControlPosition>("LEFT_CENTER");
     const markers = ref([
       { position: { lat: 35 + 0.015, lng: -95 + 0.015 } },
       { position: { lat: 35 + 0.005, lng: -95 + 0.005 } },
@@ -48,7 +48,11 @@ export default defineComponent({
     <Marker :options="{ position: { lat: 35, lng: -95 + dist } }" />
     <Marker :options="{ position: { lat: 35, lng: -95 } }" @click="greet" />
     <Marker v-for="(marker, index) of markers" :key="index" :options="marker" @click="remove" />
-    <CustomControl v-for="index in parseInt(bottomControlQuantity)" :key="`control-${index}`" position="BOTTOM_CENTER">
+    <CustomControl
+      v-for="index in Math.floor(bottomControlQuantity)"
+      :key="`control-${index}`"
+      position="BOTTOM_CENTER"
+    >
       <button style="height: 20px; background: orange; color: white" @click="greet">[{{ index }}] Greet</button>
     </CustomControl>
 
