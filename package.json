@@ -32,7 +32,7 @@
         "dist/types/index.d.ts"
       ],
       "themes": [
-        "dist/themes/types/index.d.ts"
+        "dist/types/themes/index.d.ts"
       ]
     }
   },
