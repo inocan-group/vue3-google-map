@@ -2346,7 +2346,7 @@ packages:
     engines: {node: '>=0.4.7'}
     hasBin: true
     dependencies:
-      minimist: 1.2.5
+      minimist: 1.2.8
       neo-async: 2.6.2
       source-map: 0.6.1
       wordwrap: 1.0.0
@@ -2935,8 +2935,8 @@ packages:
       kind-of: 6.0.3
     dev: true
 
-  /minimist@1.2.5:
-    resolution: {integrity: sha512-FM9nNUYrRBAELZQT3xeZQ7fmMOBg6nWNmJKTcgsJeaLstP/UODVpGsr5OhXhhXg6f+qtJ8uiZ+PUxkDWcgIXLw==}
+  /minimist@1.2.8:
+    resolution: {integrity: sha512-2yyAR8qBkN3YuheJanUpWC5U3bb5osDywNB8RzDVlDwDHbocAJveqqj1u8+SVD7jkWT4yvsHCpWqqWqAxb0zCA==}
     dev: true
 
   /modify-values@1.0.1:
@@ -4139,7 +4139,7 @@ packages:
       markdown-it-container: 3.0.0
       markdown-it-emoji: 2.0.2
       markdown-it-table-of-contents: 0.5.2
-      minimist: 1.2.5
+      minimist: 1.2.8
       ora: 5.4.1
       polka: 0.5.2
       prismjs: 1.29.0
