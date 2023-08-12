@@ -46,7 +46,7 @@ Include the following script tag in your `index.html` (make sure to include it a
 <script src="https://unpkg.com/vue3-google-map"></script>
 ```
 
-All the map components are available on the `Vue3GoogeMap` global variable. 
+All the map components are available on the `Vue3GoogleMap` global variable. 
 
 [Codepen demo](https://codepen.io/husamibrahim/pen/poQXZbR)
 
