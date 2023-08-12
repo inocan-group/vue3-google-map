@@ -40,11 +40,15 @@ yarn add vue3-google-map
 
 #### CDN
 
-Include the following script tag in your `index.html` (make sure to include it after Vue 3).
+Include the following script tag in your `index.html` (make sure to include it after Vue 3's global build).
 
 ```html
 <script src="https://unpkg.com/vue3-google-map"></script>
 ```
+
+All the map components are available on the `Vue3GoogeMap` global variable. 
+
+[Codepen demo](https://codepen.io/husamibrahim/pen/poQXZbR)
 
 ### Your First Map
 
