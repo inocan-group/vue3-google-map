@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.17.0](https://github.com/inocan-group/vue3-google-maps/compare/v0.16.0...v0.17.0) (2023-08-12)
+
+
+### Features
+
+* **perf:** new default clustering algo ([#152](https://github.com/inocan-group/vue3-google-maps/issues/152)) ([3feb791](https://github.com/inocan-group/vue3-google-maps/commit/3feb791828f45066170e89aa94120a3cec36c447))
+
 ### [0.16.0](https://github.com/inocan-group/vue3-google-maps/compare/v0.15.0...v0.16.0) (2023-08-07)
 
 
