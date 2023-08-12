@@ -1,4 +1,6 @@
 # vue3-google-map
+![Build Status](https://github.com/inocan-group/vue3-google-map/actions/workflows/build.yml/badge.svg)
+[![License](https://img.shields.io/github/license/inocan-group/vue3-google-map)](https://github.com/inocan-group/vue3-google-map/blob/develop/LICENSE)
 
 > Composable components for easy use of Google Maps with Vue 3
 
