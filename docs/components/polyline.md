@@ -67,7 +67,7 @@ export default defineComponent({
 
 \
 <GoogleMap style="width: 100%; height: 500px" :center="{ lat: 0, lng: -180 }" :zoom="3">
-<Polyline :options="$page.frontmatter.flightPath" />
+<Polyline :options="$frontmatter.flightPath" />
 </GoogleMap>
 
 ## Events

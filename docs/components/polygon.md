@@ -69,7 +69,7 @@ export default defineComponent({
 
 \
 <GoogleMap style="width: 100%; height: 500px" :center="{ lat: 24.886, lng: -70.268 }" :zoom="5">
-<Polygon :options="$page.frontmatter.bermudaTriangle" />
+<Polygon :options="$frontmatter.bermudaTriangle" />
 </GoogleMap>
 
 ## Events
