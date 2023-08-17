@@ -71,7 +71,7 @@ devDependencies:
     specifier: ^4.4.9
     version: 4.4.9
   vitepress:
-    specifier: 1.0.0-rc.4
+    specifier: ^1.0.0-rc.4
     version: 1.0.0-rc.4(@algolia/client-search@4.19.1)(search-insights@2.7.0)
   vue:
     specifier: ^3.3.4
