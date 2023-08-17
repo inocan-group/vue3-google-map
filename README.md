@@ -4,27 +4,50 @@
 
 `vue3-google-map` offers a set of composable components for easy use of Google Maps in your Vue 3 projects.
 
-Note: Please refer to the [documentation site](https://vue3-google-map.netlify.app/) for rendered examples.
+Note: Please refer to the [documentation site](https://vue3-google-map.com/) for rendered examples.
 
 ## Table of Contents
 
-- [Getting Started](#getting-started)
-  - [Installation](#installation)
-  - [Your First Map](#your-first-map)
-- [Components](#components)
-  - [Marker](#marker)
-  - [Polyline](#polyline)
-  - [Polygon](#polygon)
-  - [Rectangle](#rectangle)
-  - [Circle](#circle)
-  - [Info Window](#info-window)
-  - [Custom Marker](#custom-marker)
-  - [Custom Control](#custom-control)
-  - [Marker Cluster](#marker-cluster)
-  - [Heatmap Layer](#heatmap-layer)
-- [Advanced Usage](#advanced-usage)
-- [Contribution](#contribution)
-- [License](#license)
+- [vue3-google-map](#vue3-google-map)
+  - [Table of Contents](#table-of-contents)
+  - [Getting Started](#getting-started)
+    - [Installation](#installation)
+      - [NPM](#npm)
+      - [CDN](#cdn)
+    - [Your First Map](#your-first-map)
+  - [Components](#components)
+    - [Marker](#marker)
+      - [Options](#options)
+      - [Events](#events)
+    - [Polyline](#polyline)
+      - [Options](#options-1)
+      - [Events](#events-1)
+    - [Polygon](#polygon)
+      - [Options](#options-2)
+      - [Events](#events-2)
+    - [Rectangle](#rectangle)
+      - [Options](#options-3)
+      - [Events](#events-3)
+    - [Circle](#circle)
+      - [Options](#options-4)
+      - [Events](#events-4)
+    - [Info Window](#info-window)
+      - [Options](#options-5)
+      - [Use with Marker](#use-with-marker)
+      - [Events](#events-5)
+    - [Custom Marker](#custom-marker)
+      - [Options](#options-6)
+    - [Custom Control](#custom-control)
+      - [Usage](#usage)
+    - [Marker Cluster](#marker-cluster)
+      - [Usage](#usage-1)
+      - [Options](#options-7)
+      - [Events](#events-6)
+    - [Heatmap Layer](#heatmap-layer)
+      - [Options](#options-8)
+  - [Advanced Usage](#advanced-usage)
+  - [Contribution](#contribution)
+  - [License](#license)
 
 ## Getting Started
 
@@ -46,7 +69,7 @@ Include the following script tag in your `index.html` (make sure to include it a
 <script src="https://unpkg.com/vue3-google-map"></script>
 ```
 
-All the map components are available on the `Vue3GoogeMap` global variable. 
+All the map components are available on the `Vue3GoogeMap` global variable.
 
 [Codepen demo](https://codepen.io/husamibrahim/pen/poQXZbR)
 
@@ -439,14 +462,13 @@ Regular markers can be customized a great deal but if you need to you can use th
 
 #### Options
 
-| Parameter | Type     | Description                |
-| :-------- | :------- | :------------------------- |
-| `position` | `{ lat: number, lng: number}` | Sets the marker position. |
+| Parameter     | Type                                                                                                                                            | Description                                                                             |
+| :------------ | :---------------------------------------------------------------------------------------------------------------------------------------------- | :-------------------------------------------------------------------------------------- |
+| `position`    | `{ lat: number, lng: number}`                                                                                                                   | Sets the marker position.                                                               |
 | `anchorPoint` | `'CENTER' \| 'TOP_CENTER' \|'BOTTOM_CENTER' \| 'LEFT_CENTER' \| 'RIGHT_CENTER' \| 'TOP_LEFT' \| 'TOP_RIGHT' \| 'BOTTOM_LEFT' \| 'BOTTOM_RIGHT'` | Sets how the marker is anchored relative to it's `position` point. Default is `CENTER`. |
-| `offsetX` | `number` | Horizontal offset from the `position` point. |
-| `offsetY` | `number` | Vertical offset from the `position` point. |
-| `zIndex` | `number` | `z-index` value of the marker. |
-
+| `offsetX`     | `number`                                                                                                                                        | Horizontal offset from the `position` point.                                            |
+| `offsetY`     | `number`                                                                                                                                        | Vertical offset from the `position` point.                                              |
+| `zIndex`      | `number`                                                                                                                                        | `z-index` value of the marker.                                                          |
 
 ```vue
 <template>
