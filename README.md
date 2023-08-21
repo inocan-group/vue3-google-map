@@ -37,7 +37,7 @@ Note: Please refer to the [documentation site](https://vue3-google-map.netlify.a
 ```bash
 npm install vue3-google-map
 # OR
-yarn add vue3-google-map
+pnpm add vue3-google-map
 ```
 
 #### CDN
