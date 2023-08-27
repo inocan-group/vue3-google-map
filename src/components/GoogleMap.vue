@@ -1,7 +1,7 @@
 <script lang="ts">
 import { defineComponent, PropType, ref, onMounted, onBeforeUnmount, watch, toRef, provide, markRaw } from "vue";
 import { mapSymbol, apiSymbol, mapTilesLoadedSymbol, customMarkerClassSymbol } from "../shared/index";
-import { Loader } from "@googlemaps/js-api-loader";
+import { Loader, Library } from "@googlemaps/js-api-loader";
 import { createCustomMarkerClass } from "../utils";
 import { IControlPosition } from "../@types/index";
 
@@ -269,8 +269,8 @@ export default defineComponent({
           api.event.addListenerOnce(map, "tilesloaded", () => {
             mapTilesLoaded.value = true;
           });
-          // As the watcher is imediately invoked if the api and the map was already loaded
-          // the watchStopHandler wasnt created because this function has not fully executed
+          // As the watcher is immediately invoked if the api and the map was already loaded
+          // the watchStopHandler wasn't created because this function has not fully executed
           // therefore i propagate the watchStopHandler execution on the event loop to ensure
           // it exists when its called.
           setTimeout(stopWatchingMapApiAndRef, 0);
@@ -282,7 +282,7 @@ export default defineComponent({
     const loadMapsAPI = () => {
       try {
         const { apiKey, region, version, language, libraries } = props;
-        loaderInstance = new Loader({ apiKey, region, version, language, libraries });
+        loaderInstance = new Loader({ apiKey, region, version, language, libraries: libraries as Library[] });
       } catch (err) {
         // Loader instantiated again with different options, which isn't allowed by js-api-loader
         console.error(err);

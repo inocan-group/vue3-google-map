@@ -101,8 +101,8 @@ export default defineComponent({
 \
 <GoogleMap style="width: 100%; height: 500px" :center="{ lat: 37.09, lng: -95.712 }" :zoom="4" mapTypeId="terrain">
 <Circle
-v-for="{ center, population } in $page.frontmatter.cities"
-:options="{ ...$page.frontmatter.circleStyles, center, radius: Math.sqrt(population) * 100 }"
+v-for="{ center, population } in $frontmatter.cities"
+:options="{ ...$frontmatter.circleStyles, center, radius: Math.sqrt(population) * 100 }"
 />
 </GoogleMap>
 

@@ -4,7 +4,7 @@ sidebar: auto
 
 # Themes
 
-`vue3-google-map` comse with a curated set of default themes for you to use. You can also define custom styles utilizing the Google Maps API.
+`vue3-google-map` comes with a curated set of default themes for you to use. You can also define custom styles utilizing the Google Maps API.
 
 ## Default Themes
 
@@ -61,7 +61,7 @@ select {
 ## Custom Styles
 
 ::: warning
-Please be aware that if you specify a default theme that it will overrride any custom styles you define.
+Please be aware that if you specify a default theme that it will override any custom styles you define.
 :::
 
 Alternatively you can define your own styles by passing them to the `styles` prop of the `GoogleMap` component. Please refer to the [Google Maps documentation](https://developers.google.com/maps/documentation/javascript/reference/map#MapOptions.styles) on custom styles.

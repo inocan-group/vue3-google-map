@@ -1,6 +1,6 @@
-const path = require("path");
+import { fileURLToPath } from "node:url";
 
-module.exports = {
+export default {
   title: "vue3-google-map",
   description: "vue3-google-map documentation",
   themeConfig: {
@@ -13,10 +13,10 @@ module.exports = {
         text: "Components",
         link: "/components/",
       },
-      // {
-      //   text: "Themes",
-      //   link: "/themes/",
-      // },
+      {
+        text: "Themes",
+        link: "/themes/",
+      },
       {
         text: "Advanced Usage",
         link: "/advanced-usage/",
@@ -67,7 +67,7 @@ module.exports = {
     ],
   },
   alias: {
-    "/@src": path.resolve(__dirname, "../../src"),
-    "/@docs": path.resolve(__dirname, ".."),
+    "@/lib": fileURLToPath(new URL("../../src/index.ts", import.meta.url)),
+    "/@docs": fileURLToPath(new URL("..", import.meta.url)),
   },
 };

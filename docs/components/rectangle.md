@@ -64,7 +64,7 @@ export default defineComponent({
 
 \
 <GoogleMap style="width: 100%; height: 500px" :center="{ lat: 33.678, lng: -116.243 }" :zoom="11" mapTypeId="terrain">
-<Rectangle :options="$page.frontmatter.rectangle" />
+<Rectangle :options="$frontmatter.rectangle" />
 </GoogleMap>
 
 ## Events
