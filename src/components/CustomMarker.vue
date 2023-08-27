@@ -7,6 +7,8 @@
 </template>
 
 <script lang="ts">
+// eslint-disable-next-line @typescript-eslint/triple-slash-reference
+/// <reference path="../shims-google-maps" />
 import { defineComponent, PropType, ref, computed, Comment } from "vue";
 import { customMarkerClassSymbol } from "../shared/index";
 import { useSetupMapComponent } from "../composables/index";

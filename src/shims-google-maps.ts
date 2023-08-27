@@ -1,6 +1,7 @@
 import { createCustomMarkerClass } from "./utils";
 
 declare global {
+  // eslint-disable-next-line @typescript-eslint/no-namespace
   namespace google.maps {
     interface CustomMarkerOptions {
       position?: google.maps.MarkerOptions["position"];
