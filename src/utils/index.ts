@@ -59,7 +59,7 @@ export function createCustomMarkerClass(api: typeof google.maps): ICustomMarkerC
       if (!this.element) return;
 
       const overlayProjection = this.getProjection();
-      const point = overlayProjection.fromLatLngToDivPixel(this.getPosition());
+      const point = overlayProjection?.fromLatLngToDivPixel(this.getPosition());
 
       if (point) {
         this.element.style.position = "absolute";
@@ -122,8 +122,11 @@ export function createCustomMarkerClass(api: typeof google.maps): ICustomMarkerC
       this.element.remove();
     }
 
-    setOptions(opts: google.maps.CustomMarkerOptions) {
-      this.opts = opts;
+    setOptions(opts: google.maps.CustomMarkerOptions & { element?: HTMLElement }) {
+      const { element, ...rest } = opts;
+
+      this.element = element;
+      this.opts = rest;
       this.draw();
     }
   };
