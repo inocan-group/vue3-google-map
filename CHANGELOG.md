@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.17.1](https://github.com/inocan-group/vue3-google-maps/compare/v0.17.0...v0.17.1) (2023-08-27)
+
+
+### Bug Fixes
+
+* custom markers reactivity ([4a06b12](https://github.com/inocan-group/vue3-google-maps/commit/4a06b12b800fcb49d013c8b3cd5279f7ee0b5f25))
+
 ### [0.17.0](https://github.com/inocan-group/vue3-google-maps/compare/v0.16.0...v0.17.0) (2023-08-12)
 
 
