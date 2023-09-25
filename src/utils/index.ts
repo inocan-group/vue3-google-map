@@ -63,8 +63,8 @@ export function createCustomMarkerClass(api: typeof google.maps): ICustomMarkerC
 
       if (point) {
         this.element.style.position = "absolute";
-        const height = this.opts.size && this.opts.size.height ? this.opts.size.height : this.element.offsetHeight;
-        const width = this.opts.size && this.opts.size.width ? this.opts.size.width : this.element.offsetWidth;
+        const height = this.element.offsetHeight;
+        const width = this.element.offsetWidth;
         let x: number, y: number;
         switch (this.opts.anchorPoint) {
           case "TOP_CENTER":
