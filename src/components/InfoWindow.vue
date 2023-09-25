@@ -55,18 +55,20 @@ export default defineComponent({
       internalVal = val;
       emit('update:modelValue', val);
     }
+
     const open = (opts?: google.maps.InfoWindowOpenOptions) => {
       if (infoWindow.value) {
         infoWindow.value.open({ map: map.value, anchor: anchor.value, ...opts });
         updateVModel(true);
       }
-    });
+    };
+
     const close = () => {
       if (infoWindow.value) {
         infoWindow.value.close();
         updateVModel(false);
       }
-    });
+    };
 
     onMounted(() => {
       watch(
@@ -114,6 +116,8 @@ export default defineComponent({
         if (val !== internalVal) {
           val ? open() : close();
         }
+      }, {
+        immediate: true
       });
     });
 
