@@ -19,7 +19,6 @@ declare global {
       offsetX?: number;
       offsetY?: number;
       zIndex?: number | null;
-      size?: { width: number; height: number };
     }
 
     export let CustomMarker: ReturnType<typeof createCustomMarkerClass>;
