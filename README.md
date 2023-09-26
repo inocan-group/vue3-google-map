@@ -48,7 +48,7 @@ Include the following script tag in your `index.html` (make sure to include it a
 <script src="https://unpkg.com/vue3-google-map"></script>
 ```
 
-All the map components are available on the `Vue3GoogleMap` global variable. 
+All the map components are available on the `Vue3GoogleMap` global variable.
 
 [Codepen demo](https://codepen.io/husamibrahim/pen/poQXZbR)
 
@@ -390,7 +390,7 @@ You can nest the `InfoWindow` component inside the `Marker` component to display
   <GoogleMap api-key="YOUR_GOOGLE_MAPS_API_KEY" style="width: 100%; height: 500px" :center="center" :zoom="4">
     <Marker :options="{ position: center }">
       <InfoWindow>
-        <div id="contet">
+        <div id="content">
           <div id="siteNotice"></div>
           <h1 id="firstHeading" class="firstHeading">Uluru</h1>
           <div id="bodyContent">
@@ -427,6 +427,44 @@ export default defineComponent({
 
     return { center };
   },
+});
+</script>
+```
+
+#### Open and close the Info Window
+
+You can use `v-model` to manage the state of the info window programmatically or to know whether it's open or closed
+
+```vue
+<template>
+  <GoogleMap api-key="YOUR_GOOGLE_MAPS_API_KEY" style="width: 100%; height: 500px" :center="center" :zoom="4">
+    <Marker :options="{ position: center }">
+      <InfoWindow v-model="infowindow">
+        <div id="content">
+          This is the infowindow content
+        </div>
+      </InfoWindow>
+    </Marker>
+  </GoogleMap>
+</template>
+
+<script>
+import { defineComponent } from "vue";
+import { GoogleMap, Marker, InfoWindow } from "vue3-google-map";
+
+export default defineComponent({
+  components: { GoogleMap, Marker, InfoWindow },
+  setup() {
+    const center = { lat: -25.363, lng: 131.044 };
+    const infowindow = ref(true); // Will be opened when mounted
+
+    return { center, infowindow };
+  },
+  watch: {
+    infowindow(v) {
+      alert('infowindow has been ' + (v ? 'opened' : 'closed'))
+    }
+  }
 });
 </script>
 ```
