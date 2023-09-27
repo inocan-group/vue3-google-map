@@ -111,6 +111,8 @@ export function createCustomMarkerClass(api: typeof google.maps): ICustomMarkerC
             element.style.position = "absolute";
             element.style.left = x + "px";
             element.style.top = y + "px";
+            // eslint-disable-next-line prettier/prettier
+            element.style.transform = `translateX(${this.opts.offsetX || 0}px) translateY(${this.opts.offsetY || 0}px)`;
 
             if (this.opts.zIndex) {
               element.style.zIndex = this.opts.zIndex.toString();
