@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.18.0](https://github.com/inocan-group/vue3-google-maps/compare/v0.17.1...v0.18.0) (2023-09-28)
+
+
+### Features
+
+* add v-model to infowindow ([64ac3ac](https://github.com/inocan-group/vue3-google-maps/commit/64ac3ac42a9125ccf538553e97ba5b8dd0ac2c66))
+
 ### [0.17.1](https://github.com/inocan-group/vue3-google-maps/compare/v0.17.0...v0.17.1) (2023-08-27)
 
 
