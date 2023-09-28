@@ -54,7 +54,8 @@
   "dependencies": {
     "@googlemaps/js-api-loader": "^1.16.2",
     "@googlemaps/markerclusterer": "^2.4.0",
-    "fast-deep-equal": "^3.1.3"
+    "fast-deep-equal": "^3.1.3",
+    "fastdom": "^1.0.11"
   },
   "devDependencies": {
     "pnpm": "^8.7.6",
