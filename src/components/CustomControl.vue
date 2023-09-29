@@ -3,7 +3,7 @@
     v-show must be used instead of v-if otherwise there
     would be no rendered content pushed to the map controls
   -->
-  <div ref="controlRef" v-show="showContent">
+  <div ref="controlRef" class="custom-control-wrapper">
     <slot />
   </div>
 </template>
@@ -36,8 +36,6 @@ export default defineComponent({
     const api = inject(apiSymbol, ref());
     const mapTilesLoaded = inject(mapTilesLoadedSymbol, ref(false));
 
-    const showContent = ref(false);
-
     // To avoid rendering the content outside the map we need to wait for the map AND the api to fully load
     const stopWatchingOnMapLoad = watch(
       [mapTilesLoaded, api, controlRef],
@@ -48,8 +46,6 @@ export default defineComponent({
 
         if (api && mapLoadedStatus && contentRef) {
           addControl(props.position);
-
-          showContent.value = true;
 
           emit("content:loaded");
 
@@ -105,7 +101,17 @@ export default defineComponent({
       }
     );
 
-    return { controlRef, showContent };
+    return { controlRef };
   },
 });
 </script>
+
+<style scoped>
+.custom-control-wrapper {
+  display: none;
+}
+
+.mapdiv .custom-control-wrapper {
+  display: inline-block;
+}
+</style>
