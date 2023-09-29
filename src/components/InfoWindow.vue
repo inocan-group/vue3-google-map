@@ -47,14 +47,15 @@ export default defineComponent({
     const api = inject(apiSymbol, ref());
     const anchor = inject(markerSymbol, ref());
     let anchorClickListener: google.maps.MapsEventListener;
+    // eslint-disable-next-line vue/no-setup-props-destructure
     let internalVal = props.modelValue; // Doesn't need to be reactive
 
     const hasSlotContent = computed(() => slots.default?.().some((vnode) => vnode.type !== Comment));
 
     const updateVModel = (val: boolean) => {
       internalVal = val;
-      emit('update:modelValue', val);
-    }
+      emit("update:modelValue", val);
+    };
 
     const open = (opts?: google.maps.InfoWindowOpenOptions) => {
       if (infoWindow.value) {
@@ -105,7 +106,7 @@ export default defineComponent({
               infoWindowEvents.forEach((event) => {
                 infoWindow.value?.addListener(event, (e: unknown) => emit(event, e));
               });
-              infoWindow.value?.addListener('closeclick', () => updateVModel(false));
+              infoWindow.value?.addListener("closeclick", () => updateVModel(false));
             }
           }
         },
@@ -114,11 +115,14 @@ export default defineComponent({
         }
       );
 
-      watch(() => props.modelValue, (val) => {
-        if (val !== internalVal) {
-          val ? open() : close();
+      watch(
+        () => props.modelValue,
+        (val) => {
+          if (val !== internalVal) {
+            val ? open() : close();
+          }
         }
-      });
+      );
     });
 
     onBeforeUnmount(() => {
