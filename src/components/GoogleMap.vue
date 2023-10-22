@@ -6,6 +6,7 @@ import { createCustomMarkerClass } from "../utils";
 import { IControlPosition } from "../@types/index";
 
 let loaderInstance: Loader | undefined;
+let stopWatchingLanguage: Function | undefined;
 
 const mapEvents = [
   "bounds_changed",
@@ -287,6 +288,7 @@ export default defineComponent({
         // Loader instantiated again with different options, which isn't allowed by js-api-loader
         console.error(err);
       }
+      (loaderInstance as Loader).load().then(setupMap);
     };
 
     const setupMap = (_google: typeof google) => {
@@ -308,7 +310,7 @@ export default defineComponent({
         )
         .map((key) => toRef(props, key));
 
-      watch(
+      const stopWatchingProps = watch(
         [() => props.center, () => props.zoom, ...otherPropsAsRefs] as const,
         ([center, zoom], [oldCenter, oldZoom]) => {
           // eslint-disable-next-line @typescript-eslint/no-unused-vars
@@ -322,6 +324,24 @@ export default defineComponent({
           if (center && centerHasChanged) map.value?.panTo(center);
         }
       );
+
+      if (loaderInstance && !stopWatchingLanguage) {
+        stopWatchingLanguage = watch([() => props.language, () => props.region],
+          () => {
+            ready.value = false;
+            stopWatchingProps();
+            api.value?.event.clearInstanceListeners(map.value as object);
+            const mapNodes = document.querySelectorAll(
+              'script[src*="maps.googleapis.com"], link[href*="fonts.googleapis.com"]'
+            );
+            mapNodes.forEach(el => {
+              if (el.parentNode) el.parentNode.removeChild(el);
+            });
+            (Loader as any).instance = null;
+            delete (_google as any).maps;
+            loadMapsAPI();
+        })
+      }
     };
 
     onMounted(() => {
@@ -329,8 +349,6 @@ export default defineComponent({
         props.apiPromise.then(setupMap);
       } else {
         loadMapsAPI();
-
-        (loaderInstance as Loader).load().then(setupMap);
       }
     });
 
