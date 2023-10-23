@@ -6,7 +6,6 @@ import { createCustomMarkerClass } from "../utils";
 import { IControlPosition } from "../@types/index";
 
 let loaderInstance: Loader | undefined;
-let stopWatchingLanguage: Function | undefined;
 
 const mapEvents = [
   "bounds_changed",
@@ -234,6 +233,8 @@ export default defineComponent({
     provide(apiSymbol, api);
     provide(mapTilesLoadedSymbol, mapTilesLoaded);
 
+    let stopWatchingLanguage: Function | undefined;
+
     const resolveOptions = (): google.maps.MapOptions => {
       const options: google.maps.MapOptions = { ...props };
       const keys = Object.keys(options) as (keyof google.maps.MapOptions)[];
@@ -291,6 +292,19 @@ export default defineComponent({
       (loaderInstance as Loader).load().then(setupMap);
     };
 
+    const unloadMapsAPI = () => {
+      ready.value = false;
+      if (map.value) api.value?.event.clearInstanceListeners(map.value);
+      const mapNodes = document.querySelectorAll(
+        'script[src*="maps.googleapis.com"], link[href*="fonts.googleapis.com"]'
+      );
+      mapNodes.forEach(el => {
+        if (el.parentNode) el.parentNode.removeChild(el);
+      });
+      (Loader as any).instance = null;
+      delete (window.google as any).maps;
+    }
+
     const setupMap = (_google: typeof google) => {
       api.value = markRaw(_google.maps);
       map.value = markRaw(new _google.maps.Map(mapRef.value as HTMLElement, resolveOptions()));
@@ -325,20 +339,11 @@ export default defineComponent({
         }
       );
 
-      if (loaderInstance && !stopWatchingLanguage) {
+      if (!stopWatchingLanguage) {
         stopWatchingLanguage = watch([() => props.language, () => props.region],
           () => {
-            ready.value = false;
             stopWatchingProps();
-            api.value?.event.clearInstanceListeners(map.value as object);
-            const mapNodes = document.querySelectorAll(
-              'script[src*="maps.googleapis.com"], link[href*="fonts.googleapis.com"]'
-            );
-            mapNodes.forEach(el => {
-              if (el.parentNode) el.parentNode.removeChild(el);
-            });
-            (Loader as any).instance = null;
-            delete (_google as any).maps;
+            unloadMapsAPI();
             loadMapsAPI();
         })
       }
@@ -347,6 +352,14 @@ export default defineComponent({
     onMounted(() => {
       if (props.apiPromise && props.apiPromise instanceof Promise) {
         props.apiPromise.then(setupMap);
+      } else if (loaderInstance) {
+        const { language, region } = loaderInstance.options;
+        if (language !== props.language || region !== props.region) {
+          unloadMapsAPI();
+          loadMapsAPI();
+        } else {
+          loaderInstance.load().then(setupMap);
+        }
       } else {
         loadMapsAPI();
       }
