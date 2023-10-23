@@ -378,7 +378,7 @@ export default defineComponent({
 <template>
   <div>
     <div ref="mapRef" class="mapdiv" />
-    <slot v-bind="{ ready, map, api, mapTilesLoaded }" />
+    <slot :key="map" v-bind="{ ready, map, api, mapTilesLoaded }" />
   </div>
 </template>
 
