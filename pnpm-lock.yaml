@@ -14,9 +14,6 @@ dependencies:
   fast-deep-equal:
     specifier: ^3.1.3
     version: 3.1.3
-  fastdom:
-    specifier: ^1.0.11
-    version: 1.0.11
 
 devDependencies:
   '@types/google.maps':
@@ -1782,12 +1779,6 @@ packages:
     resolution: {integrity: sha512-DCXu6Ifhqcks7TZKY3Hxp3y6qphY5SJZmrWMDrKcERSOXWQdMhU9Ig/PYrzyw/ul9jOIyh0N4M0tbC5hodg8dw==}
     dev: true
 
-  /fastdom@1.0.11:
-    resolution: {integrity: sha512-jl9MwXDFxhg354W4E3s1UMsLh3HWFuVMQiRUlXpHckcHRXQvUe76yzBf1Z7b+x5Ci4TUJ1KmynI9alGUXG95IQ==}
-    dependencies:
-      strictdom: 1.0.1
-    dev: false
-
   /fastq@1.15.0:
     resolution: {integrity: sha512-wBrocU2LCXXa+lWBt8RoIRD89Fi8OdABODa/kEnyeyjS5aZO5/GNvI5sEINADqP/h8M29UHTHUb53sUu5Ihqdw==}
     dependencies:
@@ -2928,10 +2919,6 @@ packages:
       stringify-package: 1.0.1
       yargs: 16.2.0
     dev: true
-
-  /strictdom@1.0.1:
-    resolution: {integrity: sha512-cEmp9QeXXRmjj/rVp9oyiqcvyocWab/HaoN4+bwFeZ7QzykJD6L3yD4v12K1x0tHpqRqVpJevN3gW7kyM39Bqg==}
-    dev: false
 
   /string-width@4.2.3:
     resolution: {integrity: sha512-wKyQRQpjJ0sIp62ErSZdGsjMJWsap5oRNihHhu6G7JVO/9jIB6UyevL+tXuOqrng8j/cxKTWyWUwvSTriiZz/g==}
