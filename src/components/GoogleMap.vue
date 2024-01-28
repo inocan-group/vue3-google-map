@@ -117,7 +117,7 @@ export default defineComponent({
     isFractionalZoomEnabled: {
       type: Boolean,
       required: false,
-      default: undefined
+      default: undefined,
     },
     keyboardShortcuts: {
       type: Boolean,
