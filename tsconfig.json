@@ -12,18 +12,13 @@
     ],
     "skipLibCheck": true,
     "types": [
-      "google.maps"
+      "google.maps",
+      "vite/client",
     ],
     "paths": {
       "@/*": [
         "src/*"
       ],
-      "/@src/*": [
-        "src/*"
-      ],
-      "/@docs/*": [
-        "docs/*"
-      ]
     },
     /* Bundler mode */
     "moduleResolution": "bundler",
@@ -45,7 +40,8 @@
     "src/**/*.tsx",
     "src/**/*.vue",
     "dev/**/*.ts",
-    "dev/**/*.vue"
+    "dev/**/*.vue",
+    "docs/**/*.ts",
   ],
   "references": [
     {

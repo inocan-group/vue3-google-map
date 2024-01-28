@@ -1,7 +1,3 @@
----
-sidebar: auto
----
-
 # Themes
 
 `vue3-google-map` comes with a curated set of default themes for you to use. You can also define custom styles utilizing the Google Maps API.
@@ -19,7 +15,6 @@ To use a default theme simply pass the theme's name to the `theme` prop of the `
 - `roadwaysMinimal`
 - `ultraLight`
 
-<!-- prettier-ignore -->
 ```vue
 <template>
   <GoogleMap api-key="YOUR_GOOGLE_MAPS_API_KEY" :center="center" :zoom="4" :styles="theme" />
