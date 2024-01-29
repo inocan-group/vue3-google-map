@@ -1,3 +1,8 @@
+---
+prev: false
+next: false
+---
+
 # vue3-google-map
 
 ![map](/images/map-1200.jpg)
