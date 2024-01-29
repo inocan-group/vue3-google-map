@@ -6,4 +6,4 @@ const loader = new Loader({
   libraries: ["visualization"],
 });
 
-export const apiPromise = loader.load();
+export const apiPromise = import.meta.env.SSR ? Promise.resolve() : loader.load();

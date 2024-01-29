@@ -80,6 +80,12 @@ export default defineConfig({
   },
 
   vite: {
+    ssr: {
+      noExternal: [
+        '@googlemaps/js-api-loader',
+        '@googlemaps/markerclusterer',
+      ]
+    },
     resolve: {
       alias: {
         "@lib": fileURLToPath(new URL("../../src/index.ts", import.meta.url)),
