@@ -724,10 +724,11 @@ const lng = computed({
   },
 })
 
-watch(lng, () => {
-  if (mapRef.value?.ready) {
-    mapRef.value.map.panTo({ lat: 0, lng: lng.value })
-  }
+watch([() => mapRef.value?.ready, lng], ([ready, lng]) => {
+  if (!ready)
+    return
+
+  mapRef.value.map.panTo({ lat: 0, lng })
 })
 </script>
 
