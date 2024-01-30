@@ -161,3 +161,9 @@ watch(infowindow, (v) => {
 ## Events
 
 You can listen for [the following events](https://developers.google.com/maps/documentation/javascript/reference/info-window#InfoWindow-Events) on the `InfoWindow` component.
+
+<style scoped>
+:deep(.mapdiv) {
+  color: #3c3c43;
+}
+</style>
