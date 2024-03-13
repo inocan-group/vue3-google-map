@@ -224,6 +224,10 @@ export default defineComponent({
       type: String as PropType<IControlPosition>,
       required: false,
     },
+    nonce: {
+      type: String,
+      default: "",
+    },
   },
 
   emits: mapEvents,
@@ -289,8 +293,8 @@ export default defineComponent({
 
     const loadMapsAPI = () => {
       try {
-        const { apiKey, region, version, language, libraries } = props;
-        loaderInstance = new Loader({ apiKey, region, version, language, libraries: libraries as Library[] });
+        const { apiKey, region, version, language, libraries, nonce } = props;
+        loaderInstance = new Loader({ apiKey, region, version, language, libraries: libraries as Library[], nonce });
       } catch (err) {
         // Loader instantiated again with different options, which isn't allowed by js-api-loader
         console.error(err);
@@ -312,7 +316,7 @@ export default defineComponent({
       const otherPropsAsRefs = (Object.keys(props) as (keyof typeof props)[])
         .filter(
           (key) =>
-            !["apiPromise", "apiKey", "version", "libraries", "region", "language", "center", "zoom"].includes(key)
+            !["apiPromise", "apiKey", "version", "libraries", "region", "language", "center", "zoom", "nonce"].includes(key)
         )
         .map((key) => toRef(props, key));
 
