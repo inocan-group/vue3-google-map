@@ -2,7 +2,7 @@ name: Build & Publish
 on:
   push:
     branches:
-      - develop
+      - main
 
 jobs:
   build:
