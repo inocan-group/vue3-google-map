@@ -2,6 +2,18 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.20.0](https://github.com/inocan-group/vue3-google-maps/compare/v0.19.0...v0.20.0) (2024-03-19)
+
+
+### Features
+
+* expose nonce option from @googlemaps/js-api-loader ([6e7bcdc](https://github.com/inocan-group/vue3-google-maps/commit/6e7bcdc87919b561cc34d89fb6b7b6e7fef07e6c))
+
+
+### Bug Fixes
+
+* use with SSR ([5dd31c5](https://github.com/inocan-group/vue3-google-maps/commit/5dd31c5f9839259683c36cc6c43dcb8e37f8475c))
+
 ### [0.19.0](https://github.com/inocan-group/vue3-google-maps/compare/v0.18.0...v0.19.0) (2024-01-19)
 
 
