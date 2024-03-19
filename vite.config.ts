@@ -10,7 +10,7 @@ export default defineConfig({
   plugins: [
     vue(),
     cssInjectedByJsPlugin({
-      jsAssetsFilterFunction: ({ fileName }) => fileName == "index.es.js" || fileName == "index.cjs.js",
+      jsAssetsFilterFunction: ({ fileName }) => fileName == "index.mjs" || fileName == "index.cjs",
     }),
   ],
   build: {
@@ -20,11 +20,19 @@ export default defineConfig({
         themes: resolve(__dirname, "src/themes/index.ts"),
       },
       fileName: (format, entryName) => {
+        const formatExtensionMap = {
+          es: "mjs",
+          cjs: "cjs",
+          umd: "umd.js",
+        };
+
+        const ext = formatExtensionMap[format];
+
         if (entryName === "themes") {
-          return `themes/index.${format}.js`;
+          return `themes/index.${ext}`;
         }
 
-        return `index.${format}.js`;
+        return `index.${ext}`;
       },
     },
     rollupOptions: {

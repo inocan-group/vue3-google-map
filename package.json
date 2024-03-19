@@ -10,23 +10,22 @@
   "description": "A set of composable components for easy use of Google Maps in your Vue 3 projects.",
   "unpkg": "dist/index.umd.js",
   "jsdelivr": "dist/index.umd.js",
-  "main": "dist/index.cjs.js",
-  "module": "dist/index.es.js",
+  "main": "dist/index.cjs",
+  "module": "dist/index.mjs",
   "files": [
     "dist"
   ],
   "exports": {
     ".": {
-      "import": "./dist/index.es.js",
-      "require": "./dist/index.cjs.js",
+      "import": "./dist/index.mjs",
+      "require": "./dist/index.cjs",
       "types": "./dist/types/index.d.ts"
     },
     "./themes": {
-      "import": "./dist/themes/index.es.js",
-      "require": "./dist/themes/index.cjs.js",
+      "import": "./dist/themes/index.mjs",
+      "require": "./dist/themes/index.cjs",
       "types": "./dist/types/themes/index.d.ts"
-    },
-    "./package.json": "./package.json"
+    }
   },
   "typesVersions": {
     "*": {
