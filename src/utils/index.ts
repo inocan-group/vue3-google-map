@@ -1,4 +1,3 @@
-import fastdom from "fastdom";
 type ICustomMarkerInterface = google.maps.OverlayView & {
   getPosition(): google.maps.LatLng | null;
   getVisible(): boolean;
@@ -63,62 +62,57 @@ export function createCustomMarkerClass(api: typeof google.maps): ICustomMarkerC
       const point = overlayProjection?.fromLatLngToDivPixel(this.getPosition());
 
       if (point) {
-        const element = this.element;
-        fastdom.measure(() => {
-          const height = element.offsetHeight;
-          const width = element.offsetWidth;
-          let x: number, y: number;
-          switch (this.opts.anchorPoint) {
-            case "TOP_CENTER":
-              x = point.x - width / 2;
-              y = point.y;
-              break;
-            case "BOTTOM_CENTER":
-              x = point.x - width / 2;
-              y = point.y - height;
-              break;
-            case "LEFT_CENTER":
-              x = point.x;
-              y = point.y - height / 2;
-              break;
-            case "RIGHT_CENTER":
-              x = point.x - width;
-              y = point.y - height / 2;
-              break;
-            case "TOP_LEFT":
-              x = point.x;
-              y = point.y;
-              break;
-            case "TOP_RIGHT":
-              x = point.x - width;
-              y = point.y;
-              break;
-            case "BOTTOM_LEFT":
-              x = point.x;
-              y = point.y - height;
-              break;
-            case "BOTTOM_RIGHT":
-              x = point.x - width;
-              y = point.y - height;
-              break;
-            default:
-              // "center"
-              x = point.x - width / 2;
-              y = point.y - height / 2;
-          }
+        this.element.style.position = "absolute";
+        const height = this.element.offsetHeight;
+        const width = this.element.offsetWidth;
+        let x: number, y: number;
+        switch (this.opts.anchorPoint) {
+          case "TOP_CENTER":
+            x = point.x - width / 2;
+            y = point.y;
+            break;
+          case "BOTTOM_CENTER":
+            x = point.x - width / 2;
+            y = point.y - height;
+            break;
+          case "LEFT_CENTER":
+            x = point.x;
+            y = point.y - height / 2;
+            break;
+          case "RIGHT_CENTER":
+            x = point.x - width;
+            y = point.y - height / 2;
+            break;
+          case "TOP_LEFT":
+            x = point.x;
+            y = point.y;
+            break;
+          case "TOP_RIGHT":
+            x = point.x - width;
+            y = point.y;
+            break;
+          case "BOTTOM_LEFT":
+            x = point.x;
+            y = point.y - height;
+            break;
+          case "BOTTOM_RIGHT":
+            x = point.x - width;
+            y = point.y - height;
+            break;
+          default:
+            // "center"
+            x = point.x - width / 2;
+            y = point.y - height / 2;
+        }
 
-          fastdom.mutate(() => {
-            element.style.position = "absolute";
-            element.style.left = x + "px";
-            element.style.top = y + "px";
-            // eslint-disable-next-line prettier/prettier
-            element.style.transform = `translateX(${this.opts.offsetX || 0}px) translateY(${this.opts.offsetY || 0}px)`;
+        this.element.style.left = x + "px";
+        this.element.style.top = y + "px";
+        // eslint-disable-next-line prettier/prettier
+        this.element.style.transform = `translateX(${this.opts.offsetX || 0}px) translateY(${this.opts.offsetY || 0}px)`;
 
-            if (this.opts.zIndex) {
-              element.style.zIndex = this.opts.zIndex.toString();
-            }
-          });
-        });
+        if (this.opts.zIndex) {
+          this.element.style.zIndex = this.opts.zIndex.toString();
+        }
       }
     }
 
