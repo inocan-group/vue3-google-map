@@ -4,6 +4,7 @@ This library is intended to be used in a composable fashion. Therefore you will 
 
 The main mapping component is `GoogleMap`, however the following components are available at your disposal:
 
+- [AvancedMarker](./avanced-marker.md)
 - [Marker](./marker.md)
 - [Polyline](./polyline.md)
 - [Polygon](./polygon.md)
