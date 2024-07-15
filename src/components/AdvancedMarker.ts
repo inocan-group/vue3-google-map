@@ -35,19 +35,19 @@ export default defineComponent({
     watch(
       [map, options],
       async (_, [oldMap, oldOptions]) => {
-        const hasChanged = !equal(options.value, oldOptions) || map.value !== oldMap;
+        const hasOptionChange = !equal(options.value, oldOptions);
+        const hasChanged = hasOptionChange || map.value !== oldMap;
 
         if (!map.value || !api.value || !hasChanged) return;
         const { AdvancedMarkerElement, PinElement } = (await google.maps.importLibrary(
           "marker"
         )) as google.maps.MarkerLibrary;
 
-        if (marker.value) {
-          if (isMarkerInCluster.value) {
-            markerCluster.value?.removeMarker(marker.value);
-            markerCluster.value?.addMarker(marker.value);
-          }
-        } else {
+        if (marker.value && isMarkerInCluster.value) {
+          markerCluster.value?.removeMarker(marker.value);
+        }
+
+        if (!marker.value || hasOptionChange) {
           if (pinOptions.value) {
             pin.value = markRaw(new PinElement(pinOptions.value));
             options.value.content = pin.value.element;
