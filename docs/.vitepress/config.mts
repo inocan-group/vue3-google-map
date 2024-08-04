@@ -20,6 +20,10 @@ export default defineConfig({
         collapsed: false,
         items: [
           {
+            text: "Advanced Marker",
+            link: "/components/advanced-marker",
+          },
+          {
             text: "Marker",
             link: "/components/marker",
           },
