@@ -1,5 +1,5 @@
 import { defineComponent, PropType, toRef, provide, computed, inject, markRaw, onBeforeUnmount, ref, watch } from "vue";
-import { advancedMarkerSymbol, apiSymbol, mapSymbol, markerClusterSymbol } from "../shared/index";
+import { markerSymbol, apiSymbol, mapSymbol, markerClusterSymbol } from "../shared/index";
 import equal from "fast-deep-equal";
 
 const markerEvents = ["click", "drag", "dragend", "dragstart", "gmp-click"];
@@ -22,7 +22,6 @@ export default defineComponent({
     const pinOptions = toRef(props, "pinOptions");
 
     const marker = ref<google.maps.marker.AdvancedMarkerElement>();
-    const pin = ref<google.maps.marker.PinElement>();
 
     const map = inject(mapSymbol, ref());
     const api = inject(apiSymbol, ref());
@@ -33,24 +32,30 @@ export default defineComponent({
     );
 
     watch(
-      [map, options],
-      async (_, [oldMap, oldOptions]) => {
-        const hasOptionChange = !equal(options.value, oldOptions);
+      [map, options, pinOptions],
+      async (_, [oldMap, oldOptions, oldPinOptions]) => {
+        const hasOptionChange = !equal(options.value, oldOptions) || !equal(pinOptions.value, oldPinOptions);
         const hasChanged = hasOptionChange || map.value !== oldMap;
 
         if (!map.value || !api.value || !hasChanged) return;
-        const { AdvancedMarkerElement, PinElement } = (await google.maps.importLibrary(
-          "marker"
-        )) as google.maps.MarkerLibrary;
 
-        if (marker.value && isMarkerInCluster.value) {
-          markerCluster.value?.removeMarker(marker.value);
-        }
+        const { AdvancedMarkerElement, PinElement } = api.value.marker;
 
-        if (!marker.value || hasOptionChange) {
+        if (marker.value) {
+          const { map: _, content, ...otherOptions } = options.value;
+
+          Object.assign(marker.value, {
+            content: pinOptions.value ? new PinElement(pinOptions.value).element : content,
+            ...otherOptions,
+          });
+
+          if (isMarkerInCluster.value) {
+            markerCluster.value?.removeMarker(marker.value);
+            markerCluster.value?.addMarker(marker.value);
+          }
+        } else {
           if (pinOptions.value) {
-            pin.value = markRaw(new PinElement(pinOptions.value));
-            options.value.content = pin.value.element;
+            options.value.content = new PinElement(pinOptions.value).element;
           }
 
           marker.value = markRaw(new AdvancedMarkerElement(options.value));
@@ -83,7 +88,7 @@ export default defineComponent({
       }
     });
 
-    provide(advancedMarkerSymbol, marker);
+    provide(markerSymbol, marker);
 
     expose({ marker });
 

@@ -21,7 +21,7 @@ export default defineConfig({
         items: [
           {
             text: "Advanced Marker",
-            link: "/components/avanced-marker",
+            link: "/components/advanced-marker",
           },
           {
             text: "Marker",

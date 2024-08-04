@@ -5,9 +5,10 @@ import { apiPromise } from '@docs/shared'
 const center = { lat: 40.689247, lng: -74.044502 }
 </script>
 
-# AvancedMarker
 
-Use the `AvancedMarker` component to draw markers, drop pins or any custom icons on a map. `AvancedMarker` is the new version offered by google when deprecated the `Marker` component ([read more here](https://developers.google.com/maps/deprecations#googlemapsmarker_in_the_deprecated_as_of_february_2024)).
+# Advanced Marker
+
+Use the `AdvancedMarker` component to draw markers, drop pins or any custom icons on a map. `AdvancedMarker` is the new version offered by google when deprecated the `Marker` component ([read more here](https://developers.google.com/maps/deprecations#googlemapsmarker_in_the_deprecated_as_of_february_2024)).
 
 In order to use the `AdvancedMarker` component is necessary to specify a MapId on declaring the `GoogleMap` component ([see more here](https://developers.google.com/maps/documentation/javascript/advanced-markers/start#create_a_map_id)).
 
@@ -53,4 +54,4 @@ const pinOptions = { background: '#FBBC04' }
 
 ## Events
 
-You can listen for [the following events](https://developers.google.com/maps/documentation/javascript/reference/advanced-markers#AdvancedMarkerClickEvent) on the `AdvancedMarker` component.
+You can listen for [the following events](https://developers.google.com/maps/documentation/javascript/reference/advanced-markers#AdvancedMarkerElement-Events) on the `AdvancedMarker` component.

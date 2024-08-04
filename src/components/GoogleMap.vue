@@ -46,8 +46,8 @@ export default defineComponent({
       default: "weekly",
     },
     libraries: {
-      type: Array as PropType<("drawing" | "geometry" | "localContext" | "places" | "visualization")[]>,
-      default: () => ["places"],
+      type: Array as PropType<Library[]>,
+      default: () => ["places", "marker"],
     },
     region: {
       type: String,
