@@ -101,7 +101,7 @@ Use the `AdvancedMarker` component to draw markers, drop pins or any custom icon
 
 In order to use the `AdvancedMarker` component is necessary to specify a MapId on declaring the `GoogleMap` component ([see more here](https://developers.google.com/maps/documentation/javascript/advanced-markers/start#create_a_map_id)).
 
-## Options
+#### Options
 
 You can pass a [AdvancedMarkerElementOptions](https://developers.google.com/maps/documentation/javascript/reference/advanced-markers#AdvancedMarkerElementOptions) object to the `options` prop to configure your marker.
 
@@ -129,7 +129,7 @@ const pinOptions = { background: '#FBBC04' }
 </template>
 ```
 
-## Events
+#### Events
 
 You can listen for [the following events](https://developers.google.com/maps/documentation/javascript/reference/advanced-markers#AdvancedMarkerElement-Events) on the `AdvancedMarker` component.
 
