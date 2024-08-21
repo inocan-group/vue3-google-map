@@ -207,6 +207,10 @@ const center = { lat: 40.689247, lng: -74.044502 };
 </template>
 ```
 
+## Events
+
+You can listen for [the following events](https://developers.google.com/maps/documentation/javascript/reference/map#Map-Events) on the `GoogleMap` component.
+
 <style scoped>
 .map {
   position: relative;
