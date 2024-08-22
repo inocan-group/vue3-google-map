@@ -209,7 +209,14 @@ const center = { lat: 40.689247, lng: -74.044502 };
 
 ## Events
 
-You can listen for [the following events](https://developers.google.com/maps/documentation/javascript/reference/map#Map-Events) on the `GoogleMap` component.
+You can listen for [the following events](https://developers.google.com/maps/documentation/javascript/reference/map#Map-Events) on the `GoogleMap` component by using `@event_name`. For example if you want to call a function whenever the zoom value is changed, you can use it like this: 
+
+```vue
+<GoogleMap
+  @zoom_changed="yourFunctionName"
+/>
+```
+
 
 <style scoped>
 .map {
