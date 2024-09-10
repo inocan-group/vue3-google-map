@@ -63,52 +63,51 @@ export function createCustomMarkerClass(api: typeof google.maps): ICustomMarkerC
 
       if (point) {
         this.element.style.position = "absolute";
-        const height = this.element.offsetHeight;
-        const width = this.element.offsetWidth;
-        let x: number, y: number;
+        let transformX: string, transformY: string;
+
         switch (this.opts.anchorPoint) {
           case "TOP_CENTER":
-            x = point.x - width / 2;
-            y = point.y;
+            transformX = "-50%";
+            transformY = "-100%";
             break;
           case "BOTTOM_CENTER":
-            x = point.x - width / 2;
-            y = point.y - height;
+            transformX = "-50%";
+            transformY = "0";
             break;
           case "LEFT_CENTER":
-            x = point.x;
-            y = point.y - height / 2;
+            transformX = "-100%";
+            transformY = "-50%";
             break;
           case "RIGHT_CENTER":
-            x = point.x - width;
-            y = point.y - height / 2;
+            transformX = "0";
+            transformY = "-50%";
             break;
           case "TOP_LEFT":
-            x = point.x;
-            y = point.y;
+            transformX = "-100%";
+            transformY = "-100%";
             break;
           case "TOP_RIGHT":
-            x = point.x - width;
-            y = point.y;
+            transformX = "0";
+            transformY = "-100%";
             break;
           case "BOTTOM_LEFT":
-            x = point.x;
-            y = point.y - height;
+            transformX = "-100%";
+            transformY = "0";
             break;
           case "BOTTOM_RIGHT":
-            x = point.x - width;
-            y = point.y - height;
+            transformX = "0";
+            transformY = "0";
             break;
           default:
             // "center"
-            x = point.x - width / 2;
-            y = point.y - height / 2;
+            transformX = "-50%";
+            transformY = "-50%";
         }
 
-        this.element.style.left = x + "px";
-        this.element.style.top = y + "px";
+        this.element.style.left = point.x + (this.opts.offsetX || 0) + "px";
+        this.element.style.top = point.y + (this.opts.offsetY || 0) + "px";
         // eslint-disable-next-line prettier/prettier
-        this.element.style.transform = `translateX(${this.opts.offsetX || 0}px) translateY(${this.opts.offsetY || 0}px)`;
+        this.element.style.transform = `translateX(${transformX}) translateY(${transformY})`;
 
         if (this.opts.zIndex) {
           this.element.style.zIndex = this.opts.zIndex.toString();
