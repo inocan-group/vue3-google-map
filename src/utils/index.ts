@@ -104,10 +104,10 @@ export function createCustomMarkerClass(api: typeof google.maps): ICustomMarkerC
             transformY = "-50%";
         }
 
-        this.element.style.left = point.x + (this.opts.offsetX || 0) + "px";
-        this.element.style.top = point.y + (this.opts.offsetY || 0) + "px";
+        const xPos = point.x + (this.opts.offsetX || 0) + "px";
+        const yPos = point.y + (this.opts.offsetY || 0) + "px";
         // eslint-disable-next-line prettier/prettier
-        this.element.style.transform = `translateX(${transformX}) translateY(${transformY})`;
+        this.element.style.transform = `translateX(${transformX}) translateX(${xPos}) translateY(${transformY}) translateY(${yPos})`;
 
         if (this.opts.zIndex) {
           this.element.style.zIndex = this.opts.zIndex.toString();
