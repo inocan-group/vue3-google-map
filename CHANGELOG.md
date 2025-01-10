@@ -2,6 +2,11 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.21.1](https://github.com/inocan-group/vue3-google-maps/compare/v0.21.0...v0.21.1) (2025-01-10)
+
+optimize CustomMarkerClass draw method ([93c2b50](https://github.com/inocan-group/vue3-google-maps/commit/93c2b50c1199e1236dc4ddc7b5b829595964b905))
+
+
 ### [0.21.0](https://github.com/inocan-group/vue3-google-maps/compare/v0.20.0...v0.21.0) (2024-08-04)
 
 
