@@ -57,7 +57,7 @@
   },
   "devDependencies": {
     "pnpm": "^8.7.6",
-    "@types/google.maps": "^3.53.6",
+    "@types/google.maps": "^3.58.1",
     "@typescript-eslint/eslint-plugin": "^4.33.0",
     "@typescript-eslint/parser": "^4.33.0",
     "@vitejs/plugin-vue": "^4.3.1",

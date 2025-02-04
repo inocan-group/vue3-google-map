@@ -70,6 +70,10 @@ export default defineComponent({
       required: false,
       default: undefined,
     },
+    colorScheme: {
+      type: String as PropType<google.maps.ColorScheme>,
+      required: false,
+    },
     controlSize: {
       type: Number,
       required: false,
