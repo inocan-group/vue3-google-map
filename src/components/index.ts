@@ -1,5 +1,5 @@
 export { default as GoogleMap } from "./GoogleMap.vue";
-export { default as AdvancedMarker } from "./AdvancedMarker";
+export { default as AdvancedMarker } from "./AdvancedMarker.vue";
 export { default as Marker } from "./Marker";
 export { default as Polyline } from "./Polyline";
 export { default as Polygon } from "./Polygon";
