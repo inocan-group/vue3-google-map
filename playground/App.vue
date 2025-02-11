@@ -7,8 +7,8 @@ const markerOptions = { position: center, title: "LADY LIBERTY" };
 
 <template>
   <GoogleMap mapId="DEMO_MAP_ID" style="width: 100%; height: 500px" :center="center" :zoom="15">
-    <AdvancedMarker :options="markerOptions" @click="console.log('click')">
-      <div style="border: 1px solid red">test advanced marker slot</div>
+    <AdvancedMarker :options="markerOptions">
+      <div style="border: 1px solid red">advanced marker slot</div>
     </AdvancedMarker>
   </GoogleMap>
 </template>
