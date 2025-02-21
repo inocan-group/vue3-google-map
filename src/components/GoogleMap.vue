@@ -224,6 +224,15 @@ export default defineComponent({
       type: String as PropType<IControlPosition>,
       required: false,
     },
+    cameraControl: {
+      type: Boolean,
+      required: false,
+      default: undefined,
+    },
+    cameraControlPosition: {
+      type: String as PropType<IControlPosition>,
+      required: false,
+    },
     nonce: {
       type: String,
       default: "",
@@ -265,6 +274,7 @@ export default defineComponent({
         rotateControlOptions: createControlOptionsWithPosition(props.rotateControlPosition),
         streetViewControlOptions: createControlOptionsWithPosition(props.streetViewControlPosition),
         fullscreenControlOptions: createControlOptionsWithPosition(props.fullscreenControlPosition),
+        cameraControlOptions: createControlOptionsWithPosition(props.cameraControlPosition),
         disableDefaultUI: props.disableDefaultUi,
       };
 
