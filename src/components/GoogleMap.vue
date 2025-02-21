@@ -278,8 +278,6 @@ export default defineComponent({
         disableDefaultUI: props.disableDefaultUi,
       };
 
-      console.log({ ...options, ...otherOptions });
-
       return { ...options, ...otherOptions };
     };
 
