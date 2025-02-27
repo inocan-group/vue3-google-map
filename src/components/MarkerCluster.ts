@@ -5,7 +5,8 @@ import {
   MarkerClustererEvents,
   SuperClusterViewportAlgorithm,
 } from "@googlemaps/markerclusterer";
-import { mapSymbol, apiSymbol, markerClusterSymbol } from "../shared/index";
+import { mapSymbol, apiSymbol, markerClusterSymbol, markerClusterMethodsSymbol } from "../shared/index";
+import debounce from 'debounce';
 
 const markerClusterEvents = Object.values(MarkerClustererEvents);
 
@@ -16,6 +17,10 @@ export default defineComponent({
       type: Object as PropType<MarkerClustererOptions>,
       default: () => ({}),
     },
+    renderDebounceDelay: {
+      type: Number,
+      default: 10,
+    }
   },
   emits: markerClusterEvents,
   setup(props, { emit, expose, slots }) {
@@ -23,7 +28,28 @@ export default defineComponent({
     const map = inject(mapSymbol, ref());
     const api = inject(apiSymbol, ref());
 
+    const debouncedRender = debounce(() => {
+      if (markerCluster.value) {
+        markerCluster.value?.render();
+      }
+    }, props.renderDebounceDelay);
+
+    const addMarker = (marker: google.maps.Marker | google.maps.marker.AdvancedMarkerElement) => {
+      if (markerCluster.value) {
+        markerCluster.value?.addMarker(marker, true);
+        debouncedRender();
+      }
+    };
+
+    const removeMarker = (marker: google.maps.Marker | google.maps.marker.AdvancedMarkerElement) => {
+      if (markerCluster.value) {
+        markerCluster.value?.removeMarker(marker, true);
+        debouncedRender();
+      }
+    };
+
     provide(markerClusterSymbol, markerCluster);
+    provide(markerClusterMethodsSymbol, { addMarker, removeMarker });
 
     watch(
       map,
@@ -55,6 +81,7 @@ export default defineComponent({
         markerCluster.value.clearMarkers();
         markerCluster.value.setMap(null);
       }
+      debouncedRender.clear()
     });
 
     expose({ markerCluster });

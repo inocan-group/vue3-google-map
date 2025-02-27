@@ -7,6 +7,11 @@ export const markerSymbol: InjectionKey<
   Ref<google.maps.Marker | google.maps.marker.AdvancedMarkerElement | undefined>
 > = Symbol("marker");
 export const markerClusterSymbol: InjectionKey<Ref<MarkerClusterer | undefined>> = Symbol("markerCluster");
+export const markerClusterMethodsSymbol: InjectionKey<{
+  addMarker: (marker: google.maps.Marker | google.maps.marker.AdvancedMarkerElement) => void;
+  removeMarker: (marker: google.maps.Marker | google.maps.marker.AdvancedMarkerElement) => void;
+} | undefined> = Symbol("markerClusterMethods");
+
 export const customMarkerClassSymbol = Symbol("CustomMarker") as unknown as "CustomMarker";
 /**
  * Utilitary flag for components that need to know the map
