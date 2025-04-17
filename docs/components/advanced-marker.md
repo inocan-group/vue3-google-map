@@ -39,7 +39,7 @@ const pinOptions = { background: '#FBBC04' }
   >
     <AdvancedMarker :options="markerOptions" :pin-options="pinOptions"/>
     <AdvancedMarker :options="markerOptions">
-       <div style="background: white; padding: 5px; border-radius: 5px">
+       <div style="background: white; color: black; padding: 5px; border-radius: 5px">
         Custom Content
       </div>
     </AdvancedMarker>
@@ -56,6 +56,11 @@ const pinOptions = { background: '#FBBC04' }
     :zoom="15"
   >
     <AdvancedMarker :options="{ position: { lat: 40.689247, lng: -74.044502 } }" :pin-options="{ background: '#FBBC04' }" />
+    <AdvancedMarker :options="{ position: { lat: 40.689247, lng: -74.044502 } }">
+       <div style="background: white; color: black; padding: 5px; border-radius: 5px;">
+        Custom Content
+      </div>
+    </AdvancedMarker>
   </GoogleMap>
 </ClientOnly>
 
