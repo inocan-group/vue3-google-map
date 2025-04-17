@@ -71,7 +71,7 @@ export default defineComponent({
       default: undefined,
     },
     colorScheme: {
-      type: String as PropType<google.maps.ColorScheme>,
+      type: String as PropType<keyof typeof google.maps.ColorScheme>,
       required: false,
     },
     controlSize: {
