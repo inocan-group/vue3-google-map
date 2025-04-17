@@ -1,4 +1,25 @@
-import { defineComponent, PropType, toRef, provide, computed, inject, markRaw, onBeforeUnmount, ref, watch } from "vue";
+<template>
+  <div v-if="hasSlotContent" class="advanced-marker-wrapper">
+    <div ref="markerRef" v-bind="$attrs">
+      <slot />
+    </div>
+  </div>
+</template>
+
+<script lang="ts">
+import {
+  defineComponent,
+  PropType,
+  toRef,
+  provide,
+  computed,
+  inject,
+  markRaw,
+  onBeforeUnmount,
+  ref,
+  watch,
+  Comment,
+} from "vue";
 import { markerSymbol, apiSymbol, mapSymbol, markerClusterSymbol } from "../shared/index";
 import equal from "fast-deep-equal";
 
@@ -18,6 +39,9 @@ export default defineComponent({
   },
   emits: markerEvents,
   setup(props, { emit, expose, slots }) {
+    const markerRef = ref<HTMLElement>();
+    const hasSlotContent = computed(() => slots.default?.().some((vnode) => vnode.type !== Comment));
+
     const options = toRef(props, "options");
     const pinOptions = toRef(props, "pinOptions");
 
@@ -45,7 +69,11 @@ export default defineComponent({
           const { map: _, content, ...otherOptions } = options.value;
 
           Object.assign(marker.value, {
-            content: pinOptions.value ? new PinElement(pinOptions.value).element : content,
+            content: hasSlotContent.value
+              ? markerRef.value
+              : pinOptions.value
+                ? new PinElement(pinOptions.value).element
+                : content,
             ...otherOptions,
           });
 
@@ -54,7 +82,9 @@ export default defineComponent({
             markerCluster.value?.addMarker(marker.value);
           }
         } else {
-          if (pinOptions.value) {
+          if (hasSlotContent.value) {
+            options.value.content = markerRef.value;
+          } else if (pinOptions.value) {
             options.value.content = new PinElement(pinOptions.value).element;
           }
 
@@ -92,6 +122,17 @@ export default defineComponent({
 
     expose({ marker });
 
-    return () => slots.default?.();
+    return { hasSlotContent, markerRef };
   },
 });
+</script>
+
+<style>
+.advanced-marker-wrapper {
+  display: none;
+}
+
+.mapdiv .advanced-marker-wrapper {
+  display: inline-block;
+}
+</style>
