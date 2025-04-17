@@ -72,8 +72,8 @@ export default defineComponent({
             content: hasSlotContent.value
               ? markerRef.value
               : pinOptions.value
-              ? new PinElement(pinOptions.value).element
-              : content,
+                ? new PinElement(pinOptions.value).element
+                : content,
             ...otherOptions,
           });
 
