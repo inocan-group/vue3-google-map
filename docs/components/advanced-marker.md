@@ -16,7 +16,7 @@ In order to use the `AdvancedMarker` component is necessary to specify a MapId o
 
 You can pass a [AdvancedMarkerElementOptions](https://developers.google.com/maps/documentation/javascript/reference/advanced-markers#AdvancedMarkerElementOptions) object to the `options` prop to configure your marker.
 
-You can also pass a [PinElementOptions interface](https://developers.google.com/maps/documentation/javascript/reference/advanced-markers#PinElementOptions) object to custumize pin used by the marker.
+You can also pass a [PinElementOptions interface](https://developers.google.com/maps/documentation/javascript/reference/advanced-markers#PinElementOptions) object to customize pin used by the marker.
 
 Additionally, `AdvancedMarker` supports default slot content, allowing you to use custom HTML or Vue components inside the marker.
 

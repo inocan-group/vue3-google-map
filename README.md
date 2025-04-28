@@ -56,7 +56,7 @@ All the map components are available on the `Vue3GoogleMap` global variable.
 
 ### Your First Map
 
-To construct a map using `vue3-google-map` you'll need to use the base `GoogleMap` component which receives your [Google Maps API key](https://developers.google.com/maps/documentation/javascript/get-api-key), styles (e.g. setting width and height), and any [MapOptions](https://developers.google.com/maps/documentation/javascript/reference/map#MapOptions) to configure your map ([see this](https://github.com/inocan-group/vue3-google-map/blob/develop/src/components/GoogleMap.vue#L36-L230) for all the supported `MapOptions`).
+To construct a map using `vue3-google-map` you'll need to use the base `GoogleMap` component which receives your [Google Maps API key](https://developers.google.com/maps/documentation/javascript/get-api-key), styles (e.g. setting width and height), and any [MapOptions](https://developers.google.com/maps/documentation/javascript/reference/map#MapOptions) to configure your map ([see this](https://github.com/inocan-group/vue3-google-map/blob/develop/src/components/GoogleMap.vue#L36-L244) for all the supported `MapOptions`).
 Other map features can be added to your map by passing map subcomponents ([Marker](#marker), [Polyline](#polyline), [Polygon](#polygon), [Rectangle](#rectangle), [Circle](#circle), [InfoWindow](#info-window), [CustomMarker](#custom-marker), [CustomControl](#custom-control), or [MarkerCluster](#marker-cluster)) to the default slot of the `GoogleMap` component.
 
 The [the following events](https://developers.google.com/maps/documentation/javascript/reference/map#Map-Events) will be emitted by the `GoogleMap` component and can be listened to by using `@event_name`.
@@ -107,7 +107,9 @@ In order to use the `AdvancedMarker` component is necessary to specify a MapId o
 
 You can pass a [AdvancedMarkerElementOptions](https://developers.google.com/maps/documentation/javascript/reference/advanced-markers#AdvancedMarkerElementOptions) object to the `options` prop to configure your marker.
 
-You can also pass a [PinElementOptions interface](https://developers.google.com/maps/documentation/javascript/reference/advanced-markers#PinElementOptions) object to custumize pin used by the marker.
+You can also pass a [PinElementOptions interface](https://developers.google.com/maps/documentation/javascript/reference/advanced-markers#PinElementOptions) object to customize pin used by the marker.
+
+Additionally, `AdvancedMarker` supports default slot content, allowing you to use custom HTML or Vue components inside the marker.
 
 ```vue
 <script setup>
@@ -127,6 +129,11 @@ const pinOptions = { background: '#FBBC04' }
     :zoom="15"
   >
     <AdvancedMarker :options="markerOptions" :pin-options="pinOptions"/>
+    <AdvancedMarker :options="markerOptions">
+       <div style="background: white; color: black; padding: 5px; border-radius: 5px">
+        Custom Content
+      </div>
+    </AdvancedMarker>
   </GoogleMap>
 </template>
 ```
