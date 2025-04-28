@@ -2,6 +2,15 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.22.0](https://github.com/inocan-group/vue3-google-maps/compare/v0.21.1...v0.22.0) (2025-04-28)
+
+
+### Features
+
+* **AdvancedMarker:** support slot custom content ([c1fdb3f](https://github.com/inocan-group/vue3-google-maps/commit/c1fdb3f50234fd874a21be7d8d5f14dc0d5d0bfd))
+* colorScheme support ([29720fb](https://github.com/inocan-group/vue3-google-maps/commit/29720fbae3ebcd246e5614a5cd3a6972730ddb95)), closes [#289](https://github.com/inocan-group/vue3-google-maps/issues/289)
+* support cameraControl ([85b655e](https://github.com/inocan-group/vue3-google-maps/commit/85b655e1397e3e9cbb28115772e3fda3ab329100))
+
 ### [0.21.1](https://github.com/inocan-group/vue3-google-maps/compare/v0.21.0...v0.21.1) (2025-01-10)
 
 optimize CustomMarkerClass draw method ([93c2b50](https://github.com/inocan-group/vue3-google-maps/commit/93c2b50c1199e1236dc4ddc7b5b829595964b905))
