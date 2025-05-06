@@ -1,6 +1,6 @@
 import { watch, ref, Ref, inject, onBeforeUnmount, computed, markRaw } from "vue";
 import equal from "fast-deep-equal";
-import { apiSymbol, mapSymbol, markerClusterSymbol, customMarkerClassSymbol } from "../shared/index";
+import { apiSymbol, mapSymbol, markerClusterSymbol, customMarkerClassSymbol, markerClusterMethodsSymbol } from "../shared/index";
 
 type ICtorKey = "Marker" | "Polyline" | "Polygon" | "Rectangle" | "Circle" | typeof customMarkerClassSymbol;
 
@@ -50,6 +50,7 @@ export const useSetupMapComponent = <T extends ICtorKey>(
   const map = inject(mapSymbol, ref());
   const api = inject(apiSymbol, ref());
   const markerCluster = inject(markerClusterSymbol, ref());
+  const markerClusterMethods = inject(markerClusterMethodsSymbol, undefined);
 
   const isMarkerInCluster = computed(
     () =>
@@ -72,8 +73,8 @@ export const useSetupMapComponent = <T extends ICtorKey>(
         component.value.setOptions(options.value as any);
 
         if (isMarkerInCluster.value) {
-          markerCluster.value?.removeMarker(component.value as google.maps.Marker);
-          markerCluster.value?.addMarker(component.value as google.maps.Marker);
+          markerClusterMethods?.removeMarker(component.value as google.maps.Marker);
+          markerClusterMethods?.addMarker(component.value as google.maps.Marker);
         }
       } else {
         if (isMarkerCtorKey(ctorKey)) {
@@ -94,7 +95,7 @@ export const useSetupMapComponent = <T extends ICtorKey>(
         }
 
         if (isMarkerInCluster.value) {
-          markerCluster.value?.addMarker(component.value as google.maps.Marker);
+          markerClusterMethods?.addMarker(component.value as google.maps.Marker);
         } else {
           component.value.setMap(map.value);
         }
@@ -114,7 +115,7 @@ export const useSetupMapComponent = <T extends ICtorKey>(
       api.value?.event.clearInstanceListeners(component.value);
 
       if (isMarkerInCluster.value) {
-        markerCluster.value?.removeMarker(component.value as google.maps.Marker);
+        markerClusterMethods?.removeMarker(component.value as google.maps.Marker);
       } else {
         component.value.setMap(null);
       }

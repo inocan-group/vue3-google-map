@@ -20,7 +20,7 @@ import {
   watch,
   Comment,
 } from "vue";
-import { markerSymbol, apiSymbol, mapSymbol, markerClusterSymbol } from "../shared/index";
+import { markerSymbol, apiSymbol, mapSymbol, markerClusterSymbol, markerClusterMethodsSymbol } from "../shared/index";
 import equal from "fast-deep-equal";
 
 const markerEvents = ["click", "drag", "dragend", "dragstart", "gmp-click"];
@@ -50,6 +50,7 @@ export default defineComponent({
     const map = inject(mapSymbol, ref());
     const api = inject(apiSymbol, ref());
     const markerCluster = inject(markerClusterSymbol, ref());
+    const markerClusterMethods = inject(markerClusterMethodsSymbol, undefined);
 
     const isMarkerInCluster = computed(
       () => !!(markerCluster.value && api.value && marker.value instanceof google.maps.marker.AdvancedMarkerElement)
@@ -78,8 +79,8 @@ export default defineComponent({
           });
 
           if (isMarkerInCluster.value) {
-            markerCluster.value?.removeMarker(marker.value);
-            markerCluster.value?.addMarker(marker.value);
+            markerClusterMethods?.removeMarker(marker.value);
+            markerClusterMethods?.addMarker(marker.value);
           }
         } else {
           if (hasSlotContent.value) {
@@ -91,7 +92,7 @@ export default defineComponent({
           marker.value = markRaw(new AdvancedMarkerElement(options.value));
 
           if (isMarkerInCluster.value) {
-            markerCluster.value?.addMarker(marker.value);
+            markerClusterMethods?.addMarker(marker.value);
           } else {
             marker.value.map = map.value;
           }
@@ -111,7 +112,7 @@ export default defineComponent({
         api.value?.event.clearInstanceListeners(marker.value);
 
         if (isMarkerInCluster.value) {
-          markerCluster.value?.removeMarker(marker.value);
+          markerClusterMethods?.removeMarker(marker.value);
         } else {
           marker.value.map = null;
         }
