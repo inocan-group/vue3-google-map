@@ -1,5 +1,5 @@
 <script setup>
-import { GoogleMap, Marker, InfoWindow } from '@lib'
+import { GoogleMap, AdvancedMarker, Marker, InfoWindow } from '@lib'
 import { apiPromise } from '@docs/shared'
 </script>
 
@@ -122,6 +122,87 @@ const center = { lat: -25.363, lng: 131.044 }
         </div>
       </InfoWindow>
     </Marker>
+  </GoogleMap>
+</ClientOnly>
+
+## Use with AdvancedMarker
+
+You can nest the `InfoWindow` component inside the `AdvancedMarker` with `<template #info-window>` component to display an info window when the marker is clicked.
+
+```vue
+<script setup>
+  import { GoogleMap, AdvancedMarker, InfoWindow } from "../src";
+
+  const center = { lat: -25.363, lng: 131.044 };
+
+  const centerSydney = { lat: -33.873220, lng: 151.206176 };
+  const makerOptionsSydney = { position: centerSydney, title: "SYDNEY" };
+
+  const centerPerth = { lat: -31.954877, lng: 115.860462 };
+  const markerOptionsPerth = { position: centerPerth, title: "PERTH" };
+</script>
+
+<template>
+  <GoogleMap mapId="DEMO_MAP_ID" style="width: 100%; height: 500px" :center="center" :zoom="3">
+    <AdvancedMarker :options="makerOptionsSydney">
+      <template #info-window>
+        <InfoWindow>
+          <h1>Sydney</h1>
+          <div>
+            Default AdvancedMarker With Custom InfoWindow
+          </div>
+        </InfoWindow>
+      </template>
+    </AdvancedMarker>
+
+    <AdvancedMarker :options="markerOptionsPerth">
+      <div style="background: white; color: black; padding: 5px; border-radius: 5px">
+        Perth
+      </div>
+      <template #info-window>
+        <InfoWindow>
+          <h1>Perth</h1>
+          <div>
+            Custom Content AdvancedMarker With Custom InfoWindow
+          </div>
+        </InfoWindow>
+      </template>
+    </AdvancedMarker>
+  </GoogleMap>
+</template>
+```
+
+<ClientOnly>
+  <GoogleMap
+    :api-promise="apiPromise"
+    mapId="DEMO_MAP_ID"
+    style="width: 100%; height: 500px"
+    :center="{ lat: -25.363, lng: 131.044 }"
+    :zoom="3"
+  >
+    <AdvancedMarker :options="{ position: { lat: -33.873220, lng: 151.206176 }, title: 'SYDNEY' }">
+      <template #info-window>
+        <InfoWindow>
+          <h1>Sydney</h1>
+          <div>
+            Default AdvancedMarker With Custom InfoWindow
+          </div>
+        </InfoWindow>
+      </template>
+    </AdvancedMarker>
+    <AdvancedMarker :options="{ position: { lat: -31.954877, lng: 115.860462 }, title: 'PERTH' }">
+      <div style="background: white; color: black; padding: 5px; border-radius: 5px">
+        Perth
+      </div>
+      <template #info-window>
+      <InfoWindow>
+        <h1>Perth</h1>
+        <div>
+          Custom Content AdvancedMarker With Custom InfoWindow
+        </div>
+      </InfoWindow>
+      </template>
+    </AdvancedMarker>
   </GoogleMap>
 </ClientOnly>
 
