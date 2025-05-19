@@ -1,14 +1,40 @@
 <script setup>
-import { GoogleMap, AdvancedMarker } from "../src";
+import { GoogleMap, AdvancedMarker, InfoWindow } from "../src";
 
-const center = { lat: 40.689247, lng: -74.044502 };
-const markerOptions = { position: center, title: "LADY LIBERTY" };
+const center = { lat: -25.363, lng: 131.044 };
+
+const centerSydney = { lat: -33.873220, lng: 151.206176 };
+const makerOptionsSydney = { position: centerSydney, title: "SYDNEY" };
+
+const centerPerth = { lat: -31.954877, lng: 115.860462 };
+const markerOptionsPerth = { position: centerPerth, title: "PERTH" };
 </script>
 
 <template>
-  <GoogleMap mapId="DEMO_MAP_ID" style="width: 100%; height: 500px" :center="center" :zoom="15">
-    <AdvancedMarker :options="markerOptions">
-      <div style="border: 1px solid red">advanced marker slot</div>
+  <GoogleMap mapId="DEMO_MAP_ID" style="width: 100%; height: 500px" :center="center" :zoom="4">
+    <AdvancedMarker :options="makerOptionsSydney">
+      <template #info-window>
+        <InfoWindow>
+          <h1>Sydney</h1>
+          <div>
+            Default AdvancedMarker With Custom InfoWindow
+          </div>
+        </InfoWindow>
+      </template>
+    </AdvancedMarker>
+
+    <AdvancedMarker :options="markerOptionsPerth">
+      <div style="background: white; color: black; padding: 5px; border-radius: 5px">
+        Perth
+      </div>
+      <template #info-window>
+      <InfoWindow>
+        <h1>Perth</h1>
+        <div>
+          Custom Content AdvancedMarker With Custom InfoWindow
+        </div>
+      </InfoWindow>
+      </template>
     </AdvancedMarker>
   </GoogleMap>
 </template>

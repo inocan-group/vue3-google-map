@@ -4,6 +4,7 @@
       <slot />
     </div>
   </div>
+  <slot name="info-window" />
 </template>
 
 <script lang="ts">
