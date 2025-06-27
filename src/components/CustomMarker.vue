@@ -9,8 +9,8 @@
 <script lang="ts">
 // eslint-disable-next-line @typescript-eslint/triple-slash-reference
 /// <reference path="../shims-google-maps" />
-import { defineComponent, PropType, ref, computed, Comment } from "vue";
-import { customMarkerClassSymbol } from "../shared/index";
+import { defineComponent, PropType, ref, computed, provide, Comment } from "vue";
+import { customMarkerClassSymbol, markerSymbol } from "../shared/index";
 import { useSetupMapComponent } from "../composables/index";
 
 export default defineComponent({
@@ -32,6 +32,7 @@ export default defineComponent({
     }));
 
     const customMarker = useSetupMapComponent(customMarkerClassSymbol, [], options, emit);
+    provide(markerSymbol, customMarker);
 
     expose({
       customMarker,
