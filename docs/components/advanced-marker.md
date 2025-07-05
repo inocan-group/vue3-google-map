@@ -10,7 +10,19 @@ const center = { lat: 40.689247, lng: -74.044502 }
 
 Use the `AdvancedMarker` component to draw markers, drop pins or any custom icons on a map. `AdvancedMarker` is the new version offered by google when deprecated the `Marker` component ([read more here](https://developers.google.com/maps/deprecations#googlemapsmarker_in_the_deprecated_as_of_february_2024)).
 
-In order to use the `AdvancedMarker` component is necessary to specify a MapId on declaring the `GoogleMap` component ([see more here](https://developers.google.com/maps/documentation/javascript/advanced-markers/start#create_a_map_id)).
+In order to use the `AdvancedMarker` component it is necessary to specify a MapId on declaring the `GoogleMap` component ([see more here](https://developers.google.com/maps/documentation/javascript/advanced-markers/start#create_a_map_id)).
+
+::: tip Library Requirement
+If you're using the `AdvancedMarker` component with an external loader (using the `apiPromise` prop), you must include the `marker` library in your loader configuration:
+
+```js
+const loader = new Loader({
+  apiKey: YOUR_GOOGLE_MAPS_API_KEY,
+  version: 'weekly',
+  libraries: ['marker'], // Required for AdvancedMarker component
+});
+```
+:::
 
 ## Options
 
