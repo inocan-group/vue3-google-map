@@ -13,12 +13,10 @@ const markerOptionsPerth = { position: centerPerth, title: "PERTH" };
 <template>
   <GoogleMap mapId="DEMO_MAP_ID" style="width: 100%; height: 500px" :center="center" :zoom="4">
     <AdvancedMarker :options="makerOptionsSydney">
-      <template>
-        <InfoWindow>
-          <h1>Sydney</h1>
-          <div>Default AdvancedMarker With Custom InfoWindow</div>
-        </InfoWindow>
-      </template>
+      <InfoWindow>
+        <h1>Sydney</h1>
+        <div>Default AdvancedMarker With Custom InfoWindow</div>
+      </InfoWindow>
     </AdvancedMarker>
 
     <AdvancedMarker :options="markerOptionsPerth">

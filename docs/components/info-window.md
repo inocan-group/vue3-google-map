@@ -131,19 +131,24 @@ You can nest the `InfoWindow` component inside the `AdvancedMarker` component to
 
 ```vue
 <script setup>
-  import { GoogleMap, AdvancedMarker, InfoWindow } from "../src";
+  import { GoogleMap, AdvancedMarker, InfoWindow } from 'vue3-google-map';
 
   const center = { lat: -25.363, lng: 131.044 };
 
   const centerSydney = { lat: -33.873220, lng: 151.206176 };
-  const makerOptionsSydney = { position: centerSydney, title: "SYDNEY" };
+  const makerOptionsSydney = { position: centerSydney, title: 'SYDNEY' };
 
   const centerPerth = { lat: -31.954877, lng: 115.860462 };
-  const markerOptionsPerth = { position: centerPerth, title: "PERTH" };
+  const markerOptionsPerth = { position: centerPerth, title: 'PERTH' };
 </script>
 
 <template>
-  <GoogleMap mapId="DEMO_MAP_ID" style="width: 100%; height: 500px" :center="center" :zoom="3">
+  <GoogleMap
+    mapId="DEMO_MAP_ID"
+    style="width: 100%; height: 500px"
+    :center="center"
+    :zoom="3"
+  >
     <AdvancedMarker :options="makerOptionsSydney">
       <InfoWindow>
         <h1>Sydney</h1>

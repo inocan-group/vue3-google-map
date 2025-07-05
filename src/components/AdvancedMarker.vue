@@ -1,5 +1,5 @@
 <template>
-  <div v-if="hasSlotContent" class="advanced-marker-wrapper">
+  <div v-if="hasCustomSlotContent" class="advanced-marker-wrapper">
     <div ref="markerRef" v-bind="$attrs">
       <slot name="content" />
     </div>
@@ -41,7 +41,7 @@ export default defineComponent({
   emits: markerEvents,
   setup(props, { emit, expose, slots }) {
     const markerRef = ref<HTMLElement>();
-    const hasSlotContent = computed(() => slots.content?.().some((vnode) => vnode.type !== Comment));
+    const hasCustomSlotContent = computed(() => slots.content?.().some((vnode) => vnode.type !== Comment));
 
     const options = toRef(props, "options");
     const pinOptions = toRef(props, "pinOptions");
@@ -70,11 +70,11 @@ export default defineComponent({
           const { map: _, content, ...otherOptions } = options.value;
 
           Object.assign(marker.value, {
-            content: hasSlotContent.value
+            content: hasCustomSlotContent.value
               ? markerRef.value
               : pinOptions.value
-              ? new PinElement(pinOptions.value).element
-              : content,
+                ? new PinElement(pinOptions.value).element
+                : content,
             ...otherOptions,
           });
 
@@ -83,7 +83,7 @@ export default defineComponent({
             markerCluster.value?.addMarker(marker.value);
           }
         } else {
-          if (hasSlotContent.value) {
+          if (hasCustomSlotContent.value) {
             options.value.content = markerRef.value;
           } else if (pinOptions.value) {
             options.value.content = new PinElement(pinOptions.value).element;
@@ -123,7 +123,7 @@ export default defineComponent({
 
     expose({ marker });
 
-    return { hasSlotContent, markerRef };
+    return { hasCustomSlotContent, markerRef };
   },
 });
 </script>

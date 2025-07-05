@@ -18,7 +18,7 @@ You can pass a [AdvancedMarkerElementOptions](https://developers.google.com/maps
 
 You can also pass a [PinElementOptions interface](https://developers.google.com/maps/documentation/javascript/reference/advanced-markers#PinElementOptions) object to customize pin used by the marker.
 
-Additionally, `AdvancedMarker` supports content slot content, allowing you to use custom HTML or Vue components inside the marker.
+Additionally, `AdvancedMarker` supports custom slot content via the `content` slot, allowing you to use custom HTML or Vue components inside the marker.
 
 ```vue
 <script setup>

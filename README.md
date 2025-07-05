@@ -109,7 +109,7 @@ You can pass a [AdvancedMarkerElementOptions](https://developers.google.com/maps
 
 You can also pass a [PinElementOptions interface](https://developers.google.com/maps/documentation/javascript/reference/advanced-markers#PinElementOptions) object to customize pin used by the marker.
 
-Additionally, `AdvancedMarker` supports default slot content, allowing you to use custom HTML or Vue components inside the marker.
+Additionally, `AdvancedMarker` supports custom slot content via the `content` slot, allowing you to use custom HTML or Vue components inside the marker.
 
 ```vue
 <script setup>
@@ -130,9 +130,11 @@ const pinOptions = { background: '#FBBC04' }
   >
     <AdvancedMarker :options="markerOptions" :pin-options="pinOptions"/>
     <AdvancedMarker :options="markerOptions">
-       <div style="background: white; color: black; padding: 5px; border-radius: 5px">
-        Custom Content
-      </div>
+      <template #content>
+        <div style="background: white; color: black; padding: 5px; border-radius: 5px">
+          Custom Content
+        </div>
+      </template>
     </AdvancedMarker>
   </GoogleMap>
 </template>
@@ -443,6 +445,56 @@ const center = { lat: -25.363, lng: 131.044 }
         </div>
       </InfoWindow>
     </Marker>
+  </GoogleMap>
+</template>
+```
+
+#### Use with AdvancedMarker
+
+You can nest the `InfoWindow` component inside the `AdvancedMarker` component to display an info window when the marker is clicked.
+
+```vue
+<script setup>
+  import { GoogleMap, AdvancedMarker, InfoWindow } from 'vue3-google-map';
+
+  const center = { lat: -25.363, lng: 131.044 };
+
+  const centerSydney = { lat: -33.873220, lng: 151.206176 };
+  const makerOptionsSydney = { position: centerSydney, title: 'SYDNEY' };
+
+  const centerPerth = { lat: -31.954877, lng: 115.860462 };
+  const markerOptionsPerth = { position: centerPerth, title: 'PERTH' };
+</script>
+
+<template>
+  <GoogleMap
+    mapId="DEMO_MAP_ID"
+    style="width: 100%; height: 500px"
+    :center="center"
+    :zoom="3"
+  >
+    <AdvancedMarker :options="makerOptionsSydney">
+      <InfoWindow>
+        <h1>Sydney</h1>
+        <div>
+          Default AdvancedMarker With Custom InfoWindow
+        </div>
+      </InfoWindow>
+    </AdvancedMarker>
+
+    <AdvancedMarker :options="markerOptionsPerth">
+      <template #content>
+        <div style="background: white; color: black; padding: 5px; border-radius: 5px">
+          Perth
+        </div>
+      </template>
+      <InfoWindow>
+        <h1>Perth</h1>
+        <div>
+          Custom Content AdvancedMarker With Custom InfoWindow
+        </div>
+      </InfoWindow>
+    </AdvancedMarker>
   </GoogleMap>
 </template>
 ```
