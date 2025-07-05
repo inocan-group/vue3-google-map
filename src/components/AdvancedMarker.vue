@@ -1,10 +1,10 @@
 <template>
   <div v-if="hasSlotContent" class="advanced-marker-wrapper">
     <div ref="markerRef" v-bind="$attrs">
-      <slot />
+      <slot name="content" />
     </div>
   </div>
-  <slot name="info-window" />
+  <slot />
 </template>
 
 <script lang="ts">
@@ -41,7 +41,7 @@ export default defineComponent({
   emits: markerEvents,
   setup(props, { emit, expose, slots }) {
     const markerRef = ref<HTMLElement>();
-    const hasSlotContent = computed(() => slots.default?.().some((vnode) => vnode.type !== Comment));
+    const hasSlotContent = computed(() => slots.content?.().some((vnode) => vnode.type !== Comment));
 
     const options = toRef(props, "options");
     const pinOptions = toRef(props, "pinOptions");
@@ -73,8 +73,8 @@ export default defineComponent({
             content: hasSlotContent.value
               ? markerRef.value
               : pinOptions.value
-                ? new PinElement(pinOptions.value).element
-                : content,
+              ? new PinElement(pinOptions.value).element
+              : content,
             ...otherOptions,
           });
 

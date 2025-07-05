@@ -127,7 +127,7 @@ const center = { lat: -25.363, lng: 131.044 }
 
 ## Use with AdvancedMarker
 
-You can nest the `InfoWindow` component inside the `AdvancedMarker` with `<template #info-window>` component to display an info window when the marker is clicked.
+You can nest the `InfoWindow` component inside the `AdvancedMarker` component to display an info window when the marker is clicked.
 
 ```vue
 <script setup>
@@ -145,28 +145,26 @@ You can nest the `InfoWindow` component inside the `AdvancedMarker` with `<templ
 <template>
   <GoogleMap mapId="DEMO_MAP_ID" style="width: 100%; height: 500px" :center="center" :zoom="3">
     <AdvancedMarker :options="makerOptionsSydney">
-      <template #info-window>
-        <InfoWindow>
-          <h1>Sydney</h1>
-          <div>
-            Default AdvancedMarker With Custom InfoWindow
-          </div>
-        </InfoWindow>
-      </template>
+      <InfoWindow>
+        <h1>Sydney</h1>
+        <div>
+          Default AdvancedMarker With Custom InfoWindow
+        </div>
+      </InfoWindow>
     </AdvancedMarker>
 
     <AdvancedMarker :options="markerOptionsPerth">
-      <div style="background: white; color: black; padding: 5px; border-radius: 5px">
-        Perth
-      </div>
-      <template #info-window>
-        <InfoWindow>
-          <h1>Perth</h1>
-          <div>
-            Custom Content AdvancedMarker With Custom InfoWindow
-          </div>
-        </InfoWindow>
+      <template #content>
+        <div style="background: white; color: black; padding: 5px; border-radius: 5px">
+          Perth
+        </div>
       </template>
+      <InfoWindow>
+        <h1>Perth</h1>
+        <div>
+          Custom Content AdvancedMarker With Custom InfoWindow
+        </div>
+      </InfoWindow>
     </AdvancedMarker>
   </GoogleMap>
 </template>
@@ -181,27 +179,25 @@ You can nest the `InfoWindow` component inside the `AdvancedMarker` with `<templ
     :zoom="3"
   >
     <AdvancedMarker :options="{ position: { lat: -33.873220, lng: 151.206176 }, title: 'SYDNEY' }">
-      <template #info-window>
-        <InfoWindow>
-          <h1>Sydney</h1>
-          <div>
-            Default AdvancedMarker With Custom InfoWindow
-          </div>
-        </InfoWindow>
-      </template>
+      <InfoWindow>
+        <h1>Sydney</h1>
+        <div>
+          Default AdvancedMarker With Custom InfoWindow
+        </div>
+      </InfoWindow>
     </AdvancedMarker>
     <AdvancedMarker :options="{ position: { lat: -31.954877, lng: 115.860462 }, title: 'PERTH' }">
-      <div style="background: white; color: black; padding: 5px; border-radius: 5px">
-        Perth
-      </div>
-      <template #info-window>
+      <template #content>
+        <div style="background: white; color: black; padding: 5px; border-radius: 5px">
+          Perth
+        </div>
+      </template>
       <InfoWindow>
         <h1>Perth</h1>
         <div>
           Custom Content AdvancedMarker With Custom InfoWindow
         </div>
       </InfoWindow>
-      </template>
     </AdvancedMarker>
   </GoogleMap>
 </ClientOnly>
