@@ -30,7 +30,7 @@ You can pass a [AdvancedMarkerElementOptions](https://developers.google.com/maps
 
 You can also pass a [PinElementOptions interface](https://developers.google.com/maps/documentation/javascript/reference/advanced-markers#PinElementOptions) object to customize pin used by the marker.
 
-Additionally, `AdvancedMarker` supports default slot content, allowing you to use custom HTML or Vue components inside the marker.
+Additionally, `AdvancedMarker` supports custom slot content via the `content` slot, allowing you to use custom HTML or Vue components inside the marker.
 
 ```vue
 <script setup>
@@ -51,9 +51,11 @@ const pinOptions = { background: '#FBBC04' }
   >
     <AdvancedMarker :options="markerOptions" :pin-options="pinOptions"/>
     <AdvancedMarker :options="markerOptions">
-       <div style="background: white; color: black; padding: 5px; border-radius: 5px">
-        Custom Content
-      </div>
+       <template #content>
+         <div style="background: white; color: black; padding: 5px; border-radius: 5px">
+          Custom Content
+        </div>
+       </template>
     </AdvancedMarker>
   </GoogleMap>
 </template>
@@ -69,9 +71,11 @@ const pinOptions = { background: '#FBBC04' }
   >
     <AdvancedMarker :options="{ position: { lat: 40.689247, lng: -74.044502 } }" :pin-options="{ background: '#FBBC04' }" />
     <AdvancedMarker :options="{ position: { lat: 40.689247, lng: -74.044502 } }">
-       <div style="background: white; color: black; padding: 5px; border-radius: 5px;">
-        Custom Content
-      </div>
+      <template #content>
+        <div style="background: white; color: black; padding: 5px; border-radius: 5px;">
+          Custom Content
+        </div>
+      </template>
     </AdvancedMarker>
   </GoogleMap>
 </ClientOnly>
