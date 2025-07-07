@@ -25,6 +25,10 @@ const heatmapData = [
 
 # Heatmap Layer
 
+::: warning DEPRECATED
+The `HeatmapLayer` component was deprecated on **May 27, 2025** and will be sunset in **May 2026**. Google recommends migrating to third-party library integrations like [deck.gl](https://deck.gl/), which offers a HeatmapLayer implementation. [Learn more about the deprecation](https://developers.google.com/maps/deprecations).
+:::
+
 Use the `HeatmapLayer` component to depict the intensity of data at geographical points on the map. Make sure to include the `visualization` library in the `libraries` prop of the `GoogleMap` component.
 
 ## Options

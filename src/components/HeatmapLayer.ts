@@ -8,6 +8,11 @@ interface ExtendedHeatmapLayerOptions extends Omit<HeatmapLayerOptions, "data"> 
   data: HeatmapLayerOptions["data"] | (google.maps.LatLngLiteral | { location: google.maps.LatLngLiteral })[];
 }
 
+/**
+ * @deprecated The HeatmapLayer component was deprecated on May 27, 2025 and will be sunset in May 2026.
+ * Google recommends migrating to third-party library integrations like deck.gl, which offers a HeatmapLayer implementation.
+ * @see {@link https://developers.google.com/maps/deprecations} for more information.
+ */
 export default defineComponent({
   name: "HeatmapLayer",
   props: {

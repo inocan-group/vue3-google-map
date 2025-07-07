@@ -28,6 +28,12 @@ const markerEvents = [
   "visible_changed",
 ];
 
+/**
+ * @deprecated The Marker component is deprecated as of February 2024. Use AdvancedMarker instead.
+ * The google.maps.Marker API is deprecated and will be removed in a future version.
+ * Migrate to AdvancedMarker for the latest features and better performance.
+ * @see {@link https://developers.google.com/maps/deprecations} for more information.
+ */
 export default defineComponent({
   name: "Marker",
   props: {

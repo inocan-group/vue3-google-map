@@ -7,6 +7,10 @@ const center = { lat: 40.689247, lng: -74.044502 }
 
 # Marker
 
+::: warning DEPRECATED
+The `Marker` component is deprecated as of February 2024. Please use the [`AdvancedMarker`](./advanced-marker.md) component instead for new projects. The legacy `google.maps.Marker` API will be removed in a future version. [Learn more about the deprecation](https://developers.google.com/maps/deprecations#googlemapsmarker_in_the_deprecated_as_of_february_2024).
+:::
+
 Use the `Marker` component to draw markers, drop pins or any custom icons on a map.
 
 ## Options

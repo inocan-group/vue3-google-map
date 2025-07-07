@@ -16,7 +16,7 @@ Note: Please refer to the [documentation site](https://vue3-google-map.com/) for
   - [Your First Map](#your-first-map)
 - [Components](#components)
   - [Advanced Marker](#advanced-marker)
-  - [Marker](#marker)
+  - [Marker](#marker) ⚠️ **Deprecated**
   - [Polyline](#polyline)
   - [Polygon](#polygon)
   - [Rectangle](#rectangle)
@@ -25,7 +25,7 @@ Note: Please refer to the [documentation site](https://vue3-google-map.com/) for
   - [Custom Marker](#custom-marker)
   - [Custom Control](#custom-control)
   - [Marker Cluster](#marker-cluster)
-  - [Heatmap Layer](#heatmap-layer)
+  - [Heatmap Layer](#heatmap-layer) ⚠️ **Deprecated**
 - [Advanced Usage](#advanced-usage)
 - [Contribution](#contribution)
 - [License](#license)
@@ -87,7 +87,7 @@ This library is intended to be used in a composable fashion. Therefore you will 
 The main mapping component is `GoogleMap`, however the following components are available at your disposal:
 
 - [AdvancedMarker](#advanced-marker)
-- [Marker](#marker)
+- [Marker](#marker) ⚠️ **Deprecated** - Use AdvancedMarker instead
 - [Polyline](#polyline)
 - [Polygon](#polygon)
 - [Rectangle](#rectangle)
@@ -96,6 +96,7 @@ The main mapping component is `GoogleMap`, however the following components are 
 - [CustomMarker](#custom-marker)
 - [CustomControl](#custom-control)
 - [MarkerCluster](#marker-cluster)
+- [HeatmapLayer](#heatmap-layer) ⚠️ **Deprecated**
 
 ### Advanced Marker
 
@@ -156,6 +157,9 @@ const pinOptions = { background: '#FBBC04' }
 You can listen for [the following events](https://developers.google.com/maps/documentation/javascript/reference/advanced-markers#AdvancedMarkerElement-Events) on the `AdvancedMarker` component.
 
 ### Marker
+
+> [!WARNING]
+> **DEPRECATED:** The `Marker` component is deprecated as of February 2024. Please use the [`AdvancedMarker`](#advanced-marker) component instead for new projects. The legacy `google.maps.Marker` API will be removed in a future version. [Learn more about the deprecation](https://developers.google.com/maps/deprecations#googlemapsmarker_in_the_deprecated_as_of_february_2024).
 
 Use the `Marker` component to draw markers, drop pins or any custom icons on a map.
 
@@ -708,6 +712,9 @@ const locations = [
 You can listen for [the following events](https://googlemaps.github.io/js-markerclusterer/enums/MarkerClustererEvents.html) on the `MarkerCluster` component.
 
 ### Heatmap Layer
+
+> [!WARNING]
+> **DEPRECATED:** The `HeatmapLayer` component was deprecated on **May 27, 2025** and will be sunset in **May 2026**. Google recommends migrating to third-party library integrations like [deck.gl](https://deck.gl/), which offers a HeatmapLayer implementation. [Learn more about the deprecation](https://developers.google.com/maps/deprecations).
 
 Use the `HeatmapLayer` component to depict the intensity of data at geographical points on the map. Make sure to include the `visualization` library in the `libraries` prop of the `GoogleMap` component.
 

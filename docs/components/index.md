@@ -5,7 +5,7 @@ This library is intended to be used in a composable fashion. Therefore you will 
 The main mapping component is `GoogleMap`, however the following components are available at your disposal:
 
 - [AdvancedMarker](./advanced-marker.md)
-- [Marker](./marker.md)
+- [Marker](./marker.md) ⚠️ **Deprecated** - Use AdvancedMarker instead
 - [Polyline](./polyline.md)
 - [Polygon](./polygon.md)
 - [Rectangle](./rectangle.md)
@@ -14,4 +14,4 @@ The main mapping component is `GoogleMap`, however the following components are 
 - [Custom Marker](./custom-marker.md)
 - [Custom Control](./custom-control.md)
 - [Marker Cluster](./marker-cluster.md)
-- [Heatmap Layer](./heatmap-layer.md)
+- [Heatmap Layer](./heatmap-layer.md) ⚠️ **Deprecated**
