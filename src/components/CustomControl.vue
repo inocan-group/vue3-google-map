@@ -62,6 +62,7 @@ export default defineComponent({
     const addControl = (controlPosition: IControlPosition) => {
       if (map.value && api.value && controlRef.value) {
         const position = api.value.ControlPosition[controlPosition];
+        (controlRef.value as ControlRef).index = props.index;
         map.value.controls[position].push(controlRef.value);
       }
     };
@@ -97,7 +98,9 @@ export default defineComponent({
     watch(
       () => props.index,
       (newIndex) => {
-        if (newIndex && controlRef.value) (controlRef.value as ControlRef).index = props.index;
+        if (!controlRef.value) return;
+
+        (controlRef.value as ControlRef).index = newIndex;
       }
     );
 
