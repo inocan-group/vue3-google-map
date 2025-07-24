@@ -1,4 +1,4 @@
-name: Build & Publish
+name: build
 on:
   push:
     branches:
@@ -6,24 +6,27 @@ on:
 
 jobs:
   build:
-    name: Main Job
+    name: Build & Publish
     runs-on: ubuntu-latest
 
     steps:
       - name: Checkout 🛎
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
 
       - name: Setup Node ⚙️
-        uses: actions/setup-node@v3
+        uses: actions/setup-node@v4
         with:
-          node-version: 18.17.0
+          node-version: 20
 
       - name: Install dependencies 👨🏻‍💻
-        uses: pnpm/action-setup@v2
+        uses: pnpm/action-setup@v3
         with:
-          version: 8
+          version: 10
           run_install: |
-              args: [--frozen-lockfile, --strict-peer-dependencies]
+            args: [--frozen-lockfile, --strict-peer-dependencies]
+
+      - name: Run tests 🧪
+        run: pnpm test:coverage
 
       - name: Build library 🛠
         run: pnpm build

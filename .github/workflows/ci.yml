@@ -1,0 +1,66 @@
+name: ci
+
+on:
+  push:
+    branches: [main, develop]
+  pull_request:
+    branches: [main, develop]
+
+jobs:
+  test:
+    name: Test & Lint
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout 🛎
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js ⚙️
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - name: Install dependencies 👨🏻‍💻
+        uses: pnpm/action-setup@v3
+        with:
+          version: 10
+          run_install: |
+            args: [--frozen-lockfile, --strict-peer-dependencies]
+
+      - name: Run linting 🔍
+        run: pnpm lint:check
+
+      - name: Run tests 🧪
+        run: pnpm test:coverage
+
+  build:
+    name: Build Check
+    runs-on: ubuntu-latest
+    needs: test
+
+    steps:
+      - name: Checkout 🛎
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js ⚙️
+        uses: actions/setup-node@v4
+        with:
+          node-version: 18
+
+      - name: Install dependencies 👨🏻‍💻
+        uses: pnpm/action-setup@v3
+        with:
+          version: 10
+          run_install: |
+            args: [--frozen-lockfile, --strict-peer-dependencies]
+
+      - name: Build library 🛠
+        run: pnpm build
+
+      - name: Check build output 📁
+        run: |
+          ls -la dist/
+          test -f dist/index.cjs
+          test -f dist/index.mjs
+          test -f dist/index.umd.js
+          test -d dist/types

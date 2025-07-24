@@ -41,7 +41,8 @@
     "dev": "vite",
     "prepare": "pnpm run build",
     "clean": "rimraf dist/**/*",
-    "lint": "npx eslint --ext .ts,.vue src dev docs --fix",
+    "lint": "npx eslint --ext .ts,.vue src playground --fix",
+    "lint:check": "npx eslint --ext .ts,.vue src playground",
     "build:umd": "node ./scripts/build-umd.js",
     "build": "pnpm clean && vue-tsc --declaration --emitDeclarationOnly --project tsconfig.build.json && vite build && pnpm build:umd",
     "docs": "vitepress dev docs",
@@ -75,7 +76,7 @@
     "eslint-plugin-vue": "^7.20.0",
     "jest": "^30.0.4",
     "jest-environment-jsdom": "^30.0.4",
-    "pnpm": "^8.7.6",
+    "pnpm": "^10.13.1",
     "prettier": "^2.8.8",
     "rimraf": "^5.0.1",
     "standard-version": "^9.5.0",
@@ -91,6 +92,6 @@
     "vue": "^3"
   },
   "engines": {
-    "node": ">=16.11.0"
+    "node": ">=18.12.0"
   }
 }
