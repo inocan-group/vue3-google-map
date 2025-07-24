@@ -81,9 +81,11 @@ export const useSetupMapComponent = <T extends ICtorKey>(
             new api.value[ctorKey](options.value as IComponentOptions<typeof ctorKey>)
           ) as IComponent<typeof ctorKey>;
         } else if (isCustomMarkerCtorKey(ctorKey)) {
-          component.value = markRaw(
-            new api.value[ctorKey](options.value as IComponentOptions<typeof ctorKey>)
-          ) as IComponent<typeof ctorKey>;
+          // only create CustomMarker if element is provided
+          const customMarkerOptions = options.value as IComponentOptions<typeof ctorKey>;
+          if (customMarkerOptions.element) {
+            component.value = markRaw(new api.value[ctorKey](customMarkerOptions)) as IComponent<typeof ctorKey>;
+          }
         } else {
           component.value = markRaw(
             new api.value[ctorKey]({
@@ -93,10 +95,13 @@ export const useSetupMapComponent = <T extends ICtorKey>(
           ) as IShape;
         }
 
-        if (isMarkerInCluster.value) {
-          markerCluster.value?.addMarker(component.value as google.maps.Marker);
-        } else {
-          component.value.setMap(map.value);
+        if (component.value) {
+          if (isMarkerInCluster.value) {
+            markerCluster.value?.addMarker(component.value as google.maps.Marker);
+          } else if (isMarkerCtorKey(ctorKey) || isCustomMarkerCtorKey(ctorKey)) {
+            // Only call setMap for markers, shapes are already created with map in constructor
+            component.value.setMap(map.value);
+          }
         }
 
         events.forEach((event) => {
@@ -106,6 +111,7 @@ export const useSetupMapComponent = <T extends ICtorKey>(
     },
     {
       immediate: true,
+      flush: "post",
     }
   );
 

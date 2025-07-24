@@ -1,8 +1,12 @@
-import { defineComponent, PropType, toRef, provide } from "vue";
+import { defineComponent, PropType, toRef, provide, Ref } from "vue";
 import { useSetupMapComponent } from "../composables/index";
 import { markerSymbol } from "../shared/index";
 
-const markerEvents = [
+export interface IMarkerExposed {
+  marker: Ref<google.maps.Marker | undefined>;
+}
+
+export const markerEvents = [
   "animation_changed",
   "click",
   "dblclick",
@@ -19,7 +23,6 @@ const markerEvents = [
   "contextmenu",
   "cursor_changed",
   "flat_changed",
-  "rightclick",
   "zindex_changed",
   "icon_changed",
   "position_changed",

@@ -20,11 +20,16 @@ import {
   ref,
   watch,
   Comment,
+  type Ref,
 } from "vue";
 import { markerSymbol, apiSymbol, mapSymbol, markerClusterSymbol } from "../shared/index";
 import equal from "fast-deep-equal";
 
-const markerEvents = ["click", "drag", "dragend", "dragstart", "gmp-click"];
+export interface IAdvancedMarkerExposed {
+  marker: Ref<google.maps.marker.AdvancedMarkerElement | undefined>;
+}
+
+export const markerEvents = ["click", "drag", "dragend", "dragstart", "gmp-click"];
 
 export default defineComponent({
   name: "AdvancedMarker",

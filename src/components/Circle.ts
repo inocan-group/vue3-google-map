@@ -2,7 +2,7 @@ import { defineComponent, PropType, toRef } from "vue";
 import { useSetupMapComponent } from "../composables/index";
 import { polylineEvents } from "../shared/index";
 
-const circleEvents = polylineEvents.concat(["center_changed", "radius_changed"]);
+export const circleEvents = polylineEvents.concat(["center_changed", "radius_changed"]);
 
 export default defineComponent({
   name: "Circle",

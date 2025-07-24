@@ -1,4 +1,4 @@
-import { defineComponent, PropType, ref, provide, inject, watch, markRaw, onBeforeUnmount } from "vue";
+import { defineComponent, PropType, ref, provide, inject, watch, markRaw, onBeforeUnmount, type Ref } from "vue";
 import {
   MarkerClusterer,
   MarkerClustererOptions,
@@ -7,7 +7,11 @@ import {
 } from "@googlemaps/markerclusterer";
 import { mapSymbol, apiSymbol, markerClusterSymbol } from "../shared/index";
 
-const markerClusterEvents = Object.values(MarkerClustererEvents);
+export interface IMarkerClusterExposed {
+  markerCluster: Ref<MarkerClusterer | undefined>;
+}
+
+export const markerClusterEvents = Object.values(MarkerClustererEvents);
 
 export default defineComponent({
   name: "MarkerCluster",

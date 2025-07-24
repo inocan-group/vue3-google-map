@@ -24,3 +24,23 @@ yarn-error.log*
 dist
 docs/.vitepress/dist
 docs/.vitepress/cache
+
+# Test coverage files
+coverage
+.nyc_output
+*.lcov
+.coverage
+
+# Jest cache
+.jest-cache
+
+# Test artifacts
+test-results
+test-report.xml
+junit.xml
+
+# Temporary test files
+*.tmp
+*.temp
+.tmp
+.temp

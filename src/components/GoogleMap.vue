@@ -7,7 +7,7 @@ import { IControlPosition } from "../@types/index";
 
 let loaderInstance: Loader | undefined;
 
-const mapEvents = [
+export const mapEvents = [
   "bounds_changed",
   "center_changed",
   "click",
@@ -330,7 +330,9 @@ export default defineComponent({
       const otherPropsAsRefs = (Object.keys(props) as (keyof typeof props)[])
         .filter(
           (key) =>
-            !["apiPromise", "apiKey", "version", "libraries", "region", "language", "center", "zoom", "nonce"].includes(key)
+            !["apiPromise", "apiKey", "version", "libraries", "region", "language", "center", "zoom", "nonce"].includes(
+              key
+            )
         )
         .map((key) => toRef(props, key));
 

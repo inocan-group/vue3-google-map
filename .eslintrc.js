@@ -2,6 +2,7 @@ module.exports = {
   root: true,
   env: {
     node: true,
+    jest: true,
   },
   extends: [
     "plugin:vue/vue3-essential",
@@ -31,4 +32,16 @@ module.exports = {
       },
     ],
   },
+  overrides: [
+    {
+      files: ["**/__tests__/**/*", "**/*.spec.*", "**/*.test.*"],
+      env: {
+        jest: true,
+      },
+      rules: {
+        "@typescript-eslint/no-non-null-assertion": "off",
+        "@typescript-eslint/no-unused-vars": "off",
+      },
+    },
+  ],
 };

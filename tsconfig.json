@@ -6,7 +6,7 @@
     "useDefineForClassFields": true,
     "module": "ESNext",
     "lib": [
-      "ES2020",
+      "ES2022",
       "DOM",
       "DOM.Iterable"
     ],
@@ -14,6 +14,7 @@
     "types": [
       "google.maps",
       "vite/client",
+      "jest"
     ],
     "paths": {
       "@/*": [
