@@ -2,6 +2,14 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.24.0](https://github.com/inocan-group/vue3-google-maps/compare/v0.23.1...v0.24.0) (2025-08-28)
+
+
+### Features
+
+* re-export mapSymbol, apiSymbol, mapTilesLoadedSymbol for external usage ([#345](https://github.com/inocan-group/vue3-google-maps/issues/345)) ([7f4aad4](https://github.com/inocan-group/vue3-google-maps/commit/7f4aad40c0cb29410333b3ffd1ac3752a1e82017))
+
+
 ### [0.23.1](https://github.com/inocan-group/vue3-google-maps/compare/v0.23.0...v0.23.1) (2025-07-25)
 
 
