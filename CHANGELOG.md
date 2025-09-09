@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.24.1](https://github.com/inocan-group/vue3-google-maps/compare/v0.24.0...v0.24.1) (2025-09-09)
+
+
+### Bug Fixes
+
+* **InfoWindow:** resolve timing issue with nested InfoWindow in markers ([b8c3c19](https://github.com/inocan-group/vue3-google-maps/commit/b8c3c199ccc607f557b464c36614e15eb4f4d18e))
+
 ### [0.24.0](https://github.com/inocan-group/vue3-google-maps/compare/v0.23.1...v0.24.0) (2025-08-28)
 
 
