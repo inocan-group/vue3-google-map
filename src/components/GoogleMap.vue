@@ -1,11 +1,11 @@
 <script lang="ts">
 import { defineComponent, PropType, ref, onMounted, onBeforeUnmount, watch, toRef, provide, markRaw } from "vue";
 import { mapSymbol, apiSymbol, mapTilesLoadedSymbol, customMarkerClassSymbol } from "../shared/index";
-import { Loader, Library } from "@googlemaps/js-api-loader";
+import { setOptions, importLibrary } from "@googlemaps/js-api-loader";
 import { createCustomMarkerClass } from "../utils";
 import { IControlPosition } from "../@types/index";
 
-let loaderInstance: Loader | undefined;
+let isMapsAPISet = false;
 
 export const mapEvents = [
   "bounds_changed",
@@ -46,7 +46,7 @@ export default defineComponent({
       default: "weekly",
     },
     libraries: {
-      type: Array as PropType<Library[]>,
+      type: Array as PropType<string[]>,
       default: () => ["places", "marker"],
     },
     region: {
@@ -237,10 +237,6 @@ export default defineComponent({
       type: String as PropType<IControlPosition>,
       required: false,
     },
-    nonce: {
-      type: String,
-      default: "",
-    },
   },
 
   emits: mapEvents,
@@ -305,19 +301,14 @@ export default defineComponent({
       { immediate: true }
     );
 
-    const loadMapsAPI = () => {
-      try {
-        const { apiKey, region, version, language, libraries, nonce } = props;
-        loaderInstance = new Loader({ apiKey, region, version, language, libraries: libraries as Library[], nonce });
-      } catch (err) {
-        // Loader instantiated again with different options, which isn't allowed by js-api-loader
-        console.error(err);
-      }
+    const setupMapsAPI = () => {
+      const { apiKey, region, version, language, libraries } = props;
+      setOptions({ key: apiKey, region, v: version, language, libraries });
     };
 
-    const setupMap = (_google: typeof google) => {
-      api.value = markRaw(_google.maps);
-      map.value = markRaw(new _google.maps.Map(mapRef.value as HTMLElement, resolveOptions()));
+    const setupMap = () => {
+      api.value = markRaw(google.maps);
+      map.value = markRaw(new google.maps.Map(mapRef.value as HTMLElement, resolveOptions()));
       const CustomMarker = createCustomMarkerClass(api.value);
       api.value[customMarkerClassSymbol] = CustomMarker;
 
@@ -330,9 +321,7 @@ export default defineComponent({
       const otherPropsAsRefs = (Object.keys(props) as (keyof typeof props)[])
         .filter(
           (key) =>
-            !["apiPromise", "apiKey", "version", "libraries", "region", "language", "center", "zoom", "nonce"].includes(
-              key
-            )
+            !["apiPromise", "apiKey", "version", "libraries", "region", "language", "center", "zoom"].includes(key)
         )
         .map((key) => toRef(props, key));
 
@@ -356,9 +345,11 @@ export default defineComponent({
       if (props.apiPromise && props.apiPromise instanceof Promise) {
         props.apiPromise.then(setupMap);
       } else {
-        loadMapsAPI();
-
-        (loaderInstance as Loader).load().then(setupMap);
+        if (!isMapsAPISet) {
+          setupMapsAPI();
+          isMapsAPISet = true;
+        }
+        importLibrary("core").then(setupMap);
       }
     });
 

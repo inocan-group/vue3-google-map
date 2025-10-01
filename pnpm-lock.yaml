@@ -9,8 +9,8 @@ importers:
   .:
     dependencies:
       '@googlemaps/js-api-loader':
-        specifier: ^1.16.2
-        version: 1.16.10
+        specifier: ^2.0.1
+        version: 2.0.1
       '@googlemaps/markerclusterer':
         specifier: ^2.4.0
         version: 2.6.2
@@ -686,8 +686,8 @@ packages:
   '@googlemaps/jest-mocks@2.22.6':
     resolution: {integrity: sha512-t3n0l03OdGPEUCfWVC1a4xGgcE21+58tGdNsIjGWsTbsaMZBOfCxwTHvzmAx/H0dyPeKZ4uWmtahsyUQIcGInA==}
 
-  '@googlemaps/js-api-loader@1.16.10':
-    resolution: {integrity: sha512-c2erv2k7P2ilYzMmtYcMgAR21AULosQuUHJbStnrvRk2dG93k5cqptDrh9A8p+ZNlyhiqEOgHW7N9PAizdUM7Q==}
+  '@googlemaps/js-api-loader@2.0.1':
+    resolution: {integrity: sha512-YUtKJSWH6FiE/6Ii+NP+WfkvoZ55DLwyqthKmVYxZZwn/ny310dvz9Zw3cO1besEhGxA9lW7Ctjmzae1putjXQ==}
 
   '@googlemaps/markerclusterer@2.6.2':
     resolution: {integrity: sha512-U6uVhq8iWhiIckA89sgRu8OK35mjd6/3CuoZKWakKEf0QmRRWpatlsPb3kqXkoWSmbcZkopRiI4dnW6DQSd7bQ==}
@@ -4195,7 +4195,9 @@ snapshots:
 
   '@googlemaps/jest-mocks@2.22.6': {}
 
-  '@googlemaps/js-api-loader@1.16.10': {}
+  '@googlemaps/js-api-loader@2.0.1':
+    dependencies:
+      '@types/google.maps': 3.58.1
 
   '@googlemaps/markerclusterer@2.6.2':
     dependencies:
