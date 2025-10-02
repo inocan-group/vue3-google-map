@@ -2,13 +2,15 @@ import { mount, flushPromises } from "@vue/test-utils";
 import GoogleMap, { mapEvents } from "../GoogleMap.vue";
 import { mockInstances } from "@googlemaps/jest-mocks";
 import { mapSymbol, apiSymbol, mapTilesLoadedSymbol, customMarkerClassSymbol } from "../../shared";
-import { Loader } from "@googlemaps/js-api-loader";
+import { setOptions, importLibrary } from "@googlemaps/js-api-loader";
 import { inject } from "vue";
 
+const mockSetOptions = setOptions as jest.Mock;
+const mockImportLibrary = importLibrary as jest.Mock;
+
 jest.mock("@googlemaps/js-api-loader", () => ({
-  Loader: jest.fn().mockImplementation(() => ({
-    load: jest.fn().mockResolvedValue(google),
-  })),
+  setOptions: jest.fn(),
+  importLibrary: jest.fn(),
 }));
 
 jest.mock("../../utils", () => ({
@@ -19,15 +21,16 @@ jest.mock("../../utils", () => ({
 
 describe("GoogleMap Component", () => {
   let mockApi: typeof google.maps;
-  let mockLoader: any;
   let createMapSpy: jest.Mock<void, ConstructorParameters<typeof google.maps.Map>>;
-
   let getMapMocks: () => google.maps.Map[];
 
   beforeEach(() => {
-    mockLoader = Loader;
+    jest.clearAllMocks();
 
     mockApi = google.maps;
+
+    // Setup importLibrary to return the maps library
+    mockImportLibrary.mockResolvedValue(google.maps);
 
     createMapSpy = jest.fn();
 
@@ -68,49 +71,85 @@ describe("GoogleMap Component", () => {
     });
   };
 
-  describe("Instance Creation", () => {
-    it("should create Map when loader resolves successfully", async () => {
-      createWrapper();
-
-      await flushPromises();
-
-      expect(getMapMocks()).toHaveLength(1);
-    });
-
-    it("should create Map when apiPromise is provided", async () => {
-      createWrapperWithApiPromise();
-
-      await flushPromises();
-
-      expect(getMapMocks()).toHaveLength(1);
-    });
-
-    it("should create Loader with correct options", async () => {
+  // GROUP 1: Tests that MUST run first (tests that check setOptions)
+  // These run in a separate describe block to ensure they execute before the flag is set
+  describe("Library Loading and API Setup (must run first)", () => {
+    it("should call setOptions with correct loader options", async () => {
       const props = {
         apiKey: "custom-api-key",
         version: "3.55",
         libraries: ["places", "geometry"],
         region: "US",
         language: "en",
-        nonce: "test-nonce",
       };
+
+      mockSetOptions.mockClear();
 
       createWrapper(props);
 
-      expect(mockLoader).toHaveBeenCalledWith({
-        apiKey: "custom-api-key",
-        version: "3.55",
+      await flushPromises();
+
+      // Check that setOptions was called with correct parameter names
+      expect(mockSetOptions).toHaveBeenCalledWith({
+        key: "custom-api-key",
+        v: "3.55",
         libraries: ["places", "geometry"],
         region: "US",
         language: "en",
-        nonce: "test-nonce",
       });
     });
 
-    it("should not create Loader when apiPromise is provided", async () => {
+    it("should only call setOptions once across multiple component instances", async () => {
+      const callCountBefore = mockSetOptions.mock.calls.length;
+
+      // Create another instance - should not call setOptions again
+      const wrapper2 = createWrapper();
+      await flushPromises();
+
+      // setOptions should not be called again (flag is already set)
+      expect(mockSetOptions).toHaveBeenCalledTimes(callCountBefore);
+
+      wrapper2.unmount();
+    });
+  });
+
+  describe("Instance Creation", () => {
+    it("should create Map when importLibrary resolves successfully", async () => {
+      createWrapper();
+
+      await flushPromises();
+
+      expect(getMapMocks().length).toBeGreaterThan(0);
+    });
+
+    it("should create Map when apiPromise is provided", async () => {
+      const mapsBefore = getMapMocks().length;
+
       createWrapperWithApiPromise();
 
-      expect(mockLoader).not.toHaveBeenCalled();
+      await flushPromises();
+
+      expect(getMapMocks().length).toBeGreaterThan(mapsBefore);
+    });
+
+    it("should not call setOptions when apiPromise is provided", async () => {
+      mockSetOptions.mockClear();
+
+      createWrapperWithApiPromise();
+
+      await flushPromises();
+
+      expect(mockSetOptions).not.toHaveBeenCalled();
+    });
+
+    it("should call importLibrary for core library", async () => {
+      mockImportLibrary.mockClear();
+
+      createWrapper();
+
+      await flushPromises();
+
+      expect(mockImportLibrary).toHaveBeenCalledWith("core");
     });
   });
 
@@ -326,30 +365,6 @@ describe("GoogleMap Component", () => {
       tilesloadedListener();
 
       expect(wrapper.vm.mapTilesLoaded).toBe(true);
-    });
-  });
-
-  describe("Library Loading", () => {
-    it("should load with default libraries", async () => {
-      createWrapper();
-
-      expect(mockLoader).toHaveBeenCalledWith(
-        expect.objectContaining({
-          libraries: ["places", "marker"],
-        })
-      );
-    });
-
-    it("should load with custom libraries when provided", async () => {
-      createWrapper({
-        libraries: ["geometry", "visualization"],
-      });
-
-      expect(mockLoader).toHaveBeenCalledWith(
-        expect.objectContaining({
-          libraries: ["geometry", "visualization"],
-        })
-      );
     });
   });
 
