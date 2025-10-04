@@ -6,6 +6,7 @@ import {
   SuperClusterViewportAlgorithm,
 } from "@googlemaps/markerclusterer";
 import { mapSymbol, apiSymbol, markerClusterSymbol } from "../shared/index";
+import { DebouncedMarkerClusterer } from "./DebouncedMarkerClusterer";
 
 export interface IMarkerClusterExposed {
   markerCluster: Ref<MarkerClusterer | undefined>;
@@ -19,6 +20,10 @@ export default defineComponent({
     options: {
       type: Object as PropType<MarkerClustererOptions>,
       default: () => ({}),
+    },
+    renderDebounceDelay: {
+      type: Number,
+      default: 10,
     },
   },
   emits: markerClusterEvents,
@@ -34,13 +39,13 @@ export default defineComponent({
       () => {
         if (map.value) {
           markerCluster.value = markRaw(
-            new MarkerClusterer({
+            new DebouncedMarkerClusterer({
               map: map.value,
               // Better perf than the default `SuperClusterAlgorithm`. See:
               // https://github.com/googlemaps/js-markerclusterer/pull/640
               algorithm: new SuperClusterViewportAlgorithm(props.options.algorithmOptions ?? {}),
               ...props.options,
-            })
+            }, props.renderDebounceDelay)
           );
 
           markerClusterEvents.forEach((event) => {
@@ -58,6 +63,10 @@ export default defineComponent({
         api.value?.event.clearInstanceListeners(markerCluster.value);
         markerCluster.value.clearMarkers();
         markerCluster.value.setMap(null);
+
+        if (markerCluster.value instanceof DebouncedMarkerClusterer) {
+          markerCluster.value.destroy();
+        }
       }
     });
 
