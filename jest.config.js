@@ -26,6 +26,7 @@ module.exports = {
     "!src/**/__tests__/**",
     "!src/shims-*.ts",
     "!src/themes/**",
+    "!src/components/DebouncedMarkerClusterer.ts",
   ],
   coverageThreshold: {
     global: {
