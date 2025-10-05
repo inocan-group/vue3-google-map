@@ -1,9 +1,21 @@
-import { Loader } from "@googlemaps/js-api-loader";
+import { setOptions, importLibrary } from "@googlemaps/js-api-loader";
 
-const loader = new Loader({
-  apiKey: import.meta.env.VITE_GOOGLE_API_KEY,
-  version: "weekly",
-  libraries: ["visualization", "marker"],
-});
+if (!import.meta.env.SSR) {
+  setOptions({
+    key: import.meta.env.VITE_GOOGLE_API_KEY,
+    v: "weekly",
+  });
+}
 
-export const apiPromise = import.meta.env.SSR ? Promise.resolve() : loader.load();
+export const apiPromise = import.meta.env.SSR
+  ? Promise.resolve()
+  : Promise.all([
+      importLibrary("maps"),
+      importLibrary("marker"),
+      importLibrary("visualization"),
+    ]).then(() => {
+      if (window.google) {
+        return window.google;
+      }
+      throw new Error("Google Maps API not loaded");
+    });

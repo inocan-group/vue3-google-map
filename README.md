@@ -58,7 +58,7 @@ All the map components are available on the `Vue3GoogleMap` global variable.
 
 ### Your First Map
 
-To construct a map using `vue3-google-map` you'll need to use the base `GoogleMap` component which receives your [Google Maps API key](https://developers.google.com/maps/documentation/javascript/get-api-key), styles (e.g. setting width and height), and any [MapOptions](https://developers.google.com/maps/documentation/javascript/reference/map#MapOptions) to configure your map ([see this](https://github.com/inocan-group/vue3-google-map/blob/develop/src/components/GoogleMap.vue#L36-L244) for all the supported `MapOptions`).
+To construct a map using `vue3-google-map` you'll need to use the base `GoogleMap` component which receives your [Google Maps API key](https://developers.google.com/maps/documentation/javascript/get-api-key), styles (e.g. setting width and height), and any [MapOptions](https://developers.google.com/maps/documentation/javascript/reference/map#MapOptions) to configure your map ([see this](https://github.com/inocan-group/vue3-google-map/blob/develop/src/components/GoogleMap.vue#L34-L238) for all the supported `MapOptions`).
 Other map features can be added to your map by passing map subcomponents ([Marker](#marker), [Polyline](#polyline), [Polygon](#polygon), [Rectangle](#rectangle), [Circle](#circle), [InfoWindow](#info-window), [CustomMarker](#custom-marker), [CustomControl](#custom-control), or [MarkerCluster](#marker-cluster)) to the default slot of the `GoogleMap` component.
 
 The [the following events](https://developers.google.com/maps/documentation/javascript/reference/map#Map-Events) will be emitted by the `GoogleMap` component and can be listened to by using `@event_name`.
@@ -107,14 +107,20 @@ Use the `AdvancedMarker` component to draw markers, drop pins or any custom icon
 In order to use the `AdvancedMarker` component it is necessary to specify a MapId on declaring the `GoogleMap` component ([see more here](https://developers.google.com/maps/documentation/javascript/advanced-markers/start#create_a_map_id)).
 
 > [!IMPORTANT]
-> If you're using the `AdvancedMarker` component with an external loader (using the `apiPromise` prop), you must include the `marker` library in your loader configuration:
+> If you're using the `AdvancedMarker` component with an external loader (using the `apiPromise` prop), you must include the `marker` library:
 >
 > ```js
-> const loader = new Loader({
->   apiKey: YOUR_GOOGLE_MAPS_API_KEY,
->   version: 'weekly',
->   libraries: ['marker'], // Required for AdvancedMarker component
+> import { setOptions, importLibrary } from '@googlemaps/js-api-loader';
+>
+> setOptions({
+>   key: YOUR_GOOGLE_MAPS_API_KEY,
+>   v: 'weekly',
 > });
+>
+> const apiPromise = Promise.all([
+>   importLibrary('maps'),
+>   importLibrary('marker'), // Required for AdvancedMarker component
+> ]).then(() => window.google);
 > ```
 
 #### Options
@@ -901,16 +907,26 @@ By default you would pass your API key as a prop to the `GoogleMap` component an
 
 ```vue
 <script setup>
-import { GoogleMap, Marker } from 'vue3-google-map';
-import { Loader } from '@googlemaps/js-api-loader';
+import { GoogleMap, AdvancedMarker } from 'vue3-google-map';
+import { setOptions, importLibrary } from '@googlemaps/js-api-loader';
 
-const loader = new Loader({
-  apiKey: YOUR_GOOGLE_MAPS_API_KEY,
-  version: 'weekly',
-  libraries: ['places'],
+// Configure the API loader (call once per app)
+setOptions({
+  key: YOUR_GOOGLE_MAPS_API_KEY,
+  v: 'weekly',
 });
 
-const apiPromise = loader.load();
+// Load required libraries in parallel
+const apiPromise = Promise.all([
+  importLibrary('maps'),
+  importLibrary('places'),
+  importLibrary('marker'), // Required for AdvancedMarker
+]).then(() => {
+  if (window.google) {
+    return window.google;
+  }
+  throw new Error('Google Maps API not loaded');
+});
 
 const center = { lat: 40.689247, lng: -74.044502 };
 </script>
@@ -918,11 +934,12 @@ const center = { lat: 40.689247, lng: -74.044502 };
 <template>
   <GoogleMap
     :api-promise="apiPromise"
+    mapId="DEMO_MAP_ID"
     style="width: 100%; height: 500px"
     :center="center"
     :zoom="15"
   >
-    <Marker :options="{ position: center }" />
+    <AdvancedMarker :options="{ position: center }" />
   </GoogleMap>
 </template>
 ```

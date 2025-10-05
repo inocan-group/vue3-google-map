@@ -5,8 +5,6 @@ import { setOptions, importLibrary } from "@googlemaps/js-api-loader";
 import { createCustomMarkerClass } from "../utils";
 import { IControlPosition } from "../@types/index";
 
-let isMapsAPISet = false;
-
 export const mapEvents = [
   "bounds_changed",
   "center_changed",
@@ -306,9 +304,10 @@ export default defineComponent({
       setOptions({ key: apiKey, region, v: version, language, libraries });
     };
 
-    const setupMap = () => {
-      api.value = markRaw(google.maps);
-      map.value = markRaw(new google.maps.Map(mapRef.value as HTMLElement, resolveOptions()));
+    const setupMap = (_google?: typeof google) => {
+      const googleMaps = _google ? _google.maps : google.maps;
+      api.value = markRaw(googleMaps);
+      map.value = markRaw(new googleMaps.Map(mapRef.value as HTMLElement, resolveOptions()));
       const CustomMarker = createCustomMarkerClass(api.value);
       api.value[customMarkerClassSymbol] = CustomMarker;
 
@@ -345,11 +344,12 @@ export default defineComponent({
       if (props.apiPromise && props.apiPromise instanceof Promise) {
         props.apiPromise.then(setupMap);
       } else {
-        if (!isMapsAPISet) {
-          setupMapsAPI();
-          isMapsAPISet = true;
-        }
-        importLibrary("core").then(setupMap);
+        setupMapsAPI();
+
+        // Load all specified libraries in parallel
+        const librariesToLoad = props.libraries && props.libraries.length > 0 ? props.libraries : ["maps", "marker"];
+
+        Promise.all(librariesToLoad.map((lib) => importLibrary(lib))).then(() => setupMap());
       }
     });
 
