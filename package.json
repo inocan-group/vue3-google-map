@@ -55,7 +55,7 @@
     "test:coverage": "jest --coverage"
   },
   "dependencies": {
-    "@googlemaps/js-api-loader": "^1.16.2",
+    "@googlemaps/js-api-loader": "^2.0.1",
     "@googlemaps/markerclusterer": "^2.4.0",
     "fast-deep-equal": "^3.1.3"
   },

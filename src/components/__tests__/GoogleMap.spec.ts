@@ -2,13 +2,12 @@ import { mount, flushPromises } from "@vue/test-utils";
 import GoogleMap, { mapEvents } from "../GoogleMap.vue";
 import { mockInstances } from "@googlemaps/jest-mocks";
 import { mapSymbol, apiSymbol, mapTilesLoadedSymbol, customMarkerClassSymbol } from "../../shared";
-import { Loader } from "@googlemaps/js-api-loader";
+import * as jsApiLoader from "@googlemaps/js-api-loader";
 import { inject } from "vue";
 
 jest.mock("@googlemaps/js-api-loader", () => ({
-  Loader: jest.fn().mockImplementation(() => ({
-    load: jest.fn().mockResolvedValue(google),
-  })),
+  setOptions: jest.fn(),
+  importLibrary: jest.fn(() => Promise.resolve({})),
 }));
 
 jest.mock("../../utils", () => ({
@@ -19,13 +18,19 @@ jest.mock("../../utils", () => ({
 
 describe("GoogleMap Component", () => {
   let mockApi: typeof google.maps;
-  let mockLoader: any;
+  let mockSetOptions: jest.Mock;
+  let mockImportLibrary: jest.Mock;
   let createMapSpy: jest.Mock<void, ConstructorParameters<typeof google.maps.Map>>;
 
   let getMapMocks: () => google.maps.Map[];
 
   beforeEach(() => {
-    mockLoader = Loader;
+    mockSetOptions = jsApiLoader.setOptions as jest.Mock;
+    mockImportLibrary = jsApiLoader.importLibrary as jest.Mock;
+
+    // Clear mocks
+    mockSetOptions.mockClear();
+    mockImportLibrary.mockClear();
 
     mockApi = google.maps;
 
@@ -85,32 +90,31 @@ describe("GoogleMap Component", () => {
       expect(getMapMocks()).toHaveLength(1);
     });
 
-    it("should create Loader with correct options", async () => {
+    it("should call setOptions with correct parameters", async () => {
       const props = {
         apiKey: "custom-api-key",
         version: "3.55",
         libraries: ["places", "geometry"],
         region: "US",
         language: "en",
-        nonce: "test-nonce",
       };
 
       createWrapper(props);
 
-      expect(mockLoader).toHaveBeenCalledWith({
-        apiKey: "custom-api-key",
-        version: "3.55",
+      expect(mockSetOptions).toHaveBeenCalledWith({
+        key: "custom-api-key",
+        v: "3.55",
         libraries: ["places", "geometry"],
         region: "US",
         language: "en",
-        nonce: "test-nonce",
       });
     });
 
-    it("should not create Loader when apiPromise is provided", async () => {
+    it("should not call setOptions or importLibrary when apiPromise is provided", async () => {
       createWrapperWithApiPromise();
 
-      expect(mockLoader).not.toHaveBeenCalled();
+      expect(mockSetOptions).not.toHaveBeenCalled();
+      expect(mockImportLibrary).not.toHaveBeenCalled();
     });
   });
 
@@ -333,11 +337,15 @@ describe("GoogleMap Component", () => {
     it("should load with default libraries", async () => {
       createWrapper();
 
-      expect(mockLoader).toHaveBeenCalledWith(
+      expect(mockSetOptions).toHaveBeenCalledWith(
         expect.objectContaining({
           libraries: ["places", "marker"],
         })
       );
+
+      expect(mockImportLibrary).toHaveBeenCalledWith("places");
+      expect(mockImportLibrary).toHaveBeenCalledWith("marker");
+      expect(mockImportLibrary).toHaveBeenCalledTimes(2);
     });
 
     it("should load with custom libraries when provided", async () => {
@@ -345,11 +353,15 @@ describe("GoogleMap Component", () => {
         libraries: ["geometry", "visualization"],
       });
 
-      expect(mockLoader).toHaveBeenCalledWith(
+      expect(mockSetOptions).toHaveBeenCalledWith(
         expect.objectContaining({
           libraries: ["geometry", "visualization"],
         })
       );
+
+      expect(mockImportLibrary).toHaveBeenCalledWith("geometry");
+      expect(mockImportLibrary).toHaveBeenCalledWith("visualization");
+      expect(mockImportLibrary).toHaveBeenCalledTimes(2);
     });
   });
 

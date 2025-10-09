@@ -182,15 +182,17 @@ By default you would pass your API key as a prop to the `GoogleMap` component an
 ```vue
 <script setup>
 import { GoogleMap, Marker } from 'vue3-google-map';
-import { Loader } from '@googlemaps/js-api-loader';
+import { setOptions, importLibrary } from '@googlemaps/js-api-loader';
 
-const loader = new Loader({
-  apiKey: YOUR_GOOGLE_MAPS_API_KEY,
-  version: 'weekly',
-  libraries: ['places'],
+setOptions({
+  key: YOUR_GOOGLE_MAPS_API_KEY,
+  v: 'weekly',
 });
 
-const apiPromise = loader.load();
+const apiPromise = Promise.all([
+  importLibrary('maps'),
+  importLibrary('places'),
+]).then(() => window.google);
 
 const center = { lat: 40.689247, lng: -74.044502 };
 </script>

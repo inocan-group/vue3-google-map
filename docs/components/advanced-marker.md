@@ -13,14 +13,20 @@ Use the `AdvancedMarker` component to draw markers, drop pins or any custom icon
 In order to use the `AdvancedMarker` component it is necessary to specify a MapId on declaring the `GoogleMap` component ([see more here](https://developers.google.com/maps/documentation/javascript/advanced-markers/start#create_a_map_id)).
 
 ::: tip Library Requirement
-If you're using the `AdvancedMarker` component with an external loader (using the `apiPromise` prop), you must include the `marker` library in your loader configuration:
+If you're using the `AdvancedMarker` component with an external loader (using the `apiPromise` prop), you must include the `marker` library:
 
 ```js
-const loader = new Loader({
-  apiKey: YOUR_GOOGLE_MAPS_API_KEY,
-  version: 'weekly',
-  libraries: ['marker'], // Required for AdvancedMarker component
+import { setOptions, importLibrary } from '@googlemaps/js-api-loader';
+
+setOptions({
+  key: YOUR_GOOGLE_MAPS_API_KEY,
+  v: 'weekly',
 });
+
+const apiPromise = Promise.all([
+  importLibrary('maps'),
+  importLibrary('marker'), // Required for AdvancedMarker component
+]).then(() => window.google);
 ```
 :::
 
