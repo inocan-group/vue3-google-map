@@ -33,6 +33,34 @@ jest.mock("@googlemaps/markerclusterer", () => {
   };
 });
 
+let debouncedMarkerClustererConstructorSpy: jest.Mock | undefined;
+
+jest.mock("../DebouncedMarkerClusterer", () => {
+  return {
+    DebouncedMarkerClusterer: class {
+      addListener = jest.fn();
+      clearMarkers = jest.fn();
+      setMap = jest.fn();
+      private debouncedRender: any;
+
+      constructor(options: MarkerClustererOptions) {
+        if (debouncedMarkerClustererConstructorSpy) {
+          debouncedMarkerClustererConstructorSpy(options);
+        }
+        Object.assign(this, options);
+        this.debouncedRender = {
+          clear: jest.fn(),
+        };
+        mockMarkerClustererInstances.push(this);
+      }
+
+      destroy() {
+        this.debouncedRender.clear();
+      }
+    },
+  };
+});
+
 describe("MarkerCluster Component", () => {
   let mockMap: google.maps.Map;
   let mockApi: typeof google.maps;
@@ -50,6 +78,7 @@ describe("MarkerCluster Component", () => {
     mockMap = new Map(null);
 
     createMarkerClustererSpy = jest.fn();
+    debouncedMarkerClustererConstructorSpy = createMarkerClustererSpy;
     createSuperClusterViewportAlgorithmSpy = jest.fn();
 
     (MarkerClusterer as any) = class extends MarkerClusterer {
