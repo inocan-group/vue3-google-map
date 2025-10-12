@@ -5,6 +5,13 @@ import { setOptions, importLibrary } from "@googlemaps/js-api-loader";
 import { createCustomMarkerClass } from "../utils";
 import { IControlPosition } from "../@types/index";
 
+let isOptionsSet = false;
+
+// Exported for testing only - allows tests to reset the flag between test cases
+export const __resetOptionsFlag = (): void => {
+  isOptionsSet = false;
+};
+
 export const mapEvents = [
   "bounds_changed",
   "center_changed",
@@ -344,7 +351,11 @@ export default defineComponent({
       if (props.apiPromise && props.apiPromise instanceof Promise) {
         props.apiPromise.then(setupMap);
       } else {
-        setupMapsAPI();
+        // Only call setOptions once to avoid console warnings from @googlemaps/js-api-loader
+        if (!isOptionsSet) {
+          setupMapsAPI();
+          isOptionsSet = true;
+        }
 
         // Load all specified libraries in parallel
         const librariesToLoad = props.libraries && props.libraries.length > 0 ? props.libraries : ["maps", "marker"];

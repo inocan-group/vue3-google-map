@@ -1,5 +1,5 @@
 import { mount, flushPromises } from "@vue/test-utils";
-import GoogleMap, { mapEvents } from "../GoogleMap.vue";
+import GoogleMap, { mapEvents, __resetOptionsFlag } from "../GoogleMap.vue";
 import { mockInstances } from "@googlemaps/jest-mocks";
 import { mapSymbol, apiSymbol, mapTilesLoadedSymbol, customMarkerClassSymbol } from "../../shared";
 import * as jsApiLoader from "@googlemaps/js-api-loader";
@@ -31,6 +31,9 @@ describe("GoogleMap Component", () => {
     // Clear mocks
     mockSetOptions.mockClear();
     mockImportLibrary.mockClear();
+
+    // Reset options flag for fresh environment
+    __resetOptionsFlag();
 
     mockApi = google.maps;
 
