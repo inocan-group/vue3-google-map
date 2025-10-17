@@ -58,7 +58,7 @@ All the map components are available on the `Vue3GoogleMap` global variable.
 
 ### Your First Map
 
-To construct a map using `vue3-google-map` you'll need to use the base `GoogleMap` component which receives your [Google Maps API key](https://developers.google.com/maps/documentation/javascript/get-api-key), styles (e.g. setting width and height), and any [MapOptions](https://developers.google.com/maps/documentation/javascript/reference/map#MapOptions) to configure your map ([see this](https://github.com/inocan-group/vue3-google-map/blob/develop/src/components/GoogleMap.vue#L34-L238) for all the supported `MapOptions`).
+To construct a map using `vue3-google-map` you'll need to use the base `GoogleMap` component which receives your [Google Maps API key](https://developers.google.com/maps/documentation/javascript/get-api-key), styles (e.g. setting width and height), and any [MapOptions](https://developers.google.com/maps/documentation/javascript/reference/map#MapOptions) to configure your map ([see this](https://github.com/inocan-group/vue3-google-map/blob/develop/src/components/GoogleMap.vue#L41-L245) for all the supported `MapOptions`).
 Other map features can be added to your map by passing map subcomponents ([Marker](#marker), [Polyline](#polyline), [Polygon](#polygon), [Rectangle](#rectangle), [Circle](#circle), [InfoWindow](#info-window), [CustomMarker](#custom-marker), [CustomControl](#custom-control), or [MarkerCluster](#marker-cluster)) to the default slot of the `GoogleMap` component.
 
 The [the following events](https://developers.google.com/maps/documentation/javascript/reference/map#Map-Events) will be emitted by the `GoogleMap` component and can be listened to by using `@event_name`.
