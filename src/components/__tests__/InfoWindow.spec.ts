@@ -13,6 +13,7 @@ describe("InfoWindow Component", () => {
   let createInfoWindowSpy: jest.Mock<void, ConstructorParameters<typeof google.maps.InfoWindow>>;
 
   let getInfoWindowMocks: () => google.maps.InfoWindow[];
+  let getAdvancedMarkerMocks: () => google.maps.marker.AdvancedMarkerElement[];
 
   beforeEach(() => {
     mockApi = google.maps;
@@ -28,6 +29,7 @@ describe("InfoWindow Component", () => {
     };
 
     getInfoWindowMocks = () => mockInstances.get(google.maps.InfoWindow);
+    getAdvancedMarkerMocks = () => mockInstances.get(google.maps.marker.AdvancedMarkerElement);
   });
 
   const createWrapper = (
@@ -372,6 +374,50 @@ describe("InfoWindow Component", () => {
           anchor: advancedMarker,
         })
       );
+    });
+
+    it("should set up click listeners when markers added to reactive array after map ready (Issue #354)", async () => {
+      const locations = ref<Array<{ id: number; position: { lat: number; lng: number } }>>([]);
+
+      mount(
+        {
+          template: `
+          <AdvancedMarker v-for="loc in locations" :key="loc.id" :options="{ position: loc.position }">
+            <template #content><div>Marker</div></template>
+            <InfoWindow />
+          </AdvancedMarker>
+        `,
+          components: { AdvancedMarker, InfoWindow },
+          setup() {
+            return { locations };
+          },
+        },
+        {
+          global: {
+            provide: {
+              [mapSymbol]: ref(mockMap),
+              [apiSymbol]: ref(mockApi),
+            },
+          },
+        }
+      );
+
+      await nextTick();
+
+      // Simulate adding markers after map is ready (like API call)
+      locations.value = [
+        { id: 1, position: { lat: 37, lng: -122 } },
+        { id: 2, position: { lat: 38, lng: -123 } },
+      ];
+
+      await nextTick();
+
+      // Expect 2 click listeners per marker: one from AdvancedMarker's own events, one from InfoWindow
+      const markers = getAdvancedMarkerMocks();
+      markers.forEach((marker) => {
+        const clickListeners = (marker.addListener as jest.Mock).mock.calls.filter(([event]) => event === "click");
+        expect(clickListeners).toHaveLength(2);
+      });
     });
   });
 

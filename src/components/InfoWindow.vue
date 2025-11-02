@@ -53,7 +53,7 @@ export default defineComponent({
     const map = inject(mapSymbol, ref());
     const api = inject(apiSymbol, ref());
     const anchor = inject(markerSymbol, ref());
-    let anchorClickListener: google.maps.MapsEventListener;
+    let anchorClickListener: google.maps.MapsEventListener | undefined;
     // eslint-disable-next-line vue/no-setup-props-destructure
     let internalVal = props.modelValue; // Doesn't need to be reactive
 
@@ -100,10 +100,9 @@ export default defineComponent({
                 })
               );
 
+              // Set up initial anchor click listener
               if (anchor.value) {
-                anchorClickListener = anchor.value.addListener("click", () => {
-                  open();
-                });
+                anchorClickListener = anchor.value.addListener("click", () => open());
               }
 
               if (!anchor.value || internalVal) {
@@ -119,6 +118,28 @@ export default defineComponent({
         },
         {
           immediate: true,
+          flush: "post",
+        }
+      );
+
+      // Watch anchor ref to handle timing when InfoWindow is created before AdvancedMarker provides anchor
+      watch(
+        anchor,
+        (newAnchor, oldAnchor) => {
+          if (!infoWindow.value || newAnchor === oldAnchor) return;
+
+          // Clean up old listener
+          if (anchorClickListener) {
+            anchorClickListener.remove();
+            anchorClickListener = undefined;
+          }
+
+          // Set up new listener
+          if (newAnchor) {
+            anchorClickListener = newAnchor.addListener("click", () => open());
+          }
+        },
+        {
           flush: "post",
         }
       );
