@@ -9,7 +9,7 @@ All notable changes to this project will be documented in this file. See [standa
 
 * prevent InfoWindow click listener setup race condition ([ceff802](https://github.com/inocan-group/vue3-google-map/commit/ceff80209e9d480d88cd187e946a80e3e0459a94))
 
-## [0.25.0](https://github.com/inocan-group/vue3-google-map/compare/v0.24.1...v0.25.0) (2025-10-17)
+### [0.25.0](https://github.com/inocan-group/vue3-google-map/compare/v0.24.1...v0.25.0) (2025-10-17)
 
 
 ### ⚠ BREAKING CHANGES
