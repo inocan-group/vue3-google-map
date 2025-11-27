@@ -26,7 +26,6 @@ module.exports = {
     "!src/**/__tests__/**",
     "!src/shims-*.ts",
     "!src/themes/**",
-    "!src/components/DebouncedMarkerClusterer.ts",
   ],
   coverageThreshold: {
     global: {
@@ -43,7 +42,7 @@ module.exports = {
     "^@/(.*)$": "<rootDir>/src/$1",
   },
   // Ignore certain files
-  transformIgnorePatterns: ["node_modules/(?!@googlemaps/)"],
+  transformIgnorePatterns: ["node_modules/(?!(@googlemaps|lodash-es)/)"],
   testEnvironmentOptions: {
     customExportConditions: ["node", "node-addons"],
   },
