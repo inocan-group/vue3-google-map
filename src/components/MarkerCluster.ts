@@ -1,14 +1,14 @@
 import { defineComponent, PropType, ref, provide, inject, watch, markRaw, onBeforeUnmount, type Ref } from "vue";
 import {
-  MarkerClusterer,
   MarkerClustererOptions,
   MarkerClustererEvents,
   SuperClusterViewportAlgorithm,
 } from "@googlemaps/markerclusterer";
 import { mapSymbol, apiSymbol, markerClusterSymbol } from "../shared/index";
+import { DebouncedMarkerClusterer } from "./DebouncedMarkerClusterer";
 
 export interface IMarkerClusterExposed {
-  markerCluster: Ref<MarkerClusterer | undefined>;
+  markerCluster: Ref<DebouncedMarkerClusterer | undefined>;
 }
 
 export const markerClusterEvents = Object.values(MarkerClustererEvents);
@@ -20,10 +20,14 @@ export default defineComponent({
       type: Object as PropType<MarkerClustererOptions>,
       default: () => ({}),
     },
+    renderDebounceDelay: {
+      type: Number,
+      default: 10,
+    },
   },
   emits: markerClusterEvents,
   setup(props, { emit, expose, slots }) {
-    const markerCluster = ref<MarkerClusterer>();
+    const markerCluster = ref<DebouncedMarkerClusterer>();
     const map = inject(mapSymbol, ref());
     const api = inject(apiSymbol, ref());
 
@@ -34,13 +38,16 @@ export default defineComponent({
       () => {
         if (map.value) {
           markerCluster.value = markRaw(
-            new MarkerClusterer({
-              map: map.value,
-              // Better perf than the default `SuperClusterAlgorithm`. See:
-              // https://github.com/googlemaps/js-markerclusterer/pull/640
-              algorithm: new SuperClusterViewportAlgorithm(props.options.algorithmOptions ?? {}),
-              ...props.options,
-            })
+            new DebouncedMarkerClusterer(
+              {
+                map: map.value,
+                // Better perf than the default `SuperClusterAlgorithm`. See:
+                // https://github.com/googlemaps/js-markerclusterer/pull/640
+                algorithm: new SuperClusterViewportAlgorithm(props.options.algorithmOptions ?? {}),
+                ...props.options,
+              },
+              props.renderDebounceDelay
+            )
           );
 
           markerClusterEvents.forEach((event) => {
@@ -56,8 +63,9 @@ export default defineComponent({
     onBeforeUnmount(() => {
       if (markerCluster.value) {
         api.value?.event.clearInstanceListeners(markerCluster.value);
-        markerCluster.value.clearMarkers();
+        markerCluster.value.clearMarkers(true); // Skip render since we're destroying
         markerCluster.value.setMap(null);
+        markerCluster.value.destroy();
       }
     });
 

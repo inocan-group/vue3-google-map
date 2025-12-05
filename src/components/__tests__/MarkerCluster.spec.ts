@@ -4,7 +4,6 @@ import MarkerCluster, { markerClusterEvents, type IMarkerClusterExposed } from "
 import { Map } from "@googlemaps/jest-mocks";
 import { mapSymbol, apiSymbol } from "../../shared";
 import {
-  MarkerClusterer,
   SuperClusterViewportAlgorithm,
   type MarkerClustererOptions,
   type SuperClusterViewportOptions,
@@ -12,31 +11,27 @@ import {
 
 // Mock registry
 let mockMarkerClustererInstances: any[] = [];
+let createMarkerClustererSpy: jest.Mock | undefined;
 
-jest.mock("@googlemaps/markerclusterer", () => {
-  const actualModule = jest.requireActual("@googlemaps/markerclusterer");
-
-  class MockMarkerClusterer {
-    addListener = jest.fn();
-    clearMarkers = jest.fn();
-    setMap = jest.fn();
-
-    constructor(options: MarkerClustererOptions) {
-      Object.assign(this, options);
-      mockMarkerClustererInstances.push(this);
-    }
-  }
-
+jest.mock("../DebouncedMarkerClusterer", () => {
   return {
-    ...actualModule,
-    MarkerClusterer: MockMarkerClusterer,
+    DebouncedMarkerClusterer: class {
+      addListener = jest.fn();
+      clearMarkers = jest.fn();
+      setMap = jest.fn();
+      destroy = jest.fn();
+
+      constructor(options: MarkerClustererOptions, debounceDelay?: number) {
+        createMarkerClustererSpy?.(options, debounceDelay);
+        mockMarkerClustererInstances.push(this);
+      }
+    },
   };
 });
 
 describe("MarkerCluster Component", () => {
   let mockMap: google.maps.Map;
   let mockApi: typeof google.maps;
-  let createMarkerClustererSpy: jest.Mock<void, ConstructorParameters<typeof MarkerClusterer>>;
   let createSuperClusterViewportAlgorithmSpy: jest.Mock<
     void,
     ConstructorParameters<typeof SuperClusterViewportAlgorithm>
@@ -51,13 +46,6 @@ describe("MarkerCluster Component", () => {
 
     createMarkerClustererSpy = jest.fn();
     createSuperClusterViewportAlgorithmSpy = jest.fn();
-
-    (MarkerClusterer as any) = class extends MarkerClusterer {
-      constructor(options: MarkerClustererOptions) {
-        createMarkerClustererSpy(options);
-        super(options);
-      }
-    };
 
     (SuperClusterViewportAlgorithm as any) = class extends SuperClusterViewportAlgorithm {
       constructor(options: SuperClusterViewportOptions) {
@@ -95,7 +83,8 @@ describe("MarkerCluster Component", () => {
         expect.objectContaining({
           map: mockMap,
           algorithm: expect.any(SuperClusterViewportAlgorithm),
-        })
+        }),
+        expect.any(Number)
       );
     });
 
@@ -139,7 +128,7 @@ describe("MarkerCluster Component", () => {
       createWrapper(options);
       await nextTick();
 
-      expect(createMarkerClustererSpy).toHaveBeenCalledWith(expect.objectContaining(options));
+      expect(createMarkerClustererSpy).toHaveBeenCalledWith(expect.objectContaining(options), expect.any(Number));
     });
 
     it("should merge options with map and algorithm", async () => {
@@ -155,7 +144,8 @@ describe("MarkerCluster Component", () => {
           map: mockMap,
           algorithm: expect.any(Object),
           ...options,
-        })
+        }),
+        expect.any(Number)
       );
     });
 
@@ -165,7 +155,10 @@ describe("MarkerCluster Component", () => {
       createWrapper({ algorithm: customAlgorithm });
       await nextTick();
 
-      expect(createMarkerClustererSpy).toHaveBeenCalledWith(expect.objectContaining({ algorithm: customAlgorithm }));
+      expect(createMarkerClustererSpy).toHaveBeenCalledWith(
+        expect.objectContaining({ algorithm: customAlgorithm }),
+        expect.any(Number)
+      );
     });
   });
 
@@ -241,6 +234,37 @@ describe("MarkerCluster Component", () => {
 
       expect(markerClusterer.setMap).toHaveBeenCalledTimes(1);
       expect(markerClusterer.setMap).toHaveBeenCalledWith(null);
+    });
+
+    it("should call destroy on unmount", () => {
+      const wrapper = createWrapper();
+      const markerClusterer = getMarkerClustererMocks()[0];
+
+      wrapper.unmount();
+
+      expect(markerClusterer.destroy).toHaveBeenCalledTimes(1);
+    });
+  });
+
+  describe("Debounce Configuration", () => {
+    it("should use default debounce delay of 10ms", () => {
+      createWrapper();
+
+      expect(createMarkerClustererSpy).toHaveBeenCalledWith(expect.objectContaining({ map: mockMap }), 10);
+    });
+
+    it("should use custom renderDebounceDelay when provided", () => {
+      mount(MarkerCluster, {
+        props: { renderDebounceDelay: 50 },
+        global: {
+          provide: {
+            [mapSymbol]: ref(mockMap),
+            [apiSymbol]: ref(mockApi),
+          },
+        },
+      });
+
+      expect(createMarkerClustererSpy).toHaveBeenCalledWith(expect.anything(), 50);
     });
   });
 });

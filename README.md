@@ -719,6 +719,30 @@ const locations = [
 
 You can listen for [the following events](https://googlemaps.github.io/js-markerclusterer/enums/MarkerClustererEvents.html) on the `MarkerCluster` component.
 
+#### Performance Optimization
+
+MarkerCluster uses debounced rendering to improve performance when adding or removing markers. Instead of rendering after every marker operation, it batches multiple operations together and renders once after a short delay.
+
+The `renderDebounceDelay` prop controls the debounce delay in milliseconds (default: `10`). For immediate rendering, access the underlying clusterer via a template ref and call `render()`:
+
+```vue
+<script setup>
+import { ref } from 'vue'
+
+const clusterRef = ref()
+
+function forceRender() {
+  clusterRef.value?.markerCluster?.render()
+}
+</script>
+
+<template>
+  <MarkerCluster ref="clusterRef">
+    <!-- markers -->
+  </MarkerCluster>
+</template>
+```
+
 ### Heatmap Layer
 
 > [!WARNING]

@@ -42,7 +42,7 @@ module.exports = {
     "^@/(.*)$": "<rootDir>/src/$1",
   },
   // Ignore certain files
-  transformIgnorePatterns: ["node_modules/(?!@googlemaps/)"],
+  transformIgnorePatterns: ["node_modules/(?!(@googlemaps|lodash-es)/)"],
   testEnvironmentOptions: {
     customExportConditions: ["node", "node-addons"],
   },
