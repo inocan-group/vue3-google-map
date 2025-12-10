@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [0.26.0](https://github.com/inocan-group/vue3-google-map/compare/v0.25.1...v0.26.0) (2025-12-10)
+
+
+### Features
+
+* add debounced render for cluster markers ([ed4efc2](https://github.com/inocan-group/vue3-google-map/commit/ed4efc2ca8e3879fedb542de4f9a9d4092bdb03d))
+
 ### [0.25.1](https://github.com/inocan-group/vue3-google-map/compare/v0.25.0...v0.25.1) (2025-11-05)
 
 
