@@ -21,7 +21,6 @@ yarn-error.log*
 .vscode
 
 # avoid having dist files in repo; these should only go to NPM
-dist
 docs/.vitepress/dist
 docs/.vitepress/cache
 
