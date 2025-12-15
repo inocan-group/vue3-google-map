@@ -17,11 +17,13 @@
   ],
   "exports": {
     ".": {
+      "browser": "./dist/index.umd.js",
       "import": "./dist/index.mjs",
       "require": "./dist/index.cjs",
       "types": "./dist/types/index.d.ts"
     },
     "./themes": {
+      "browser": "./dist/themes/index.umd.js",
       "import": "./dist/themes/index.mjs",
       "require": "./dist/themes/index.cjs",
       "types": "./dist/types/themes/index.d.ts"
