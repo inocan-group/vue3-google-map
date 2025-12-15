@@ -6,7 +6,12 @@ const cssInjectedByJsPlugin = require("vite-plugin-css-injected-by-js").default;
 (async () => {
   await build({
     configFile: false,
-    plugins: [vue(), cssInjectedByJsPlugin({useStrictCsp: true})],
+    plugins: [
+      vue(),
+      cssInjectedByJsPlugin({
+        useStrictCSP: true,
+      }),
+    ],
     build: {
       emptyOutDir: false,
       lib: {
