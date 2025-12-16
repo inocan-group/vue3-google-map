@@ -42,7 +42,7 @@
   "scripts": {
     "dev": "vite",
     "prepare": "pnpm run build",
-    "clean": "rimraf dist ",
+    "clean": "rimraf dist/**/*",
     "lint": "npx eslint --ext .ts,.vue src playground --fix",
     "lint:check": "npx eslint --ext .ts,.vue src playground",
     "build:umd": "node ./scripts/build-umd.js",
