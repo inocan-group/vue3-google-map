@@ -194,7 +194,6 @@ describe("CustomMarker Component", () => {
     });
   });
 
-  // TODO: review this test
   describe("Slot Content", () => {
     it("should use slot content to render CustomMarker", async () => {
       createWrapper();
