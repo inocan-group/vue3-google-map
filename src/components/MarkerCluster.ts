@@ -3,9 +3,29 @@ import {
   MarkerClustererOptions,
   MarkerClustererEvents,
   SuperClusterViewportAlgorithm,
+  type SuperClusterViewportOptions,
 } from "@googlemaps/markerclusterer";
 import { mapSymbol, apiSymbol, markerClusterSymbol } from "../shared/index";
 import { DebouncedMarkerClusterer } from "./DebouncedMarkerClusterer";
+
+/**
+ * Wrapper around SuperClusterViewportAlgorithm that ensures the supercluster
+ * is properly initialized even when starting with zero markers.
+ *
+ * This fixes an issue where SuperClusterViewportAlgorithm.getClusters() would
+ * throw "Cannot read properties of undefined (reading 'range')" when the
+ * algorithm's calculate() method is called for the first time with an empty
+ * markers array (which can happen with an empty MarkerCluster component).
+ */
+class SafeSuperClusterViewportAlgorithm extends SuperClusterViewportAlgorithm {
+  constructor(options: SuperClusterViewportOptions) {
+    super(options);
+    // Initialize the supercluster with an empty dataset to ensure the internal
+    // tree structure is created. This prevents errors when getClusters() is called
+    // before any markers have been added.
+    this.superCluster.load([]);
+  }
+}
 
 export interface IMarkerClusterExposed {
   markerCluster: Ref<DebouncedMarkerClusterer | undefined>;
@@ -43,7 +63,7 @@ export default defineComponent({
                 map: map.value,
                 // Better perf than the default `SuperClusterAlgorithm`. See:
                 // https://github.com/googlemaps/js-markerclusterer/pull/640
-                algorithm: new SuperClusterViewportAlgorithm(props.options.algorithmOptions ?? {}),
+                algorithm: new SafeSuperClusterViewportAlgorithm(props.options.algorithmOptions ?? {}),
                 ...props.options,
               },
               props.renderDebounceDelay
