@@ -10,6 +10,7 @@ export default defineConfig({
   plugins: [
     vue(),
     cssInjectedByJsPlugin({
+      useStrictCSP: true,
       jsAssetsFilterFunction: ({ fileName }) => fileName == "index.mjs" || fileName == "index.cjs",
     }),
   ],
