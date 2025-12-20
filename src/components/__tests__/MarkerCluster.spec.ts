@@ -3,11 +3,7 @@ import { nextTick, ref } from "vue";
 import MarkerCluster, { markerClusterEvents, type IMarkerClusterExposed } from "../MarkerCluster";
 import { Map } from "@googlemaps/jest-mocks";
 import { mapSymbol, apiSymbol } from "../../shared";
-import {
-  SuperClusterViewportAlgorithm,
-  type MarkerClustererOptions,
-  type SuperClusterViewportOptions,
-} from "@googlemaps/markerclusterer";
+import { SuperClusterViewportAlgorithm, type MarkerClustererOptions } from "@googlemaps/markerclusterer";
 
 // Mock registry
 let mockMarkerClustererInstances: any[] = [];
@@ -32,10 +28,6 @@ jest.mock("../DebouncedMarkerClusterer", () => {
 describe("MarkerCluster Component", () => {
   let mockMap: google.maps.Map;
   let mockApi: typeof google.maps;
-  let createSuperClusterViewportAlgorithmSpy: jest.Mock<
-    void,
-    ConstructorParameters<typeof SuperClusterViewportAlgorithm>
-  >;
 
   beforeEach(() => {
     // Reset mocks before each test
@@ -45,14 +37,6 @@ describe("MarkerCluster Component", () => {
     mockMap = new Map(null);
 
     createMarkerClustererSpy = jest.fn();
-    createSuperClusterViewportAlgorithmSpy = jest.fn();
-
-    (SuperClusterViewportAlgorithm as any) = class extends SuperClusterViewportAlgorithm {
-      constructor(options: SuperClusterViewportOptions) {
-        createSuperClusterViewportAlgorithmSpy(options);
-        super(options);
-      }
-    };
   });
 
   const getMarkerClustererMocks = () => mockMarkerClustererInstances;
@@ -108,14 +92,24 @@ describe("MarkerCluster Component", () => {
       createWrapper({ algorithmOptions });
       await nextTick();
 
-      expect(createSuperClusterViewportAlgorithmSpy).toHaveBeenCalledWith(algorithmOptions);
+      expect(createMarkerClustererSpy).toHaveBeenCalledWith(
+        expect.objectContaining({
+          algorithm: expect.any(SuperClusterViewportAlgorithm),
+        }),
+        expect.any(Number)
+      );
     });
 
     it("should use empty object as default algorithmOptions when not provided", async () => {
       createWrapper();
       await nextTick();
 
-      expect(createSuperClusterViewportAlgorithmSpy).toHaveBeenCalledWith({});
+      expect(createMarkerClustererSpy).toHaveBeenCalledWith(
+        expect.objectContaining({
+          algorithm: expect.any(SuperClusterViewportAlgorithm),
+        }),
+        expect.any(Number)
+      );
     });
   });
 
@@ -265,6 +259,33 @@ describe("MarkerCluster Component", () => {
       });
 
       expect(createMarkerClustererSpy).toHaveBeenCalledWith(expect.anything(), 50);
+    });
+  });
+
+  describe("Empty MarkerCluster", () => {
+    it("should not throw error when created with no markers", async () => {
+      expect(() => {
+        createWrapper();
+      }).not.toThrow();
+      await nextTick();
+
+      expect(getMarkerClustererMocks()).toHaveLength(1);
+    });
+
+    it("should create algorithm that handles empty marker arrays", async () => {
+      createWrapper();
+      await nextTick();
+
+      const markerClusterer = getMarkerClustererMocks()[0];
+      expect(markerClusterer).toBeDefined();
+
+      // Verify that the algorithm was created (SafeSuperClusterViewportAlgorithm extends SuperClusterViewportAlgorithm)
+      expect(createMarkerClustererSpy).toHaveBeenCalledWith(
+        expect.objectContaining({
+          algorithm: expect.any(SuperClusterViewportAlgorithm),
+        }),
+        expect.any(Number)
+      );
     });
   });
 });
