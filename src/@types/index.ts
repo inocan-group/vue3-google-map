@@ -1,5 +1,5 @@
 // eslint-disable-next-line @typescript-eslint/triple-slash-reference
-/// <reference path="../shims-google-maps" />
+/// <reference path="../shims-google-maps.ts" />
 import * as themes from "../themes/index";
 
 export type IControlPosition = keyof typeof google.maps.ControlPosition;
