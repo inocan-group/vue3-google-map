@@ -4,6 +4,7 @@ import CustomMarker from "../CustomMarker.vue";
 import { Map } from "@googlemaps/jest-mocks";
 import { mapSymbol, apiSymbol, markerClusterSymbol, customMarkerClassSymbol } from "../../shared";
 import { type MarkerClusterer } from "@googlemaps/markerclusterer";
+import type { CustomMarkerOptions } from "../../index";
 
 // Mock registry
 let mockCustomMarkerInstances: any[] = [];
@@ -326,6 +327,23 @@ describe("CustomMarker Component", () => {
       expect(customMarker.setMap).toHaveBeenCalledTimes(2);
       expect(customMarker.setMap).toHaveBeenNthCalledWith(1, mockMap);
       expect(customMarker.setMap).toHaveBeenNthCalledWith(2, null);
+    });
+  });
+
+  describe("Type Exports", () => {
+    it("should allow importing CustomMarkerOptions type from main export", () => {
+      // This test verifies that the CustomMarkerOptions type is properly exported
+      // and can be used by consumers of the library
+      const options: CustomMarkerOptions = {
+        position: { lat: 37.774, lng: -122.414 },
+        zIndex: 1,
+        anchorPoint: "CENTER",
+      };
+
+      expect(options).toBeDefined();
+      expect(options.position).toEqual({ lat: 37.774, lng: -122.414 });
+      expect(options.zIndex).toBe(1);
+      expect(options.anchorPoint).toBe("CENTER");
     });
   });
 });
