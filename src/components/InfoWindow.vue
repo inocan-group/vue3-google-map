@@ -18,9 +18,16 @@ import {
   Comment,
   onMounted,
   markRaw,
+  type Ref,
 } from "vue";
 import equal from "fast-deep-equal";
 import { apiSymbol, mapSymbol, markerSymbol } from "../shared/index";
+
+export interface IInfoWindowExposed {
+  infoWindow: Ref<google.maps.InfoWindow | undefined>;
+  open: (opts?: google.maps.InfoWindowOpenOptions) => void;
+  close: () => void;
+}
 
 export const infoWindowEvents = [
   "closeclick",
