@@ -2,6 +2,19 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [0.27.0](https://github.com/inocan-group/vue3-google-map/compare/v0.26.0...v0.27.0) (2026-01-09)
+
+
+### Features
+
+* export component exposed type interfaces for TypeScript users ([4455545](https://github.com/inocan-group/vue3-google-map/commit/44555457129bb22fff6b8844aecf34047ba2c444))
+* export CustomMarkerOptions TypeScript interface ([56612d7](https://github.com/inocan-group/vue3-google-map/commit/56612d7f42872c8aac754fa76a8ac753b5093582))
+
+
+### Bug Fixes
+
+* add SafeSuperClusterViewportAlgorithm to handle empty markers ([e237270](https://github.com/inocan-group/vue3-google-map/commit/e2372704d19c6322b981429224cb7c578965b0fe)), closes [#362](https://github.com/inocan-group/vue3-google-map/issues/362)
+
 ## [0.26.0](https://github.com/inocan-group/vue3-google-map/compare/v0.25.1...v0.26.0) (2025-12-10)
 
 
