@@ -1,11 +1,8 @@
 import { defineComponent, PropType, ref, provide, inject, watch, markRaw, onBeforeUnmount, type Ref } from "vue";
-import {
-  MarkerClustererOptions,
-  MarkerClustererEvents,
-  SuperClusterViewportAlgorithm,
-} from "@googlemaps/markerclusterer";
+import { MarkerClustererOptions, MarkerClustererEvents } from "@googlemaps/markerclusterer";
 import { mapSymbol, apiSymbol, markerClusterSymbol } from "../shared/index";
 import { DebouncedMarkerClusterer } from "./DebouncedMarkerClusterer";
+import { SafeSuperClusterViewportAlgorithm } from "./SafeSuperClusterViewportAlgorithm";
 
 export interface IMarkerClusterExposed {
   markerCluster: Ref<DebouncedMarkerClusterer | undefined>;
@@ -43,7 +40,7 @@ export default defineComponent({
                 map: map.value,
                 // Better perf than the default `SuperClusterAlgorithm`. See:
                 // https://github.com/googlemaps/js-markerclusterer/pull/640
-                algorithm: new SuperClusterViewportAlgorithm(props.options.algorithmOptions ?? {}),
+                algorithm: new SafeSuperClusterViewportAlgorithm(props.options.algorithmOptions ?? {}),
                 ...props.options,
               },
               props.renderDebounceDelay

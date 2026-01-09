@@ -12,6 +12,7 @@ import {
 // Mock registry
 let mockMarkerClustererInstances: any[] = [];
 let createMarkerClustererSpy: jest.Mock | undefined;
+let createSafeSuperClusterViewportAlgorithmSpy: jest.Mock | undefined;
 
 jest.mock("../DebouncedMarkerClusterer", () => {
   return {
@@ -29,13 +30,22 @@ jest.mock("../DebouncedMarkerClusterer", () => {
   };
 });
 
+jest.mock("../SafeSuperClusterViewportAlgorithm", () => {
+  const { SuperClusterViewportAlgorithm } = jest.requireActual("@googlemaps/markerclusterer");
+
+  return {
+    SafeSuperClusterViewportAlgorithm: class extends SuperClusterViewportAlgorithm {
+      constructor(options: SuperClusterViewportOptions) {
+        createSafeSuperClusterViewportAlgorithmSpy?.(options);
+        super(options);
+      }
+    },
+  };
+});
+
 describe("MarkerCluster Component", () => {
   let mockMap: google.maps.Map;
   let mockApi: typeof google.maps;
-  let createSuperClusterViewportAlgorithmSpy: jest.Mock<
-    void,
-    ConstructorParameters<typeof SuperClusterViewportAlgorithm>
-  >;
 
   beforeEach(() => {
     // Reset mocks before each test
@@ -45,14 +55,7 @@ describe("MarkerCluster Component", () => {
     mockMap = new Map(null);
 
     createMarkerClustererSpy = jest.fn();
-    createSuperClusterViewportAlgorithmSpy = jest.fn();
-
-    (SuperClusterViewportAlgorithm as any) = class extends SuperClusterViewportAlgorithm {
-      constructor(options: SuperClusterViewportOptions) {
-        createSuperClusterViewportAlgorithmSpy(options);
-        super(options);
-      }
-    };
+    createSafeSuperClusterViewportAlgorithmSpy = jest.fn();
   });
 
   const getMarkerClustererMocks = () => mockMarkerClustererInstances;
@@ -72,7 +75,7 @@ describe("MarkerCluster Component", () => {
   };
 
   describe("Instance Creation", () => {
-    it("should create MarkerClusterer with SuperClusterViewportAlgorithm as default", async () => {
+    it("should create MarkerClusterer with SafeSuperClusterViewportAlgorithm as default", async () => {
       expect(getMarkerClustererMocks()).toHaveLength(0);
 
       createWrapper();
@@ -103,19 +106,19 @@ describe("MarkerCluster Component", () => {
       expect(getMarkerClustererMocks()).toHaveLength(0);
     });
 
-    it("should pass algorithmOptions to SuperClusterViewportAlgorithm", async () => {
+    it("should pass algorithmOptions to SafeSuperClusterViewportAlgorithm", async () => {
       const algorithmOptions = { maxZoom: 15 };
       createWrapper({ algorithmOptions });
       await nextTick();
 
-      expect(createSuperClusterViewportAlgorithmSpy).toHaveBeenCalledWith(algorithmOptions);
+      expect(createSafeSuperClusterViewportAlgorithmSpy).toHaveBeenCalledWith(algorithmOptions);
     });
 
     it("should use empty object as default algorithmOptions when not provided", async () => {
       createWrapper();
       await nextTick();
 
-      expect(createSuperClusterViewportAlgorithmSpy).toHaveBeenCalledWith({});
+      expect(createSafeSuperClusterViewportAlgorithmSpy).toHaveBeenCalledWith({});
     });
   });
 
