@@ -3,7 +3,7 @@ import { defineConfig } from 'vitepress'
 
 export default defineConfig({
   title: "vue3-google-map",
-  description: "vue3-google-map documentation",
+  description: "A Vue 3 component library for Google Maps JavaScript API.",
   head: [
     ['link', { rel: 'icon', type: 'image/svg+xml', href: '/logo.svg' }],
     ['link', { rel: 'icon', type: 'image/png', href: '/logo.png' }],
