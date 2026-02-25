@@ -29,7 +29,9 @@ export interface IAdvancedMarkerExposed {
   marker: Ref<google.maps.marker.AdvancedMarkerElement | undefined>;
 }
 
-export const markerEvents = ["click", "drag", "dragend", "dragstart", "gmp-click"];
+const legacyClickEventName = "click";
+const newClickEventName = "gmp-click";
+export const markerEvents = ["drag", "dragend", "dragstart", newClickEventName];
 
 export default defineComponent({
   name: "AdvancedMarker",
@@ -43,7 +45,7 @@ export default defineComponent({
       required: false,
     },
   },
-  emits: markerEvents,
+  emits: [...markerEvents, legacyClickEventName],
   setup(props, { emit, expose, slots }) {
     const markerRef = ref<HTMLElement>();
     const hasCustomSlotContent = computed(() => slots.content?.().some((vnode) => vnode.type !== Comment));
@@ -107,7 +109,11 @@ export default defineComponent({
           }
 
           markerEvents.forEach((event) => {
-            marker.value?.addListener(event, (e: unknown) => emit(event, e));
+            marker.value?.addListener(event, (e: unknown) => {
+              emit(event, e);
+              // preserve backward compatibility for "click" event
+              if (event === newClickEventName) emit(legacyClickEventName, e);
+            });
           });
         }
       },
