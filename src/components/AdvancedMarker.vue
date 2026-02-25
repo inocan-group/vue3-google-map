@@ -82,7 +82,7 @@ export default defineComponent({
             content: hasCustomSlotContent.value
               ? markerRef.value
               : pinOptions.value
-                ? new PinElement(pinOptions.value).element
+                ? new PinElement(pinOptions.value)
                 : content,
             ...otherOptions,
           });
@@ -95,7 +95,7 @@ export default defineComponent({
           if (hasCustomSlotContent.value) {
             options.value.content = markerRef.value;
           } else if (pinOptions.value) {
-            options.value.content = new PinElement(pinOptions.value).element;
+            options.value.content = new PinElement(pinOptions.value);
           }
 
           marker.value = markRaw(new AdvancedMarkerElement(options.value));
