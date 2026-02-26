@@ -23,6 +23,10 @@ import {
 import equal from "fast-deep-equal";
 import { apiSymbol, mapSymbol, markerSymbol } from "../shared/index";
 
+function getAnchorClickEvent(anchor: google.maps.Marker | google.maps.marker.AdvancedMarkerElement): string {
+  return anchor instanceof google.maps.marker.AdvancedMarkerElement ? "gmp-click" : "click";
+}
+
 export interface IInfoWindowExposed {
   infoWindow: Ref<google.maps.InfoWindow | undefined>;
   open: (opts?: google.maps.InfoWindowOpenOptions) => void;
@@ -109,7 +113,7 @@ export default defineComponent({
 
               // Set up initial anchor click listener
               if (anchor.value) {
-                anchorClickListener = anchor.value.addListener("click", () => open());
+                anchorClickListener = anchor.value.addListener(getAnchorClickEvent(anchor.value), () => open());
               }
 
               if (!anchor.value || internalVal) {
@@ -143,7 +147,7 @@ export default defineComponent({
 
           // Set up new listener
           if (newAnchor) {
-            anchorClickListener = newAnchor.addListener("click", () => open());
+            anchorClickListener = newAnchor.addListener(getAnchorClickEvent(newAnchor), () => open());
           }
         },
         {
