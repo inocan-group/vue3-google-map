@@ -29,7 +29,9 @@ export interface IAdvancedMarkerExposed {
   marker: Ref<google.maps.marker.AdvancedMarkerElement | undefined>;
 }
 
-export const markerEvents = ["click", "drag", "dragend", "dragstart", "gmp-click"];
+const legacyClickEventName = "click";
+const newClickEventName = "gmp-click";
+export const markerEvents = ["drag", "dragend", "dragstart", newClickEventName];
 
 export default defineComponent({
   name: "AdvancedMarker",
@@ -43,7 +45,7 @@ export default defineComponent({
       required: false,
     },
   },
-  emits: markerEvents,
+  emits: [...markerEvents, legacyClickEventName],
   setup(props, { emit, expose, slots }) {
     const markerRef = ref<HTMLElement>();
     const hasCustomSlotContent = computed(() => slots.content?.().some((vnode) => vnode.type !== Comment));
@@ -82,7 +84,7 @@ export default defineComponent({
             content: hasCustomSlotContent.value
               ? markerRef.value
               : pinOptions.value
-                ? new PinElement(pinOptions.value).element
+                ? new PinElement(pinOptions.value)
                 : content,
             ...otherOptions,
           });
@@ -95,7 +97,7 @@ export default defineComponent({
           if (hasCustomSlotContent.value) {
             options.value.content = markerRef.value;
           } else if (pinOptions.value) {
-            options.value.content = new PinElement(pinOptions.value).element;
+            options.value.content = new PinElement(pinOptions.value);
           }
 
           marker.value = markRaw(new AdvancedMarkerElement(options.value));
@@ -107,7 +109,11 @@ export default defineComponent({
           }
 
           markerEvents.forEach((event) => {
-            marker.value?.addListener(event, (e: unknown) => emit(event, e));
+            marker.value?.addListener(event, (e: unknown) => {
+              emit(event, e);
+              // preserve backward compatibility for "click" event
+              if (event === newClickEventName) emit(legacyClickEventName, e);
+            });
           });
         }
       },

@@ -358,16 +358,18 @@ describe("InfoWindow Component", () => {
       const infoWindow = infoWindows[0];
 
       const advancedMarkerAddListenerCalls = (advancedMarker.addListener as jest.Mock).mock.calls;
-      const advancedMarkerClickListeners = advancedMarkerAddListenerCalls.filter(
-        ([eventType]) => eventType === "click"
-      );
-      expect(advancedMarkerClickListeners).toHaveLength(2);
+
+      // AdvancedMarker registers "gmp-click" (not "click"), InfoWindow registers "click" on the anchor
+      const gmpClickListeners = advancedMarkerAddListenerCalls.filter(([eventType]) => eventType === "gmp-click");
+      const clickListeners = advancedMarkerAddListenerCalls.filter(([eventType]) => eventType === "click");
+      expect(gmpClickListeners).toHaveLength(1);
+      expect(clickListeners).toHaveLength(1);
 
       // When anchor is present, InfoWindow doesn't open immediately
       expect(infoWindow.open).not.toHaveBeenCalled();
 
-      // Simulate marker click to open InfoWindow
-      advancedMarkerClickListeners[1][1](); // Trigger the InfoWindow click listener
+      // Simulate marker click to open InfoWindow (InfoWindow's click listener)
+      clickListeners[0][1]();
       expect(infoWindow.open).toHaveBeenCalledTimes(1);
       expect(infoWindow.open).toHaveBeenCalledWith(
         expect.objectContaining({
@@ -412,11 +414,14 @@ describe("InfoWindow Component", () => {
 
       await nextTick();
 
-      // Expect 2 click listeners per marker: one from AdvancedMarker's own events, one from InfoWindow
+      // AdvancedMarker registers "gmp-click", InfoWindow registers "click" on the anchor
       const markers = getAdvancedMarkerMocks();
       markers.forEach((marker) => {
-        const clickListeners = (marker.addListener as jest.Mock).mock.calls.filter(([event]) => event === "click");
-        expect(clickListeners).toHaveLength(2);
+        const addListenerCalls = (marker.addListener as jest.Mock).mock.calls;
+        const gmpClickListeners = addListenerCalls.filter(([event]) => event === "gmp-click");
+        const clickListeners = addListenerCalls.filter(([event]) => event === "click");
+        expect(gmpClickListeners).toHaveLength(1);
+        expect(clickListeners).toHaveLength(1);
       });
     });
   });
