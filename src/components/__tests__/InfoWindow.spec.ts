@@ -359,17 +359,15 @@ describe("InfoWindow Component", () => {
 
       const advancedMarkerAddListenerCalls = (advancedMarker.addListener as jest.Mock).mock.calls;
 
-      // AdvancedMarker registers "gmp-click" (not "click"), InfoWindow registers "click" on the anchor
+      // Both AdvancedMarker and InfoWindow register "gmp-click" on AdvancedMarkerElement anchors
       const gmpClickListeners = advancedMarkerAddListenerCalls.filter(([eventType]) => eventType === "gmp-click");
-      const clickListeners = advancedMarkerAddListenerCalls.filter(([eventType]) => eventType === "click");
-      expect(gmpClickListeners).toHaveLength(1);
-      expect(clickListeners).toHaveLength(1);
+      expect(gmpClickListeners).toHaveLength(2);
 
       // When anchor is present, InfoWindow doesn't open immediately
       expect(infoWindow.open).not.toHaveBeenCalled();
 
-      // Simulate marker click to open InfoWindow (InfoWindow's click listener)
-      clickListeners[0][1]();
+      // Simulate marker click to open InfoWindow (InfoWindow's gmp-click listener)
+      gmpClickListeners[1][1]();
       expect(infoWindow.open).toHaveBeenCalledTimes(1);
       expect(infoWindow.open).toHaveBeenCalledWith(
         expect.objectContaining({
@@ -414,14 +412,12 @@ describe("InfoWindow Component", () => {
 
       await nextTick();
 
-      // AdvancedMarker registers "gmp-click", InfoWindow registers "click" on the anchor
+      // Both AdvancedMarker and InfoWindow register "gmp-click" on AdvancedMarkerElement anchors
       const markers = getAdvancedMarkerMocks();
       markers.forEach((marker) => {
         const addListenerCalls = (marker.addListener as jest.Mock).mock.calls;
         const gmpClickListeners = addListenerCalls.filter(([event]) => event === "gmp-click");
-        const clickListeners = addListenerCalls.filter(([event]) => event === "click");
-        expect(gmpClickListeners).toHaveLength(1);
-        expect(clickListeners).toHaveLength(1);
+        expect(gmpClickListeners).toHaveLength(2);
       });
     });
   });
