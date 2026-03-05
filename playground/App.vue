@@ -1,4 +1,4 @@
-<script setup>
+<script setup lang="ts">
 import { GoogleMap, AdvancedMarker, InfoWindow } from "../src";
 
 const center = { lat: -25.363, lng: 131.044 };
