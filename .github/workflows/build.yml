@@ -36,5 +36,8 @@ jobs:
       - name: Build library 🛠
         run: pnpm build
 
+      - name: Type-check public API 🔎
+        run: pnpm tsc --project tsconfig.typetest.json
+
       - name: Publish package 📦
         uses: JS-DevTools/npm-publish@v4

@@ -64,3 +64,6 @@ jobs:
           test -f dist/index.mjs
           test -f dist/index.umd.js
           test -d dist/types
+
+      - name: Type-check public API 🔎
+        run: pnpm tsc --project tsconfig.typetest.json
