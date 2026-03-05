@@ -52,7 +52,7 @@
     "docs:serve": "vitepress serve docs",
     "release": "standard-version",
     "test": "jest",
-    "test:types": "pnpm run build && tsc --project tsconfig.typetest.json",
+    "test:types": "pnpm run build && tsc --noEmit --project tsconfig.typetest.json",
     "test:watch": "jest --watch",
     "test:coverage": "jest --coverage"
   },

@@ -66,4 +66,4 @@ jobs:
           test -d dist/types
 
       - name: Type-check public API 🔎
-        run: pnpm tsc --project tsconfig.typetest.json
+        run: pnpm tsc --noEmit --project tsconfig.typetest.json
