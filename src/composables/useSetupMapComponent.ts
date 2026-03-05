@@ -43,6 +43,7 @@ export const useSetupMapComponent = <T extends ICtorKey>(
   ctorKey: T,
   events: readonly string[],
   options: Ref<IComponentOptions<T>>,
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   emit: (event: any, ...args: any[]) => void
 ): Ref<IComponent<T> | undefined> => {
   const component = ref<IComponent<T>>();
