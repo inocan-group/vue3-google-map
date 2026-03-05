@@ -31,7 +31,7 @@ export interface IAdvancedMarkerExposed {
 
 const legacyClickEventName = "click";
 const newClickEventName = "gmp-click";
-export const markerEvents = ["drag", "dragend", "dragstart", newClickEventName];
+export const markerEvents = ["drag", "dragend", "dragstart", newClickEventName] as const;
 
 export default defineComponent({
   name: "AdvancedMarker",

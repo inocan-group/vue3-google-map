@@ -41,9 +41,9 @@ const isCustomMarkerCtorKey = (key: ICtorKey): key is typeof customMarkerClassSy
 
 export const useSetupMapComponent = <T extends ICtorKey>(
   ctorKey: T,
-  events: string[],
+  events: readonly string[],
   options: Ref<IComponentOptions<T>>,
-  emit: (event: string, ...args: unknown[]) => void
+  emit: (event: any, ...args: any[]) => void
 ): Ref<IComponent<T> | undefined> => {
   const component = ref<IComponent<T>>();
 

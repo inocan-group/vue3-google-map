@@ -2,7 +2,7 @@ import { defineComponent, PropType, toRef } from "vue";
 import { useSetupMapComponent } from "../composables/index";
 import { polylineEvents } from "../shared/index";
 
-export const circleEvents = polylineEvents.concat(["center_changed", "radius_changed"]);
+export const circleEvents = [...polylineEvents, "center_changed", "radius_changed"] as const;
 
 export default defineComponent({
   name: "Circle",
@@ -12,7 +12,7 @@ export default defineComponent({
       required: true,
     },
   },
-  emits: circleEvents,
+  emits: [...circleEvents],
   setup(props, { emit }) {
     const options = toRef(props, "options");
     const circle = useSetupMapComponent("Circle", circleEvents, options, emit);

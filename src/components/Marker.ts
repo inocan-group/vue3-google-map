@@ -29,7 +29,7 @@ export const markerEvents = [
   "shape_changed",
   "title_changed",
   "visible_changed",
-];
+] as const;
 
 /**
  * @deprecated The Marker component is deprecated as of February 2024. Use AdvancedMarker instead.
@@ -45,7 +45,7 @@ export default defineComponent({
       required: true,
     },
   },
-  emits: markerEvents,
+  emits: [...markerEvents],
   setup(props, { emit, expose, slots }) {
     const options = toRef(props, "options");
     const marker = useSetupMapComponent("Marker", markerEvents, options, emit);

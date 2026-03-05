@@ -40,7 +40,7 @@ export const infoWindowEvents = [
   "position_changed",
   "visible",
   "zindex_changed",
-];
+] as const;
 
 export default defineComponent({
   inheritAttrs: false,

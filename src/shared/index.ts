@@ -26,4 +26,4 @@ export const polylineEvents = [
   "mouseover",
   "mouseup",
   "rightclick",
-];
+] as const;

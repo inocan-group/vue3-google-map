@@ -35,7 +35,7 @@ export const mapEvents = [
   "tilesloaded",
   "tilt_changed",
   "zoom_changed",
-];
+] as const;
 
 export default defineComponent({
   props: {
@@ -244,7 +244,7 @@ export default defineComponent({
     },
   },
 
-  emits: mapEvents,
+  emits: [...mapEvents],
 
   setup(props, { emit }) {
     const mapRef = ref<HTMLElement>();

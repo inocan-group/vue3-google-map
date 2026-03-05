@@ -2,7 +2,7 @@ import { useSetupMapComponent } from "../composables/index";
 import { defineComponent, PropType, toRef } from "vue";
 import { polylineEvents } from "../shared/index";
 
-export const rectangleEvents = polylineEvents.concat(["bounds_changed"]);
+export const rectangleEvents = [...polylineEvents, "bounds_changed"] as const;
 
 export default defineComponent({
   name: "Rectangle",
@@ -12,7 +12,7 @@ export default defineComponent({
       required: true,
     },
   },
-  emits: rectangleEvents,
+  emits: [...rectangleEvents],
   setup(props, { emit }) {
     const options = toRef(props, "options");
     const rectangle = useSetupMapComponent("Rectangle", rectangleEvents, options, emit);
