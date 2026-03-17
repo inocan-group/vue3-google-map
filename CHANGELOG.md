@@ -2,6 +2,16 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.27.1](https://github.com/inocan-group/vue3-google-map/compare/v0.27.0...v0.27.1) (2026-03-17)
+
+
+### Bug Fixes
+
+* narrow event emit types from string[] to literal unions ([5aa3a26](https://github.com/inocan-group/vue3-google-map/commit/5aa3a26ade871167ba6b5ae1bbab7e18499678fa))
+* use composite + CLI --noEmit for typetest config to fix Vue language tools editor support ([859896d](https://github.com/inocan-group/vue3-google-map/commit/859896dddcf167942d2dba074d3c006f70d1e9d4))
+* use gmp-click and PinElement directly to suppress AdvancedMarker deprecation warnings ([db2e12b](https://github.com/inocan-group/vue3-google-map/commit/db2e12b3c36b947473ccc78bac2eb5d0ede5fc1a)), closes [#371](https://github.com/inocan-group/vue3-google-map/issues/371)
+* use gmp-click for InfoWindow anchor listener on AdvancedMarkerElement ([c408017](https://github.com/inocan-group/vue3-google-map/commit/c408017e6374116e0058d2324c914bf9092fd130)), closes [#373](https://github.com/inocan-group/vue3-google-map/issues/373)
+
 ## [0.27.0](https://github.com/inocan-group/vue3-google-map/compare/v0.26.0...v0.27.0) (2026-01-09)
 
 
