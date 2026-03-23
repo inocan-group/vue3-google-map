@@ -33,6 +33,9 @@ const cssInjectedByJsPlugin = require("vite-plugin-css-injected-by-js").default;
           dir: resolve(__dirname, "../dist"),
         },
       },
+      commonjsOptions: {
+        esmExternals: ["vue"],
+      },
     },
   });
 })();

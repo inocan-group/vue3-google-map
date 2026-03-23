@@ -44,6 +44,9 @@ export default defineConfig({
         dir: resolve(__dirname, "dist"),
       },
     },
+    commonjsOptions: {
+      esmExternals: ["vue"],
+    },
   },
   resolve: {
     alias: {
