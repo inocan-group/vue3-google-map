@@ -64,7 +64,7 @@
   },
   "devDependencies": {
     "@babel/core": "^7.28.0",
-    "@googlemaps/jest-mocks": "^2.22.6",
+    "@googlemaps/jest-mocks": "^2.22.8",
     "@types/google.maps": "^3.58.1",
     "@types/jest": "^29.5.14",
     "@types/lodash-es": "^4.17.12",
