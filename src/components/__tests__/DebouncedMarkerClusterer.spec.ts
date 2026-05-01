@@ -117,5 +117,25 @@ describe("DebouncedMarkerClusterer", () => {
       expect(mockDebouncedRender.cancel).toHaveBeenCalled();
       expect(mockRender).not.toHaveBeenCalled();
     });
+
+    // Issue #376: parent-first onBeforeUnmount lets child markers call
+    // removeMarker() after MarkerCluster has already destroyed the clusterer.
+    // Those calls used to restart the debounce, and the trailing setTimeout
+    // would fire into a torn-down Maps API and throw inside
+    // `MarkerClusterer.render()`. After destroy, marker ops must not be able
+    // to invoke the original debounced render at all.
+    it("post-destroy marker ops must not invoke the debounced render (regression: issue #376)", () => {
+      clusterer.destroy();
+      mockDebouncedRender.mockClear();
+
+      clusterer.removeMarker(mockMarker);
+      clusterer.addMarker(mockMarker);
+      clusterer.removeMarkers([mockMarker]);
+      clusterer.addMarkers([mockMarker]);
+      clusterer.clearMarkers();
+
+      expect(mockDebouncedRender).not.toHaveBeenCalled();
+      expect(mockRender).not.toHaveBeenCalled();
+    });
   });
 });

@@ -1,6 +1,8 @@
 import { MarkerClusterer, MarkerClustererOptions } from "@googlemaps/markerclusterer";
 import debounce from "lodash-es/debounce";
 
+type RenderFn = (() => void) & { cancel: () => void };
+
 /**
  * MarkerClusterer with debounced rendering for batch operations.
  *
@@ -9,7 +11,7 @@ import debounce from "lodash-es/debounce";
  * This provides immediate visual feedback while still batching rapid updates.
  */
 export class DebouncedMarkerClusterer extends MarkerClusterer {
-  private readonly debouncedRender: ReturnType<typeof debounce>;
+  private debouncedRender: RenderFn;
 
   constructor(options: MarkerClustererOptions, debounceDelay = 10) {
     super(options);
@@ -66,7 +68,17 @@ export class DebouncedMarkerClusterer extends MarkerClusterer {
     super.render();
   }
 
+  /**
+   * Cancels any pending debounced render and replaces `debouncedRender` with a
+   * no-op so that calls arriving after destroy (e.g. `removeMarker` triggered
+   * by child components unmounting after `MarkerCluster.onBeforeUnmount`) cannot
+   * restart the debounce. Without this, a trailing `setTimeout` fires later and
+   * crashes inside `MarkerClusterer.render()` if the Maps API has been torn
+   * down. See issue #376.
+   */
   destroy(): void {
     this.debouncedRender.cancel();
+    // eslint-disable-next-line @typescript-eslint/no-empty-function
+    this.debouncedRender = Object.assign(() => {}, { cancel: () => {} });
   }
 }
