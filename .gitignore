@@ -34,6 +34,9 @@ coverage
 # Jest cache
 .jest-cache
 
+# TypeScript incremental build cache
+*.tsbuildinfo
+
 # Test artifacts
 test-results
 test-report.xml
