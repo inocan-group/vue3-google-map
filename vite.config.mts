@@ -15,6 +15,7 @@ export default defineConfig({
     }),
   ],
   build: {
+    minify: false,
     lib: {
       entry: {
         main: resolve(__dirname, "src/index.ts"),

@@ -8,6 +8,13 @@ const __dirname = dirname(fileURLToPath(import.meta.url));
 
 await build({
   configFile: false,
+  // Substitute NODE_ENV in the UMD bundle only — `process` is undefined when
+  // loaded via <script>, so leaving the references unsubstituted (as in the
+  // CJS/ESM outputs) would throw ReferenceError. "development" preserves
+  // js-api-loader's diagnostic warnings for CDN consumers.
+  define: {
+    "process.env.NODE_ENV": JSON.stringify("development"),
+  },
   plugins: [
     vue(),
     cssInjectedByJsPlugin({
