@@ -1,0 +1,29 @@
+{
+  "$schema": "https://raw.githubusercontent.com/googleapis/release-please/main/schemas/config.json",
+  "release-type": "node",
+  "bump-minor-pre-major": true,
+  "bump-patch-for-minor-pre-major": true,
+  "include-v-in-tag": true,
+  "packages": {
+    ".": {
+      "package-name": "vue3-google-map",
+      "changelog-path": "CHANGELOG.md",
+      "pull-request-title-pattern": "chore(release): ${version}",
+      "changelog-sections": [
+        { "type": "feat",     "section": "Features" },
+        { "type": "fix",      "section": "Bug Fixes" },
+        { "type": "perf",     "section": "Performance" },
+        { "type": "revert",   "section": "Reverts" },
+        { "type": "types",    "section": "Types",         "hidden": true },
+        { "type": "build",    "section": "Build System",  "hidden": true },
+        { "type": "deps",     "section": "Dependencies",  "hidden": true },
+        { "type": "chore",    "section": "Miscellaneous", "hidden": true },
+        { "type": "ci",       "section": "CI",            "hidden": true },
+        { "type": "docs",     "section": "Documentation", "hidden": true },
+        { "type": "test",     "section": "Tests",         "hidden": true },
+        { "type": "refactor", "section": "Refactors",     "hidden": true },
+        { "type": "style",    "section": "Style",         "hidden": true }
+      ]
+    }
+  }
+}
