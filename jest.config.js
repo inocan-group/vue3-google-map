@@ -3,7 +3,7 @@ module.exports = {
   testEnvironment: "jsdom",
   moduleFileExtensions: ["js", "ts", "vue", "json"],
   transform: {
-    "^.+\\.vue$": "@vue/vue3-jest",
+    "^.+\\.vue$": "<rootDir>/tests/vue-jest-transformer.js",
     "^.+\\.tsx?$": [
       "ts-jest",
       {
@@ -27,12 +27,15 @@ module.exports = {
     "!src/shims-*.ts",
     "!src/themes/**",
   ],
+  // Floors sit ~3-4 pts below actuals (branches 86.4 / functions 95.4 / lines 98.3 /
+  // statements 97.9). Raised after the source-map fix made coverage accurate; the old
+  // floors (72/88/88/85) compensated for under-reported coverage from broken .vue maps.
   coverageThreshold: {
     global: {
-      branches: 72,
-      functions: 88,
-      lines: 88,
-      statements: 85,
+      branches: 82,
+      functions: 92,
+      lines: 95,
+      statements: 94,
     },
   },
   coverageReporters: ["text", "json", "html", "lcov"],

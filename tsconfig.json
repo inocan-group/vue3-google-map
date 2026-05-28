@@ -33,7 +33,12 @@
     "strict": true,
     "noUnusedLocals": true,
     "noUnusedParameters": true,
-    "noFallthroughCasesInSwitch": true
+    "noFallthroughCasesInSwitch": true,
+    // Required for accurate Jest coverage line numbers. @vue/vue3-jest reads
+    // this root config when compiling SFC <script> blocks, and ts-jest merges
+    // it for .ts files; without it Istanbul maps coverage to compiled output.
+    // Inert for the build (emitDeclarationOnly above). See tests/vue-jest-transformer.js.
+    "sourceMap": true
   },
   "include": [
     "src/**/*.ts",
