@@ -172,6 +172,62 @@ describe("AdvancedMarker Component", () => {
       expect(advancedMarker.zIndex).toBe(newOptions.zIndex);
     });
 
+    // Regression test for https://github.com/inocan-group/vue3-google-map/issues/242
+    it("should update marker properties when a nested option is mutated in place (deep reactivity)", async () => {
+      const position = { lat: 37.774, lng: -122.414 };
+
+      const wrapper = mount(AdvancedMarker, {
+        props: { options: { position, title: "SF" } },
+        global: {
+          provide: {
+            [mapSymbol]: ref(mockMap),
+            [apiSymbol]: ref(mockApi),
+          },
+        },
+      });
+      await nextTick();
+
+      const advancedMarker = getAdvancedMarkerMocks()[0];
+
+      // Reset the marker's observable state to a sentinel so the assertion only
+      // passes if the update path actually re-applies the options. (The mock
+      // stores the same `position` object reference, so asserting on it directly
+      // would pass even without an update.)
+      advancedMarker.title = "SENTINEL";
+
+      // The only change is the in-place nested mutation; `title` is unchanged.
+      position.lat = 45.0;
+      position.lng = -75.0;
+      await wrapper.setProps({ options: { position, title: "SF" } });
+
+      expect(advancedMarker.title).toBe("SF");
+      expect(advancedMarker.position).toEqual(position);
+    });
+
+    // Guards the dedup optimization: a fresh-but-structurally-identical options
+    // object must NOT re-run the update path (no redundant Object.assign / cluster churn).
+    it("should not re-apply options when a new but deeply-equal options object is passed (dedup)", async () => {
+      const wrapper = mount(AdvancedMarker, {
+        props: { options: { position: { lat: 37.774, lng: -122.414 }, title: "SF" } },
+        global: {
+          provide: {
+            [mapSymbol]: ref(mockMap),
+            [apiSymbol]: ref(mockApi),
+          },
+        },
+      });
+      await nextTick();
+
+      const advancedMarker = getAdvancedMarkerMocks()[0];
+
+      // If the update path runs, Object.assign overwrites this back to "SF".
+      advancedMarker.title = "SENTINEL";
+
+      await wrapper.setProps({ options: { position: { lat: 37.774, lng: -122.414 }, title: "SF" } });
+
+      expect(advancedMarker.title).toBe("SENTINEL");
+    });
+
     it("should maintain same AdvancedMarker instance when options change", async () => {
       const wrapper = createWrapper();
       await nextTick();

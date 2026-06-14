@@ -22,6 +22,7 @@ import {
 } from "vue";
 import equal from "fast-deep-equal";
 import { apiSymbol, mapSymbol, markerSymbol } from "../shared/index";
+import { cloneOptions } from "../utils/index";
 
 function getAnchorClickEvent(anchor: google.maps.Marker | google.maps.marker.AdvancedMarkerElement): string {
   return anchor instanceof google.maps.marker.AdvancedMarkerElement ? "gmp-click" : "click";
@@ -89,11 +90,16 @@ export default defineComponent({
       }
     };
 
+    // Snapshot of the last options we acted on, insulated from in-place
+    // mutation of the source, so deep changes to `options` are reliably
+    // detected (see cloneOptions).
+    let appliedOptions: google.maps.InfoWindowOptions | undefined;
+
     onMounted(() => {
       watch(
         [map, () => props.options],
-        ([_, options], [oldMap, oldOptions]) => {
-          const hasChanged = !equal(options, oldOptions) || map.value !== oldMap;
+        ([_, options], [oldMap]) => {
+          const hasChanged = !appliedOptions || !equal(options, appliedOptions) || map.value !== oldMap;
 
           if (map.value && api.value && hasChanged) {
             if (infoWindow.value) {
@@ -125,11 +131,14 @@ export default defineComponent({
               });
               infoWindow.value?.addListener("closeclick", () => updateVModel(false));
             }
+
+            appliedOptions = cloneOptions(options);
           }
         },
         {
           immediate: true,
           flush: "post",
+          deep: true,
         }
       );
 

@@ -1,3 +1,38 @@
+function isPlainObject(value: unknown): value is Record<string, unknown> {
+  if (value === null || typeof value !== "object") return false;
+  const proto = Object.getPrototypeOf(value);
+  return proto === Object.prototype || proto === null;
+}
+
+/**
+ * Snapshots the plain-data portions of an options object so it can be compared
+ * against a future value even if the source (or any of its nested arrays /
+ * objects) is mutated in place. This is what enables deep reactivity of
+ * `:options` props: without a snapshot insulated from in-place mutation, the
+ * change-detection `equal()` check would compare the live value against an old
+ * value that shares the same (already-mutated) nested references and therefore
+ * never detect a change.
+ *
+ * Plain objects and arrays are deep-cloned. Non-plain values — DOM nodes, class
+ * instances (e.g. `google.maps.LatLng`), and functions — are preserved by
+ * reference and compared by identity.
+ */
+export function cloneOptions<T>(options: T): T {
+  if (Array.isArray(options)) {
+    return options.map((item) => cloneOptions(item)) as unknown as T;
+  }
+
+  if (isPlainObject(options)) {
+    const result: Record<string, unknown> = {};
+    for (const key of Object.keys(options)) {
+      result[key] = cloneOptions(options[key]);
+    }
+    return result as unknown as T;
+  }
+
+  return options;
+}
+
 type ICustomMarkerInterface = google.maps.OverlayView & {
   getPosition(): google.maps.LatLng | null;
   getVisible(): boolean;

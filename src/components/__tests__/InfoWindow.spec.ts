@@ -194,6 +194,51 @@ describe("InfoWindow Component", () => {
       );
     });
 
+    // Regression test for https://github.com/inocan-group/vue3-google-map/issues/242
+    it("should call setOptions when a nested option is mutated in place (deep reactivity)", async () => {
+      const position = { lat: 45.0, lng: -75.0 };
+
+      const wrapper = mount(InfoWindow, {
+        props: { options: { position, maxWidth: 300 } },
+        global: {
+          provide: {
+            [mapSymbol]: ref(mockMap),
+            [apiSymbol]: ref(mockApi),
+          },
+        },
+      });
+      await nextTick();
+
+      const infoWindow = getInfoWindowMocks()[0];
+
+      position.lat = 46.0;
+      await wrapper.setProps({ options: { position, maxWidth: 300 } });
+
+      expect(infoWindow.setOptions).toHaveBeenCalledTimes(1);
+      expect(infoWindow.setOptions).toHaveBeenCalledWith(expect.objectContaining({ position }));
+    });
+
+    // Guards the dedup optimization: a fresh-but-structurally-identical options
+    // object must NOT trigger a redundant setOptions.
+    it("should not call setOptions when a new but deeply-equal options object is passed (dedup)", async () => {
+      const wrapper = mount(InfoWindow, {
+        props: { options: { position: { lat: 45.0, lng: -75.0 }, maxWidth: 300 } },
+        global: {
+          provide: {
+            [mapSymbol]: ref(mockMap),
+            [apiSymbol]: ref(mockApi),
+          },
+        },
+      });
+      await nextTick();
+
+      const infoWindow = getInfoWindowMocks()[0];
+
+      await wrapper.setProps({ options: { position: { lat: 45.0, lng: -75.0 }, maxWidth: 300 } });
+
+      expect(infoWindow.setOptions).not.toHaveBeenCalled();
+    });
+
     it("should maintain same InfoWindow instance when options change", async () => {
       const wrapper = createWrapper();
       await nextTick();

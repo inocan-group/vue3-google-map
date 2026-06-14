@@ -175,6 +175,67 @@ describe("CustomMarker Component", () => {
       expect(customMarker.setOptions).toHaveBeenCalledWith(expect.objectContaining(options));
     });
 
+    // Regression test for https://github.com/inocan-group/vue3-google-map/issues/242
+    it("should call setOptions when a nested option is mutated in place (deep reactivity)", async () => {
+      const position = { lat: 37.774, lng: -122.414 };
+
+      const wrapper = mount(CustomMarker, {
+        props: { options: { position } },
+        slots: {
+          // eslint-disable-next-line quotes
+          default: '<div class="custom-content">Custom Marker Content</div>',
+        },
+        global: {
+          provide: {
+            [mapSymbol]: ref(mockMap),
+            [apiSymbol]: ref(mockApi),
+          },
+        },
+      });
+      await nextTick();
+
+      const customMarker = getCustomMarkerMocks()[0];
+
+      // Clear setOptions calls from initial creation (element ref changes)
+      customMarker.setOptions.mockClear();
+
+      position.lat = 45.0;
+      await wrapper.setProps({ options: { position } });
+
+      expect(customMarker.setOptions).toHaveBeenCalledTimes(1);
+      expect(customMarker.setOptions).toHaveBeenCalledWith(expect.objectContaining({ position }));
+    });
+
+    // Guards the dedup optimization for CustomMarker specifically: its `options`
+    // is a computed that injects the DOM `element` ref, so dedup must compare
+    // that non-plain value by identity (cloneOptions keeps it by reference). A
+    // fresh-but-structurally-identical options object must NOT re-apply.
+    it("should not call setOptions when a new but deeply-equal options object is passed (dedup)", async () => {
+      const wrapper = mount(CustomMarker, {
+        props: { options: { position: { lat: 37.774, lng: -122.414 } } },
+        slots: {
+          // eslint-disable-next-line quotes
+          default: '<div class="custom-content">Custom Marker Content</div>',
+        },
+        global: {
+          provide: {
+            [mapSymbol]: ref(mockMap),
+            [apiSymbol]: ref(mockApi),
+          },
+        },
+      });
+      await nextTick();
+
+      const customMarker = getCustomMarkerMocks()[0];
+
+      // Clear setOptions calls from initial creation (element ref settles).
+      customMarker.setOptions.mockClear();
+
+      await wrapper.setProps({ options: { position: { lat: 37.774, lng: -122.414 } } });
+
+      expect(customMarker.setOptions).not.toHaveBeenCalled();
+    });
+
     it("should maintain same CustomMarker instance when options change", async () => {
       const wrapper = createWrapper();
       await nextTick();

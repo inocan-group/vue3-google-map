@@ -152,6 +152,33 @@ describe("Polygon Component", () => {
       expect(polygon.setOptions).toHaveBeenCalledWith(options);
     });
 
+    // Regression test for https://github.com/inocan-group/vue3-google-map/issues/242
+    it("should call setOptions when a nested option is mutated in place (deep reactivity)", async () => {
+      const paths = [
+        { lat: 40.748, lng: -73.986 },
+        { lat: 40.748, lng: -73.982 },
+      ];
+
+      const wrapper = mount(Polygon, {
+        props: { options: { paths } },
+        global: {
+          provide: {
+            [mapSymbol]: ref(mockMap),
+            [apiSymbol]: ref(mockApi),
+          },
+        },
+      });
+      await nextTick();
+
+      const polygon = getPolygonMocks()[0];
+
+      paths.push({ lat: 40.751, lng: -73.982 });
+      await wrapper.setProps({ options: { paths } });
+
+      expect(polygon.setOptions).toHaveBeenCalledTimes(1);
+      expect(polygon.setOptions).toHaveBeenCalledWith(expect.objectContaining({ paths }));
+    });
+
     it("should maintain same Polygon instance when options change", async () => {
       const wrapper = createWrapper();
       await nextTick();

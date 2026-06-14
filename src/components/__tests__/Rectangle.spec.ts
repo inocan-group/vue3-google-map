@@ -143,6 +143,30 @@ describe("Rectangle Component", () => {
       expect(rectangle.setOptions).toHaveBeenCalledWith(options);
     });
 
+    // Regression test for https://github.com/inocan-group/vue3-google-map/issues/242
+    it("should call setOptions when a nested option is mutated in place (deep reactivity)", async () => {
+      const bounds = { north: 45, south: 40, east: -65, west: -70 };
+
+      const wrapper = mount(Rectangle, {
+        props: { options: { bounds } },
+        global: {
+          provide: {
+            [mapSymbol]: ref(mockMap),
+            [apiSymbol]: ref(mockApi),
+          },
+        },
+      });
+      await nextTick();
+
+      const rectangle = getRectangleMocks()[0];
+
+      bounds.north = 50;
+      await wrapper.setProps({ options: { bounds } });
+
+      expect(rectangle.setOptions).toHaveBeenCalledTimes(1);
+      expect(rectangle.setOptions).toHaveBeenCalledWith(expect.objectContaining({ bounds }));
+    });
+
     it("should maintain same Rectangle instance when options change", async () => {
       const wrapper = createWrapper();
       await nextTick();

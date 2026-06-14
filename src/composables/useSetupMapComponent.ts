@@ -1,6 +1,7 @@
 import { watch, ref, Ref, inject, onBeforeUnmount, computed, markRaw } from "vue";
 import equal from "fast-deep-equal";
 import { apiSymbol, mapSymbol, markerClusterSymbol, customMarkerClassSymbol } from "../shared/index";
+import { cloneOptions } from "../utils/index";
 
 type ICtorKey = "Marker" | "Polyline" | "Polygon" | "Rectangle" | "Circle" | typeof customMarkerClassSymbol;
 
@@ -61,10 +62,15 @@ export const useSetupMapComponent = <T extends ICtorKey>(
       )
   );
 
+  // Snapshot of the last options we acted on, insulated from in-place mutation
+  // of the source. Compared against (instead of Vue's old value) so that deep
+  // changes — e.g. pushing to a nested `path` array — are reliably detected.
+  let appliedOptions: IComponentOptions<T> | undefined;
+
   watch(
     [map, options],
-    (_, [oldMap, oldOptions]) => {
-      const hasChanged = !equal(options.value, oldOptions) || map.value !== oldMap;
+    (_, [oldMap]) => {
+      const hasChanged = !appliedOptions || !equal(options.value, appliedOptions) || map.value !== oldMap;
 
       if (!map.value || !api.value || !hasChanged) return;
 
@@ -109,10 +115,13 @@ export const useSetupMapComponent = <T extends ICtorKey>(
           component.value?.addListener(event, (e: unknown) => emit(event, e));
         });
       }
+
+      appliedOptions = cloneOptions(options.value);
     },
     {
       immediate: true,
       flush: "post",
+      deep: true,
     }
   );
 
