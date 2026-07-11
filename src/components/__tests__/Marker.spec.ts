@@ -131,6 +131,30 @@ describe("Marker Component", () => {
       expect(marker.setOptions).toHaveBeenCalledWith(options);
     });
 
+    // Regression test for https://github.com/inocan-group/vue3-google-map/issues/242
+    it("should call setOptions when a nested option is mutated in place (deep reactivity)", async () => {
+      const position = { lat: 45.0, lng: -75.0 };
+
+      const wrapper = mount(Marker, {
+        props: { options: { position } },
+        global: {
+          provide: {
+            [mapSymbol]: ref(mockMap),
+            [apiSymbol]: ref(mockApi),
+          },
+        },
+      });
+      await nextTick();
+
+      const marker = getMarkerMocks()[0];
+
+      position.lat = 46.0;
+      await wrapper.setProps({ options: { position } });
+
+      expect(marker.setOptions).toHaveBeenCalledTimes(1);
+      expect(marker.setOptions).toHaveBeenCalledWith(expect.objectContaining({ position }));
+    });
+
     it("should maintain same Marker instance when options change", async () => {
       const wrapper = createWrapper();
       await nextTick();

@@ -1,5 +1,5 @@
 import { mount } from "@vue/test-utils";
-import { nextTick, ref } from "vue";
+import { nextTick, reactive, ref } from "vue";
 import HeatmapLayer from "../HeatmapLayer";
 import { Map } from "@googlemaps/jest-mocks";
 import { mapSymbol, apiSymbol } from "../../shared";
@@ -201,6 +201,81 @@ describe("HeatmapLayer Component", () => {
 
       expect(heatmapLayer.setOptions).toHaveBeenCalledTimes(1);
       expect(heatmapLayer.setOptions).toHaveBeenCalledWith(options);
+    });
+
+    // Regression test for https://github.com/inocan-group/vue3-google-map/issues/242
+    it("should call setOptions when a nested option is mutated in place (deep reactivity)", async () => {
+      const data = [{ lat: 40.7128, lng: -74.006 }];
+
+      const wrapper = mount(HeatmapLayer, {
+        props: { options: { data } },
+        global: {
+          provide: {
+            [mapSymbol]: ref(mockMap),
+            [apiSymbol]: ref(mockApi),
+          },
+        },
+      });
+      await nextTick();
+
+      const heatmapLayer = getHeatmapLayerMocks()[0];
+
+      data.push({ lat: 40.7614, lng: -73.9776 });
+      await wrapper.setProps({ options: { data } });
+
+      expect(heatmapLayer.setOptions).toHaveBeenCalledTimes(1);
+      expect(heatmapLayer.setOptions).toHaveBeenCalledWith(
+        expect.objectContaining({
+          data: expect.arrayContaining([expect.any(google.maps.LatLng), expect.any(google.maps.LatLng)]),
+        })
+      );
+    });
+
+    // Unlike the test above, this never re-assigns the prop: the reactive options
+    // object is mutated in place and the watcher must fire on its own. This pins
+    // the watcher's `deep: true` (the setProps-based tests fire the watcher via
+    // the prop reference change and would pass without it).
+    it("should call setOptions when a reactive options object is mutated in place without reassignment (deep reactivity)", async () => {
+      const options = reactive({ data: [{ lat: 40.7128, lng: -74.006 }] });
+
+      mount(HeatmapLayer, {
+        props: { options },
+        global: {
+          provide: {
+            [mapSymbol]: ref(mockMap),
+            [apiSymbol]: ref(mockApi),
+          },
+        },
+      });
+      await nextTick();
+
+      const heatmapLayer = getHeatmapLayerMocks()[0];
+
+      options.data.push({ lat: 40.7614, lng: -73.9776 });
+      await nextTick();
+
+      expect(heatmapLayer.setOptions).toHaveBeenCalledTimes(1);
+    });
+
+    // Guards the dedup optimization: a fresh-but-structurally-identical options
+    // object must NOT trigger a redundant setOptions.
+    it("should not call setOptions when a new but deeply-equal options object is passed (dedup)", async () => {
+      const wrapper = mount(HeatmapLayer, {
+        props: { options: { data: [{ lat: 40.7128, lng: -74.006 }], radius: 30 } },
+        global: {
+          provide: {
+            [mapSymbol]: ref(mockMap),
+            [apiSymbol]: ref(mockApi),
+          },
+        },
+      });
+      await nextTick();
+
+      const heatmapLayer = getHeatmapLayerMocks()[0];
+
+      await wrapper.setProps({ options: { data: [{ lat: 40.7128, lng: -74.006 }], radius: 30 } });
+
+      expect(heatmapLayer.setOptions).not.toHaveBeenCalled();
     });
 
     it("should maintain same HeatmapLayer instance when options change", async () => {

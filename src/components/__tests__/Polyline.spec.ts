@@ -1,5 +1,5 @@
 import { mount } from "@vue/test-utils";
-import { nextTick, ref } from "vue";
+import { nextTick, reactive, ref } from "vue";
 import Polyline from "../Polyline";
 import { mockInstances, Map } from "@googlemaps/jest-mocks";
 import { mapSymbol, apiSymbol, polylineEvents } from "../../shared";
@@ -146,6 +146,90 @@ describe("Polyline Component", () => {
 
       expect(polyline.setOptions).toHaveBeenCalledTimes(1);
       expect(polyline.setOptions).toHaveBeenCalledWith(options);
+    });
+
+    // Regression test for https://github.com/inocan-group/vue3-google-map/issues/242
+    // A nested array is mutated in place and the options object is handed back
+    // still referencing that same (now-mutated) array. Shallow change detection
+    // misses this because the old and new values share the mutated reference.
+    it("should call setOptions when a nested option is mutated in place (deep reactivity)", async () => {
+      const path = [
+        { lat: 37.772, lng: -122.214 },
+        { lat: 21.291, lng: -157.821 },
+      ];
+
+      const wrapper = mount(Polyline, {
+        props: { options: { path, geodesic: true } },
+        global: {
+          provide: {
+            [mapSymbol]: ref(mockMap),
+            [apiSymbol]: ref(mockApi),
+          },
+        },
+      });
+      await nextTick();
+
+      const polyline = getPolylineMocks()[0];
+
+      path.push({ lat: -18.142, lng: 178.431 });
+      await wrapper.setProps({ options: { path, geodesic: true } });
+
+      expect(polyline.setOptions).toHaveBeenCalledTimes(1);
+      expect(polyline.setOptions).toHaveBeenCalledWith(expect.objectContaining({ path }));
+    });
+
+    // Unlike the test above, this never re-assigns the prop: the reactive options
+    // object is mutated in place and the watcher must fire on its own. This pins
+    // the watcher's `deep: true` (the setProps-based tests fire the watcher via
+    // the prop reference change and would pass without it).
+    it("should call setOptions when a reactive options object is mutated in place without reassignment (deep reactivity)", async () => {
+      const options = reactive({
+        path: [
+          { lat: 37.772, lng: -122.214 },
+          { lat: 21.291, lng: -157.821 },
+        ],
+        geodesic: true,
+      });
+
+      mount(Polyline, {
+        props: { options },
+        global: {
+          provide: {
+            [mapSymbol]: ref(mockMap),
+            [apiSymbol]: ref(mockApi),
+          },
+        },
+      });
+      await nextTick();
+
+      const polyline = getPolylineMocks()[0];
+
+      options.path.push({ lat: -18.142, lng: 178.431 });
+      await nextTick();
+
+      expect(polyline.setOptions).toHaveBeenCalledTimes(1);
+    });
+
+    // Guards the dedup optimization: a parent re-render that passes a fresh-but-
+    // structurally-identical options object (e.g. an inline `:options="{...}"`
+    // literal) must NOT trigger a redundant setOptions.
+    it("should not call setOptions when a new but deeply-equal options object is passed (dedup)", async () => {
+      const wrapper = mount(Polyline, {
+        props: { options: { path: [{ lat: 37.772, lng: -122.214 }], geodesic: true } },
+        global: {
+          provide: {
+            [mapSymbol]: ref(mockMap),
+            [apiSymbol]: ref(mockApi),
+          },
+        },
+      });
+      await nextTick();
+
+      const polyline = getPolylineMocks()[0];
+
+      await wrapper.setProps({ options: { path: [{ lat: 37.772, lng: -122.214 }], geodesic: true } });
+
+      expect(polyline.setOptions).not.toHaveBeenCalled();
     });
 
     it("should maintain same Polyline instance when options change", async () => {

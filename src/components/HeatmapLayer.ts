@@ -1,6 +1,7 @@
 import { defineComponent, PropType, ref, inject, watch, markRaw, onBeforeUnmount } from "vue";
 import equal from "fast-deep-equal";
 import { mapSymbol, apiSymbol } from "../shared/index";
+import { cloneOptions } from "../utils/index";
 
 type HeatmapLayerOptions = google.maps.visualization.HeatmapLayerOptions;
 
@@ -26,10 +27,15 @@ export default defineComponent({
     const map = inject(mapSymbol, ref());
     const api = inject(apiSymbol, ref());
 
+    // Snapshot of the last options we acted on, insulated from in-place
+    // mutation of the source, so deep changes to `options` are reliably
+    // detected (see cloneOptions).
+    let appliedOptions: ExtendedHeatmapLayerOptions | undefined;
+
     watch(
       [map, () => props.options],
-      ([_, options], [oldMap, oldOptions]) => {
-        const hasChanged = !equal(options, oldOptions) || map.value !== oldMap;
+      ([_, options], [oldMap]) => {
+        const hasChanged = !appliedOptions || !equal(options, appliedOptions) || map.value !== oldMap;
 
         if (map.value && api.value && hasChanged) {
           let opts: HeatmapLayerOptions;
@@ -72,9 +78,11 @@ export default defineComponent({
               })
             );
           }
+
+          appliedOptions = cloneOptions(options);
         }
       },
-      { immediate: true }
+      { immediate: true, deep: true }
     );
 
     onBeforeUnmount(() => {

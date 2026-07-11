@@ -23,6 +23,7 @@ import {
   type Ref,
 } from "vue";
 import { markerSymbol, apiSymbol, mapSymbol, markerClusterSymbol } from "../shared/index";
+import { cloneOptions } from "../utils/index";
 import equal from "fast-deep-equal";
 
 export interface IAdvancedMarkerExposed {
@@ -63,10 +64,17 @@ export default defineComponent({
       () => !!(markerCluster.value && api.value && marker.value instanceof google.maps.marker.AdvancedMarkerElement)
     );
 
+    // Snapshots of the last options we acted on, insulated from in-place
+    // mutation of the source, so deep changes to `options`/`pinOptions` are
+    // reliably detected (see cloneOptions).
+    let appliedOptions: google.maps.marker.AdvancedMarkerElementOptions | undefined;
+    let appliedPinOptions: google.maps.marker.PinElementOptions | undefined;
+
     watch(
       [map, options, pinOptions, markerRef],
-      async (_, [oldMap, oldOptions, oldPinOptions, oldMarkerRef]) => {
-        const hasOptionChange = !equal(options.value, oldOptions) || !equal(pinOptions.value, oldPinOptions);
+      async (_, [oldMap, , , oldMarkerRef]) => {
+        const hasOptionChange =
+          !appliedOptions || !equal(options.value, appliedOptions) || !equal(pinOptions.value, appliedPinOptions);
         const hasMarkerRefChange = markerRef.value !== oldMarkerRef;
         const hasChanged = hasOptionChange || hasMarkerRefChange || map.value !== oldMap;
 
@@ -84,8 +92,8 @@ export default defineComponent({
             content: hasCustomSlotContent.value
               ? markerRef.value
               : pinOptions.value
-                ? new PinElement(pinOptions.value)
-                : content,
+              ? new PinElement(pinOptions.value)
+              : content,
             ...otherOptions,
           });
 
@@ -116,10 +124,14 @@ export default defineComponent({
             });
           });
         }
+
+        appliedOptions = cloneOptions(options.value);
+        appliedPinOptions = cloneOptions(pinOptions.value);
       },
       {
         immediate: true,
         flush: "post", // Ensure DOM updates happen before this watcher runs
+        deep: true,
       }
     );
 
