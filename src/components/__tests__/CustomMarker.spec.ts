@@ -1,5 +1,5 @@
 import { mount } from "@vue/test-utils";
-import { nextTick, ref } from "vue";
+import { nextTick, reactive, ref } from "vue";
 import CustomMarker from "../CustomMarker.vue";
 import { Map } from "@googlemaps/jest-mocks";
 import { mapSymbol, apiSymbol, markerClusterSymbol, customMarkerClassSymbol } from "../../shared";
@@ -204,6 +204,41 @@ describe("CustomMarker Component", () => {
 
       expect(customMarker.setOptions).toHaveBeenCalledTimes(1);
       expect(customMarker.setOptions).toHaveBeenCalledWith(expect.objectContaining({ position }));
+    });
+
+    // Unlike the test above, this never re-assigns the prop: the reactive options
+    // object is mutated in place and the watcher must fire on its own. This pins
+    // `deep: true` for CustomMarker's distinct topology — its options pass through
+    // a `computed` that spreads props.options, so a nested mutation does not
+    // invalidate the computed itself; only the watcher's deep traversal of the
+    // computed's value subscribes to the nested reactive properties.
+    it("should call setOptions when a reactive options object is mutated in place without reassignment (deep reactivity)", async () => {
+      const options = reactive({ position: { lat: 37.774, lng: -122.414 } });
+
+      mount(CustomMarker, {
+        props: { options },
+        slots: {
+          // eslint-disable-next-line quotes
+          default: '<div class="custom-content">Custom Marker Content</div>',
+        },
+        global: {
+          provide: {
+            [mapSymbol]: ref(mockMap),
+            [apiSymbol]: ref(mockApi),
+          },
+        },
+      });
+      await nextTick();
+
+      const customMarker = getCustomMarkerMocks()[0];
+
+      // Clear setOptions calls from initial creation (element ref settles).
+      customMarker.setOptions.mockClear();
+
+      options.position.lat = 45.0;
+      await nextTick();
+
+      expect(customMarker.setOptions).toHaveBeenCalledTimes(1);
     });
 
     // Guards the dedup optimization for CustomMarker specifically: its `options`

@@ -1,5 +1,5 @@
 import { mount } from "@vue/test-utils";
-import { nextTick, ref } from "vue";
+import { nextTick, reactive, ref } from "vue";
 import HeatmapLayer from "../HeatmapLayer";
 import { Map } from "@googlemaps/jest-mocks";
 import { mapSymbol, apiSymbol } from "../../shared";
@@ -229,6 +229,32 @@ describe("HeatmapLayer Component", () => {
           data: expect.arrayContaining([expect.any(google.maps.LatLng), expect.any(google.maps.LatLng)]),
         })
       );
+    });
+
+    // Unlike the test above, this never re-assigns the prop: the reactive options
+    // object is mutated in place and the watcher must fire on its own. This pins
+    // the watcher's `deep: true` (the setProps-based tests fire the watcher via
+    // the prop reference change and would pass without it).
+    it("should call setOptions when a reactive options object is mutated in place without reassignment (deep reactivity)", async () => {
+      const options = reactive({ data: [{ lat: 40.7128, lng: -74.006 }] });
+
+      mount(HeatmapLayer, {
+        props: { options },
+        global: {
+          provide: {
+            [mapSymbol]: ref(mockMap),
+            [apiSymbol]: ref(mockApi),
+          },
+        },
+      });
+      await nextTick();
+
+      const heatmapLayer = getHeatmapLayerMocks()[0];
+
+      options.data.push({ lat: 40.7614, lng: -73.9776 });
+      await nextTick();
+
+      expect(heatmapLayer.setOptions).toHaveBeenCalledTimes(1);
     });
 
     // Guards the dedup optimization: a fresh-but-structurally-identical options

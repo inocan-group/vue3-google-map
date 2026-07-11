@@ -1,5 +1,5 @@
 import { mount } from "@vue/test-utils";
-import { nextTick, ref } from "vue";
+import { nextTick, reactive, ref } from "vue";
 import Polyline from "../Polyline";
 import { mockInstances, Map } from "@googlemaps/jest-mocks";
 import { mapSymbol, apiSymbol, polylineEvents } from "../../shared";
@@ -176,6 +176,38 @@ describe("Polyline Component", () => {
 
       expect(polyline.setOptions).toHaveBeenCalledTimes(1);
       expect(polyline.setOptions).toHaveBeenCalledWith(expect.objectContaining({ path }));
+    });
+
+    // Unlike the test above, this never re-assigns the prop: the reactive options
+    // object is mutated in place and the watcher must fire on its own. This pins
+    // the watcher's `deep: true` (the setProps-based tests fire the watcher via
+    // the prop reference change and would pass without it).
+    it("should call setOptions when a reactive options object is mutated in place without reassignment (deep reactivity)", async () => {
+      const options = reactive({
+        path: [
+          { lat: 37.772, lng: -122.214 },
+          { lat: 21.291, lng: -157.821 },
+        ],
+        geodesic: true,
+      });
+
+      mount(Polyline, {
+        props: { options },
+        global: {
+          provide: {
+            [mapSymbol]: ref(mockMap),
+            [apiSymbol]: ref(mockApi),
+          },
+        },
+      });
+      await nextTick();
+
+      const polyline = getPolylineMocks()[0];
+
+      options.path.push({ lat: -18.142, lng: 178.431 });
+      await nextTick();
+
+      expect(polyline.setOptions).toHaveBeenCalledTimes(1);
     });
 
     // Guards the dedup optimization: a parent re-render that passes a fresh-but-
