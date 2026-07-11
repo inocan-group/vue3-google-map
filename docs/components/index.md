@@ -14,4 +14,4 @@ The main mapping component is `GoogleMap`, however the following components are 
 - [Custom Marker](./custom-marker.md)
 - [Custom Control](./custom-control.md)
 - [Marker Cluster](./marker-cluster.md)
-- [Heatmap Layer](./heatmap-layer.md) ⚠️ **Deprecated**
+- [Heatmap Layer](./heatmap-layer.md) ⚠️ **Removed** — pin API to `3.64` or migrate

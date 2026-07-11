@@ -10,8 +10,12 @@ interface ExtendedHeatmapLayerOptions extends Omit<HeatmapLayerOptions, "data"> 
 }
 
 /**
- * @deprecated The HeatmapLayer component was deprecated on May 27, 2025 and will be sunset in May 2026.
- * Google recommends migrating to third-party library integrations like deck.gl, which offers a HeatmapLayer implementation.
+ * @deprecated The Heatmap Layer was removed from the Maps JavaScript API as of version 3.65.
+ * It is no longer available on the `weekly` (or any newer) channel and only works if the API is
+ * pinned to version 3.64 or earlier via the `version` prop on `GoogleMap` (or the `v` option of
+ * `@googlemaps/js-api-loader`). That pin is temporary — Google rotates out old versions over time.
+ * Deprecated on May 27, 2025; Google recommends migrating to third-party integrations like deck.gl,
+ * which offers a HeatmapLayer implementation.
  * @see {@link https://developers.google.com/maps/deprecations} for more information.
  */
 export default defineComponent({

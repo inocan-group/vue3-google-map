@@ -27,7 +27,7 @@ Note: Please refer to the [documentation site](https://vue3-google-map.com/) for
   - [Custom Marker](#custom-marker)
   - [Custom Control](#custom-control)
   - [Marker Cluster](#marker-cluster)
-  - [Heatmap Layer](#heatmap-layer) ⚠️ **Deprecated**
+  - [Heatmap Layer](#heatmap-layer) ⚠️ **Removed**
 - [Advanced Usage](#advanced-usage)
 - [Contribution](#contribution)
 - [License](#license)
@@ -98,7 +98,7 @@ The main mapping component is `GoogleMap`, however the following components are 
 - [CustomMarker](#custom-marker)
 - [CustomControl](#custom-control)
 - [MarkerCluster](#marker-cluster)
-- [HeatmapLayer](#heatmap-layer) ⚠️ **Deprecated**
+- [HeatmapLayer](#heatmap-layer) ⚠️ **Removed** — pin API to `3.64` or migrate
 
 ### Advanced Marker
 
@@ -745,10 +745,10 @@ function forceRender() {
 
 ### Heatmap Layer
 
-> [!WARNING]
-> **DEPRECATED:** The `HeatmapLayer` component was deprecated on **May 27, 2025** and will be sunset in **May 2026**. Google recommends migrating to third-party library integrations like [deck.gl](https://deck.gl/), which offers a HeatmapLayer implementation. [Learn more about the deprecation](https://developers.google.com/maps/deprecations).
+> [!CAUTION]
+> **NO LONGER AVAILABLE ON CURRENT API VERSIONS:** The Heatmap Layer was **removed from the Maps JavaScript API as of version 3.65**. It is no longer available on the `weekly` (or any newer) channel, so this component only works if you **pin the API to version `3.64` or earlier** via the `version` prop on `GoogleMap` (or the `v` option of `@googlemaps/js-api-loader`). This is a temporary workaround — Google rotates out old versions over time, so `3.64` will eventually stop resolving. The `HeatmapLayer` component was deprecated on **May 27, 2025**; Google recommends migrating to a third-party integration like [deck.gl](https://deck.gl/), which offers a HeatmapLayer implementation. [Learn more about the deprecation](https://developers.google.com/maps/deprecations).
 
-Use the `HeatmapLayer` component to depict the intensity of data at geographical points on the map. Make sure to include the `visualization` library in the `libraries` prop of the `GoogleMap` component.
+Use the `HeatmapLayer` component to depict the intensity of data at geographical points on the map. Make sure to include the `visualization` library in the `libraries` prop of the `GoogleMap` component, and to pin `version` to `3.64` (see the notice above).
 
 #### Options
 
@@ -782,6 +782,7 @@ const heatmapData = [
 <template>
   <GoogleMap
     api-key="YOUR_GOOGLE_MAPS_API_KEY"
+    version="3.64"
     :libraries="['visualization']"
     style="width: 100%; height: 500px"
     :center="sanFrancisco"
