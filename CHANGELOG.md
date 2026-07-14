@@ -2,6 +2,14 @@
 
 All notable changes to this project will be documented in this file. Versions are managed automatically by [release-please](https://github.com/googleapis/release-please) from [Conventional Commits](https://www.conventionalcommits.org/).
 
+## [0.27.2](https://github.com/inocan-group/vue3-google-map/compare/v0.27.1...v0.27.2) (2026-07-11)
+
+
+### Bug Fixes
+
+* deep reactivity for components with an :options config prop ([4cc7c81](https://github.com/inocan-group/vue3-google-map/commit/4cc7c81a2482ad45fc174ed5d6ba6b8c515ac048))
+* prevent trailing debounce after MarkerCluster.destroy() ([ac4a553](https://github.com/inocan-group/vue3-google-map/commit/ac4a55332f242b5c1e19b6d8bd12ffbda1edf788))
+
 ### [0.27.1](https://github.com/inocan-group/vue3-google-map/compare/v0.27.0...v0.27.1) (2026-03-17)
 
 
