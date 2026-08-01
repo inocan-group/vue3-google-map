@@ -31,6 +31,7 @@ describe("GoogleMap Component", () => {
     // Clear mocks
     mockSetOptions.mockClear();
     mockImportLibrary.mockClear();
+    mockImportLibrary.mockResolvedValue({});
 
     // Reset options flag for fresh environment
     __resetOptionsFlag();
@@ -382,6 +383,23 @@ describe("GoogleMap Component", () => {
   });
 
   describe("Cleanup", () => {
+    it("should not create a map when loading finishes after unmount", async () => {
+      let resolveLibrary!: () => void;
+      mockImportLibrary.mockImplementation(
+        () =>
+          new Promise<void>((resolve) => {
+            resolveLibrary = resolve;
+          })
+      );
+
+      const wrapper = createWrapper({ libraries: ["maps"] });
+      wrapper.unmount();
+      resolveLibrary();
+      await flushPromises();
+
+      expect(createMapSpy).not.toHaveBeenCalled();
+    });
+
     it("should clear event listeners on unmount", async () => {
       const wrapper = createWrapper();
 
