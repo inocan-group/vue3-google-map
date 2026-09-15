@@ -428,17 +428,11 @@ describe("InfoWindow Component", () => {
       const advancedMarker = advancedMarkers[0];
       const infoWindow = infoWindows[0];
 
-      const advancedMarkerAddListenerCalls = (advancedMarker.addListener as jest.Mock).mock.calls;
-
-      // Both AdvancedMarker and InfoWindow register "gmp-click" on AdvancedMarkerElement anchors
-      const gmpClickListeners = advancedMarkerAddListenerCalls.filter(([eventType]) => eventType === "gmp-click");
-      expect(gmpClickListeners).toHaveLength(2);
-
       // When anchor is present, InfoWindow doesn't open immediately
       expect(infoWindow.open).not.toHaveBeenCalled();
 
-      // Simulate marker click to open InfoWindow (InfoWindow's gmp-click listener)
-      gmpClickListeners[1][1]();
+      // Clicking the anchor opens the InfoWindow via its "gmp-click" DOM listener
+      advancedMarker.dispatchEvent(new Event("gmp-click"));
       expect(infoWindow.open).toHaveBeenCalledTimes(1);
       expect(infoWindow.open).toHaveBeenCalledWith(
         expect.objectContaining({
@@ -483,12 +477,20 @@ describe("InfoWindow Component", () => {
 
       await nextTick();
 
-      // Both AdvancedMarker and InfoWindow register "gmp-click" on AdvancedMarkerElement anchors
+      // Every anchor added after the map was ready still opens its InfoWindow on click
       const markers = getAdvancedMarkerMocks();
-      markers.forEach((marker) => {
-        const addListenerCalls = (marker.addListener as jest.Mock).mock.calls;
-        const gmpClickListeners = addListenerCalls.filter(([event]) => event === "gmp-click");
-        expect(gmpClickListeners).toHaveLength(2);
+      const infoWindows = getInfoWindowMocks();
+      expect(markers).toHaveLength(2);
+      expect(infoWindows).toHaveLength(2);
+
+      markers.forEach((marker, i) => {
+        const open = infoWindows[i].open as jest.Mock;
+        const openCallsBefore = open.mock.calls.length;
+
+        marker.dispatchEvent(new Event("gmp-click"));
+
+        expect(open.mock.calls).toHaveLength(openCallsBefore + 1);
+        expect(open).toHaveBeenLastCalledWith(expect.objectContaining({ anchor: marker }));
       });
     });
   });
@@ -522,18 +524,12 @@ describe("InfoWindow Component", () => {
       const wrapper = createWrapper({}, undefined, mockMarker);
       await nextTick();
 
-      // Mock the remove method on the listener
-      const mockListener = { remove: jest.fn() };
-      (mockMarker.addListener as jest.Mock).mockReturnValue(mockListener);
-
-      // Remount to get the listener with remove method
+      const infoWindow = getInfoWindowMocks()[0];
       wrapper.unmount();
-      const newWrapper = createWrapper({}, undefined, mockMarker);
-      await nextTick();
 
-      newWrapper.unmount();
+      mockMarker.dispatchEvent(new Event("gmp-click"));
 
-      expect(mockListener.remove).toHaveBeenCalled();
+      expect(infoWindow.open).not.toHaveBeenCalled();
     });
   });
 });
