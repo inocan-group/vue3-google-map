@@ -34,6 +34,16 @@ const legacyClickEventName = "click";
 const newClickEventName = "gmp-click";
 export const markerEvents = ["drag", "dragend", "dragstart", newClickEventName] as const;
 
+// AdvancedMarkerElement is a custom element and dispatches its events to the DOM under
+// `gmp-` prefixed names. Its `addListener` still works, but logs a deprecation warning on
+// every call, so the events below are registered with `addEventListener` instead.
+const markerEventDomNames: Record<(typeof markerEvents)[number], string> = {
+  drag: "gmp-drag",
+  dragend: "gmp-dragend",
+  dragstart: "gmp-dragstart",
+  [newClickEventName]: newClickEventName,
+};
+
 export default defineComponent({
   name: "AdvancedMarker",
   props: {
@@ -110,6 +120,11 @@ export default defineComponent({
 
           marker.value = markRaw(new AdvancedMarkerElement(options.value));
 
+          // A DOM listener is invisible to the Maps eventing system, which is what
+          // AdvancedMarkerElement consults to decide whether it is clickable. Opt in
+          // explicitly to keep the clickability the previous `addListener` call implied.
+          marker.value.gmpClickable = options.value.gmpClickable ?? true;
+
           if (isMarkerInCluster.value) {
             markerCluster.value?.addMarker(marker.value);
           } else {
@@ -117,7 +132,7 @@ export default defineComponent({
           }
 
           markerEvents.forEach((event) => {
-            marker.value?.addListener(event, (e: unknown) => {
+            marker.value?.addEventListener(markerEventDomNames[event], (e: Event) => {
               emit(event, e);
               // preserve backward compatibility for "click" event
               if (event === newClickEventName) emit(legacyClickEventName, e);
