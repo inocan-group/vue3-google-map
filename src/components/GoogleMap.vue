@@ -312,6 +312,8 @@ export default defineComponent({
     };
 
     const setupMap = (_google?: typeof google) => {
+      if (!mapRef.value) return;
+
       const googleMaps = _google ? _google.maps : google.maps;
       api.value = markRaw(googleMaps);
       map.value = markRaw(new googleMaps.Map(mapRef.value as HTMLElement, resolveOptions()));
