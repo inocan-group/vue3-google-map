@@ -277,31 +277,57 @@ describe("AdvancedMarker Component", () => {
   });
 
   describe("Event Forwarding", () => {
-    it("should setup listeners for all advanced marker events", async () => {
+    it("should not use the deprecated addListener API", async () => {
       createWrapper();
       await nextTick();
 
       const advancedMarker = getAdvancedMarkerMocks()[0];
-      const addListener = advancedMarker.addListener as jest.Mock;
 
-      expect(addListener).toHaveBeenCalledTimes(markerEvents.length);
-      addListener.mock.calls.forEach(([eventType], i) => {
-        expect(eventType).toBe(markerEvents[i]);
-      });
+      expect(advancedMarker.addListener as jest.Mock).not.toHaveBeenCalled();
     });
 
-    it("should emit Vue events when Google Maps events fire", async () => {
+    it("should mark the marker clickable so it dispatches gmp-click", async () => {
+      createWrapper();
+      await nextTick();
+
+      expect(getAdvancedMarkerMocks()[0].gmpClickable).toBe(true);
+    });
+
+    it("should respect an explicit gmpClickable option", async () => {
+      createWrapper({ gmpClickable: false });
+      await nextTick();
+
+      expect(getAdvancedMarkerMocks()[0].gmpClickable).toBe(false);
+    });
+
+    it("should emit Vue events when the marker dispatches its DOM events", async () => {
       const wrapper = createWrapper();
       await nextTick();
 
       const advancedMarker = getAdvancedMarkerMocks()[0];
-      const addListener = advancedMarker.addListener as jest.Mock;
 
-      const mockEventData = { type: "test_event" };
-      addListener.mock.calls.forEach(([eventType, listener]) => {
-        listener(mockEventData);
-        expect(wrapper.emitted(eventType)).toEqual([[mockEventData]]);
+      const domEventNames: Record<(typeof markerEvents)[number], string> = {
+        drag: "gmp-drag",
+        dragend: "gmp-dragend",
+        dragstart: "gmp-dragstart",
+        "gmp-click": "gmp-click",
+      };
+
+      markerEvents.forEach((event) => {
+        const domEvent = new Event(domEventNames[event]);
+        advancedMarker.dispatchEvent(domEvent);
+        expect(wrapper.emitted(event)).toEqual([[domEvent]]);
       });
+    });
+
+    it("should also emit the legacy click event for gmp-click", async () => {
+      const wrapper = createWrapper();
+      await nextTick();
+
+      const domEvent = new Event("gmp-click");
+      getAdvancedMarkerMocks()[0].dispatchEvent(domEvent);
+
+      expect(wrapper.emitted("click")).toEqual([[domEvent]]);
     });
   });
 

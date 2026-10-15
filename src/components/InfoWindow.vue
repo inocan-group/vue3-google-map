@@ -24,8 +24,20 @@ import equal from "fast-deep-equal";
 import { apiSymbol, mapSymbol, markerSymbol } from "../shared/index";
 import { cloneOptions } from "../utils/index";
 
-function getAnchorClickEvent(anchor: google.maps.Marker | google.maps.marker.AdvancedMarkerElement): string {
-  return anchor instanceof google.maps.marker.AdvancedMarkerElement ? "gmp-click" : "click";
+// AdvancedMarkerElement dispatches `gmp-click` to the DOM and its `addListener` is
+// deprecated, so an advanced-marker anchor is bound as a DOM listener and handed back a
+// matching `remove()` for the teardown paths below. A legacy Marker is an MVCObject,
+// where `addListener` remains correct.
+function listenForAnchorClick(
+  anchor: google.maps.Marker | google.maps.marker.AdvancedMarkerElement,
+  handler: () => void
+): google.maps.MapsEventListener {
+  if (anchor instanceof google.maps.marker.AdvancedMarkerElement) {
+    anchor.addEventListener("gmp-click", handler);
+    return { remove: () => anchor.removeEventListener("gmp-click", handler) };
+  }
+
+  return anchor.addListener("click", handler);
 }
 
 export interface IInfoWindowExposed {
@@ -119,7 +131,7 @@ export default defineComponent({
 
               // Set up initial anchor click listener
               if (anchor.value) {
-                anchorClickListener = anchor.value.addListener(getAnchorClickEvent(anchor.value), () => open());
+                anchorClickListener = listenForAnchorClick(anchor.value, () => open());
               }
 
               if (!anchor.value || internalVal) {
@@ -156,7 +168,7 @@ export default defineComponent({
 
           // Set up new listener
           if (newAnchor) {
-            anchorClickListener = newAnchor.addListener(getAnchorClickEvent(newAnchor), () => open());
+            anchorClickListener = listenForAnchorClick(newAnchor, () => open());
           }
         },
         {
