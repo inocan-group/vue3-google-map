@@ -17,7 +17,11 @@ export class SafeSuperClusterViewportAlgorithm extends SuperClusterViewportAlgor
     // Early return for empty markers - prevents "Cannot read properties of
     // undefined (reading 'range')" error when supercluster.getClusters() is
     // called before load() has initialized the internal KD-tree.
+    // Forget the last markers too, as the parent would: otherwise the same
+    // markers added back read as unchanged and are never drawn again.
     if (input.markers.length === 0) {
+      this.markers = [];
+      this.clusters = [];
       return { clusters: [], changed: true };
     }
     return super.calculate(input);
